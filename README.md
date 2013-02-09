@@ -1,4 +1,4 @@
-Git Pull
+Pullreq
 ========
 
 Github pull request app.
