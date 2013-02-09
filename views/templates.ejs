@@ -1,0 +1,51 @@
+<script id="project-template" type="text/x-handlebars-template">
+    <div class="project" id="project-{{projectId}}">
+        <h2><i class="icon-chevron-right"></i> {{name}}</h2>
+        <div class="pull-requests"></div>
+    </div>
+</script>
+<script id="pull-partial" type="text/x-handlebars-template">
+    <div class="pull-request clear-fix">
+        <img src="{{imageUrl}}" alt="{{user}}" title="{{user}}" />
+        <div>
+            <a class="roll-link" href="{{pullUrl}}"><span data-title="{{name}}">{{name}}</span></a>
+            <p>{{description}}</p>
+            <ul>
+                <li><i class="icon-user"></i> {{user}}</li>
+                <li><i class="icon-copy"></i> {{files}} Files changed</li>
+                <li><i class="icon-edit"></i> {{commits}} Commits</li>
+                <li><i class="icon-comments"></i> {{comments}} Comments</li>
+            </ul>
+        </div>
+    </div>
+</script>
+<!--<script id="pull-template" type="text/x-handlebars-template">-->
+    <!--<div class="pull-request clear-fix">-->
+        <!--<img src="{{imageUrl}}" alt="{{user}}" title="{{user}}" />-->
+        <!--<div>-->
+            <!--<a class="roll-link" href="{{pullUrl}}"><span data-title="{{name}}">{{name}}</span></a>-->
+            <!--<p>{{description}}</p>-->
+            <!--<ul>-->
+                <!--<li><i class="icon-user"></i> {{user}}</li>-->
+                <!--<li><i class="icon-copy"></i> {{files}} Files changed</li>-->
+                <!--<li><i class="icon-edit"></i> {{commits}} Commits</li>-->
+                <!--<li><i class="icon-comments"></i> {{comments}} Comments</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</script>-->
+<script id="pull-template" type="text/x-handlebars-template">
+    <div class="pull-request clear-fix">
+        <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
+        <div>
+            <a class="roll-link" href="{{html_url}}"><span data-title="{{title}}">{{title}}</span></a>
+            <p>{{body}}</p>
+            <ul>
+                <li><i class="icon-user"></i> {{user.login}}</li>
+                <li><i class="icon-copy"></i> {{files}} Files changed</li>
+                <li><i class="icon-edit"></i> {{commits}} Commits</li>
+                <li><i class="icon-comments"></i> {{comments}} Comments</li>
+            </ul>
+        </div>
+    </div>
+</script>
