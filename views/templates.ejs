@@ -19,21 +19,6 @@
         </div>
     </div>
 </script>
-<!--<script id="pull-template" type="text/x-handlebars-template">-->
-    <!--<div class="pull-request clear-fix">-->
-        <!--<img src="{{imageUrl}}" alt="{{user}}" title="{{user}}" />-->
-        <!--<div>-->
-            <!--<a class="roll-link" href="{{pullUrl}}"><span data-title="{{name}}">{{name}}</span></a>-->
-            <!--<p>{{description}}</p>-->
-            <!--<ul>-->
-                <!--<li><i class="icon-user"></i> {{user}}</li>-->
-                <!--<li><i class="icon-copy"></i> {{files}} Files changed</li>-->
-                <!--<li><i class="icon-edit"></i> {{commits}} Commits</li>-->
-                <!--<li><i class="icon-comments"></i> {{comments}} Comments</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
 <script id="pull-template" type="text/x-handlebars-template">
     <div class="pull-request clear-fix">
         <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
@@ -47,5 +32,19 @@
                 <li><i class="icon-comments"></i> {{comments}} Comments</li>
             </ul>
         </div>
+    </div>
+</script>
+<script id="repo-owner-template" type="text/x-handlebars-template">
+    <div class="owner">
+        <h2>{{login}}</h2>
+        <ul class="unstyled">
+            {{#each repos}}
+            <li>
+                <label class="checkbox">
+                    <input type="checkbox" name=""> {{name}}
+                </label>
+            </li>
+            {{/each}}
+        </ul>
     </div>
 </script>

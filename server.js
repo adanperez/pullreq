@@ -9,16 +9,10 @@ var mongoose =  require('mongoose');
 var connect =   require('connect');
 var uuid =      require('node-uuid');
 var _ =         require('underscore');
-var nconf =     require('nconf')
+var nconf =     require('nconf');
+var fs =        require('fs');
 var app = express();
 var memStore = express.session.MemoryStore
-//var db = mongoose.createConnection('localhost', 'gitpull');
-
-/**
- * Load the servers models into Mongoose
- */
-//require(__dirname + "/models/User.js").loadModel(mongoose, db);
-
 
 /**
  * Setup nconf to use (in-order):
@@ -62,11 +56,6 @@ app.configure('all', function() {
     app.set('port', 3000);
 });
 
-var username = nconf.get('username');
-var password = nconf.get('password');
-var repos = nconf.get('repos');
-console.log(repos)
-
 function clientErrorHandler(err, req, res, next) {
     if (req.xhr) {
         res.send(500, { error: 'Something blew up!' });
@@ -81,95 +70,28 @@ function errorHandler(err, req, res, next) {
     res.render(err);
 }
 
-var render = {
-    indexPage: function(res, locals) {
-        res.render('index.ejs', {
-            locals: locals
-        });
-    }
-}
+/**
+ * Create the DB connection
+ */
+mongoose.connect(nconf.get('db:server'), nconf.get('db:database'));
 
-app.get('/', function(req, res) {
-    render.indexPage(res, {});
-});
-
-app.get('/git/pulls', function(req, res) {
-
-    var auth2 = {
-        method: 'GET',
-        url: 'https://' + username + ':' + password + '@api.github.com/repos//' + '' + '/pulls',
-        json: true,
-        encoding: 'utf8'
-    }
-
-    var pulls = {}
-    for (var repo in repos) {
-        if (repos.hasOwnProperty(repo)) {
-            var projects = repos[repo];
-            for (var i = 0; i < projects.length; i++) {
-                (function() {
-                    var project = projects[i];
-                    var auth = {
-                        method: 'GET',
-                        url: 'https://api.github.com/repos/' + repo + '/' + project + '/pulls',
-                        headers: {
-                            'Host': 'api.github.com',
-                            'Authorization': 'Basic ' + new Buffer(username + ':' + password).toString('base64')
-                        },
-                        json: true,
-                        encoding: 'utf8'
-                    }
-                    pulls[project] = function(callback) {
-                        request(auth, function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                console.log(body);
-                            } else {
-                                console.log(error);
-                            }
-                            callback(error, body);
-                        });
-                    }
-                })();
-            }
-        }
-    }
-
-    async.parallel(pulls, function(err, results) {
-        if (err) {
-            res.contentType('json');
-            res.send({error:err.message});
-        } else {
-            res.contentType('json');
-            res.send(results);
-        }
-    });
-});
-
-
-app.get('/git/users/:username', function(req, res) {
-    var auth2 = {
-        method: 'GET',
-        url: 'https://@api.github.com/users/' + req.params.username,
-        json: true,
-        encoding: 'utf8'
-    }
-    request(auth2, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body);
-        } else {
-            console.log(error);
-        }
-        res.contentType('json');
-        res.send(body);
-    });
-
+/**
+ * Load the servers models into Mongoose
+ */
+var models_path = __dirname + '/models'
+fs.readdirSync(models_path).forEach(function (file) {
+    console.log('Loading: ' + models_path + '/' + file);
+    require(models_path + '/' + file);
 });
 
 /**
  * Controllers for sections of the website
  */
-//require("./controllers/IndexController.js").init(app, db);
-//require("./controllers/AuthController.js").init(app, db);
+require("./controllers/IndexController.js")(app);
+require("./controllers/AuthController.js")(app);
+require("./controllers/ApiController.js")(app);
+require("./controllers/HomeController.js")(app);
+require("./controllers/RepoController.js")(app);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));

@@ -1,29 +1,78 @@
-var db
-var userService
+var request =           require('request');
+var nconf =             require('nconf');
+var qs =                require('querystring');
+var gitUserService =    require("../services/GitUserService.js");
+var repoService =    require("../services/RepoService.js");
 
-function authenticate(email, pass, req, res) {
-    userService.authenticate(email, pass, function(err, user) {
-        if (user) {
-            req.session.user_id = user.id;
-            console.log('Logged in: ' + user.name.full)
-            req.session.message = 'Logged in!';
-        } else {
-            req.session.message = err.message;
-        }
-        res.redirect('/');
+var githubClientID = nconf.get('githubClientID');
+var githubClientSecret = nconf.get('githubClientSecret');
+
+function openAuthToGitHub(req, res) {
+    var url = 'https://github.com/login/oauth/authorize?' + qs.stringify({
+        client_id: githubClientID,
+        scope:'user,repo,notifications,gist'
     });
+    res.redirect(url);
 }
 
-function loginGet(req, res) {
-    var pass = req.query.password,
-        email = req.query.email;
-    authenticate(email, pass, req, res);
-}
+function register(req, res) {
+    var code = req.query.code;
+    //res.send('Code: ' + code);
+    var gitReq = {
+        method: 'POST',
+        url: 'https://github.com/login/oauth/access_token',
+        headers: {},
+        body: qs.stringify({
+            client_id: githubClientID,
+            client_secret: githubClientSecret,
+            code: code
+        }),
+        json: true,
+        encoding: 'utf8'
+    }
 
-function loginPost(req, res) {
-    var pass = req.body.password,
-        email = req.body.email;
-    authenticate(email, pass, req, res);
+    request(gitReq, function (error, response, body) {
+        if (error) {
+            res.contentType('json');
+            res.send(error);
+        } else {
+            var gitToken = body.access_token
+            gitReq = {
+                method: 'GET',
+                url: 'https://api.github.com/user',
+                headers: {
+                    'Host': 'api.github.com',
+                    'Authorization': 'token ' + gitToken
+                },
+                json: true,
+                encoding: 'utf8'
+            }
+            request(gitReq, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    gitUserService.addOrFindGitUser(gitToken, body, function(err, gitUser) {
+                        req.session.user_id = gitUser.id;
+                        req.session.user_token = gitToken;
+                        repoService.getReposForUser(gitUser.id, function(err, repos) {
+                           if (err) {
+                               res.contentType('json');
+                               res.send(err);
+                           } else {
+                               if (repos.length > 0) {
+                                   res.redirect('/home');
+                               } else {
+                                   res.redirect('/repos');
+                               }
+                           }
+                        });
+
+                    });
+                } else {
+                    res.contentType('json');
+                    res.send(error);
+                }
+            });
+        }
+    });
 }
 
 function logout(req, res) {
@@ -31,17 +80,33 @@ function logout(req, res) {
     res.redirect('/');
 }
 
-/**
- * The exported code
- * @param app - express application
- * @param database - mongoDB connection
- */
-exports.init = function(app, database) {
-    db = database
-    userService = require("../services/UserService.js")(db);
-
+module.exports = function(app) {
     var path = '/auth';
+    app.get(path + '/login', openAuthToGitHub);
+    app.get(path + '/register', register);
     app.get(path + '/logout', logout);
-    app.get(path + '/login', loginGet);
-    app.post(path + '/login', loginPost);
 };
+
+//function authenticate(email, pass, req, res) {
+//    userService.authenticate(email, pass, function(err, user) {
+//        if (user) {
+//            req.session.user_id = user.id;
+//            console.log('Logged in: ' + user.name.full)
+//            req.session.message = 'Logged in!';
+//        } else {
+//            req.session.message = err.message;
+//        }
+//        res.redirect('/');
+//    });
+//}
+//function loginGet(req, res) {
+//    var pass = req.query.password,
+//        email = req.query.email;
+//    authenticate(email, pass, req, res);
+//}
+//
+//function loginPost(req, res) {
+//    var pass = req.body.password,
+//        email = req.body.email;
+//    authenticate(email, pass, req, res);
+//}

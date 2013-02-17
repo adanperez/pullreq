@@ -1,6 +1,3 @@
-var db
-var userService
-
 var render = {
     indexPage: function(res, locals) {
         res.render('index.ejs', {
@@ -16,29 +13,12 @@ function getAndClearMessage(req) {
 }
 
 function renderIndex(req, res) {
-    console.log(req.session);
-    if (req.session.user_id) {
-        var UserModel = db.model('User');
-        UserModel.findById(req.session.user_id, function(err, user) {
-            render.indexPage(res, {
-                user: user,
-                message: null
-            });
-        });
-    } else {
-        render.indexPage(res, {
-            user: null,
-            message: getAndClearMessage(req)
-        });
-    }
+    render.indexPage(res, {
+        user: null,
+        message: getAndClearMessage(req)
+    });
 }
-/**
- * The exported code
- * @param app - express application
- * @param database - mongoDB connection
- */
-exports.init = function(app, database) {
-    db = database
-    userService = require("../services/UserService.js")(db);
+
+module.exports = function(app) {
     app.get('/', renderIndex);
 };
