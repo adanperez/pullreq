@@ -1,6 +1,6 @@
 <script id="project-template" type="text/x-handlebars-template">
     <div class="project" id="project-{{projectId}}">
-        <h2><i class="icon-chevron-right"></i> {{name}}</h2>
+        <h2>{{name}}</h2>
         <div class="pull-requests"></div>
     </div>
 </script>
@@ -27,9 +27,10 @@
             <p>{{body}}</p>
             <ul>
                 <li><i class="icon-user"></i> {{user.login}}</li>
-                <li><i class="icon-copy"></i> {{files}} Files changed</li>
-                <li><i class="icon-edit"></i> {{commits}} Commits</li>
-                <li><i class="icon-comments"></i> {{comments}} Comments</li>
+                <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
+                <li><i class="icon-copy"></i> {{files.length}} Files changed</li>
+                <li><i class="icon-edit"></i> {{commits.length}} Commits</li>
+                <li><i class="icon-comments"></i> {{comments.length}} Comments</li>
             </ul>
         </div>
     </div>
@@ -41,7 +42,7 @@
             {{#each repos}}
             <li>
                 <label class="checkbox">
-                    <input type="checkbox" name=""> {{name}}
+                    <input type="checkbox" name="repo" value="{{full_name}}"> {{name}}
                 </label>
             </li>
             {{/each}}

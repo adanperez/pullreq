@@ -5,8 +5,8 @@ var request =   require('request');
 var async =     require('async');
 var _ =         require('underscore');
 var gitAPIService = require("../services/GitAPIService.js");
+var repoService =    require("../services/RepoService.js");
 
-var repos = nconf.get('repos');
 
 function requireAuthentication(req, res, next) {
     if (req.session.user_token) {
@@ -25,25 +25,41 @@ function jsonResponse(err, json, response) {
     }
 }
 
-function getPullRequests(req, res) {
-
-    var pulls = {}
-    for (var repo in repos) {
-        if (repos.hasOwnProperty(repo)) {
-            var projects = repos[repo];
-            for (var i = 0; i < projects.length; i++) {
-                (function() {
-                    var project = projects[i];
-                    pulls[project] = function(callback) {
-                        gitAPIService.getPullRequests(req.session.user_token, repo, project, callback);
-                    }
-                })();
-            }
+function getPullRequestInfo(req, res) {
+    var userToken = req.session.user_token;
+    var owner = req.params.owner;
+    var repo = req.params.repo;
+    var pullNumber = req.params.pullNumber;
+    var info = {
+        'commits': function(callback) {
+            gitAPIService.getPullRequestCommits(userToken, owner, repo, pullNumber, callback)
+        },
+        'files': function(callback) {
+            gitAPIService.getPullRequestFiles(userToken, owner, repo, pullNumber, callback)
+        },
+        'comments': function(callback) {
+            gitAPIService.getPullRequestComments(userToken, owner, repo, pullNumber, callback)
         }
     }
-
-    async.parallel(pulls, function(err, json) {
+    async.parallel(info, function(err, json) {
         jsonResponse(err, json, res);
+    });
+};
+
+
+function getUserPullRequests(req, res) {
+    var userToken = req.session.user_token;
+    var userId = req.session.user_id;
+    var pulls = {}
+    repoService.getReposForUser(userId, function(err, repos) {
+        _.each(repos, function(repo) {
+            pulls[repo.owner + '/' + repo.repo] = function(callback) {
+                gitAPIService.getPullRequests(userToken, repo.owner, repo.repo, callback);
+            }
+        }, this);
+        async.parallel(pulls, function(err, json) {
+            jsonResponse(err, json, res);
+        });
     });
 };
 
@@ -54,7 +70,7 @@ function getRepoOptions(req, res) {
             console.log(org);
             options.push(function(callback) {
                 gitAPIService.getOrgRepos(req.session.user_token, org.login, function(err, json) {
-                    org.repos = json
+                    org.repos = _.sortBy(json, function(repo){ return repo.name.toLowerCase(); });
                     callback(err, org);
                 });
             });
@@ -81,7 +97,8 @@ function getOrgRepos(req, res) {
 module.exports = function(app) {
     var path = '/api';
     app.all(path + '/*', requireAuthentication);
-    app.get(path + '/pullRequests', getPullRequests);
+    app.get(path + '/pullRequests', getUserPullRequests);
+    app.get(path + '/pullRequestInfo/:owner/:repo/:pullNumber', getPullRequestInfo);
     app.get(path + '/userOrgs', getUserOrgs);
     app.get(path + '/repoOptions', getRepoOptions);
     app.get(path + '/orgRepos/:org', getOrgRepos);

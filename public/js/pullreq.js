@@ -47,14 +47,20 @@ var PullReq = PullReq || {};
 
     PullReq.views  = {
         RepoOwners: Backbone.View.extend({
-            el: $("#content"),
+            el: $("#owners"),
             template: Handlebars.compile($("#repo-owner-template").html()),
+            //events: {
+            //    'submit #repoForm': 'saveToModel'
+            //},
             render: function() {
                 var view = this;
                 this.$el.fadeOut(100, function() {
+                    $('#loadingMessage').html('Choose your repos');
                     view.$el.empty();
                     view.collection.each(view.makeView, view);
-                    view.$el.fadeIn(200);
+                    view.$el.fadeIn(200, function() {
+                        $('#saveButton').show();
+                    });
                 });
                 return this;
             },

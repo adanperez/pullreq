@@ -1,9 +1,21 @@
+@font-face
+{
+    font-family: BebasNeue;
+    src: url('../font/BebasNeue.otf');
+}
+
+@font-face
+{
+    font-family: Chunkfive;
+    src: url('../font/Chunkfive.otf');
+}
+
 body {
 	/*background: #222;*/
     /*background-image: url('../img/grey_diag.png');*/
 
     color: #735151;
-	font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+	font: 300 100.1% Helvetica, "Arial Unicode MS", Arial, sans-serif;
     font-size: 14px;
 	/*font-family: 'Chau Philomene One', sans-serif;*/
 }
@@ -75,7 +87,6 @@ a {
     line-height: 0;
     height: 0;
 }
-
 
 /* ROLL LINKS */
 .roll-link {
@@ -159,6 +170,11 @@ a {
     margin-bottom: 40px;
 }
 
+.project h2 {
+    font-family: BebasNeue;
+    /*text-shadow: rgb(0, 0, 0) 0px 1px 0px;*/
+}
+
 .pull-request {
     clear: both;
     margin: 0 0 20px 0;
@@ -179,14 +195,20 @@ a {
 
 .pull-request p {
     margin-left: 2px;
+    color: #666666;
 }
 
 .pull-request ul {
-    color: #888;
+    color: #666666;
     display: inline;
 }
 
 .pull-request li {
     float:left;
     margin-right: 20px;
+}
+
+#loadingMessage {
+    padding-top: 0;
+    text-align: center;
 }

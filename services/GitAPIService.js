@@ -28,6 +28,18 @@ exports.getOrgRepos = function(token, org, callback) {
     makeGitRequest(token, '/orgs/' + org + '/repos', callback);
 }
 
-exports.getPullRequests = function(token, repo, project, callback) {
-    makeGitRequest(token, '/repos/' + repo + '/' + project + '/pulls', callback);
+exports.getPullRequests = function(token, owner, repo, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls', callback);
+}
+
+exports.getPullRequestCommits = function(token, owner, repo, pullNumber, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/commits', callback);
+}
+
+exports.getPullRequestFiles = function(token, owner, repo, pullNumber, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/files', callback);
+}
+
+exports.getPullRequestComments = function(token, owner, repo, pullNumber, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/comments', callback);
 }
