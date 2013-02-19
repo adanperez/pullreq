@@ -4,28 +4,10 @@
     src: url('../font/BebasNeue.otf');
 }
 
-/*@font-face*/
-/*{*/
-    /*font-family: Chunkfive;*/
-    /*src: url('../font/Chunkfive.otf');*/
-/*}*/
-
-/*@font-face {*/
-    /*font-family: 'Yanone Kaffeesatz';*/
-    /*font-style: normal;*/
-    /*font-weight: 400;*/
-    /*src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(http://themes.googleusercontent.com/static/fonts/yanonekaffeesatz/v4/YDAoLskQQ5MOAgvHUQCcLQa6gm6bS00u2Qn-iPLo1Go.woff) format('woff');*/
-/*}*/
-
-
 body {
-	/*background: #222;*/
-    /*background-image: url('../img/grey_diag.png');*/
-
     color: #735151;
 	font: 300 100.1% Helvetica, "Arial Unicode MS", Arial, sans-serif;
     font-size: 14px;
-	/*font-family: 'Chau Philomene One', sans-serif;*/
 }
 
 header {
@@ -41,6 +23,10 @@ header h1 {
 footer {
     color: rgba(0, 0, 0, 0.3);
     margin-bottom: 20px;
+}
+
+footer a {
+    color: rgba(0, 0, 0, 0.3);
 }
 
 h1 {
@@ -64,13 +50,6 @@ h4 {
 	font-size: 24px;
 	color: rgba(255,255,255,0.4);
 	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
-}
-
-a {
-    /*color: #dd4d42;*/
-    /*font-weight: bold;*/
-    /*text-decoration: none;*/
-    /*word-wrap: break-word;*/
 }
 
 /* Clear Fix */
@@ -190,11 +169,6 @@ a {
     margin-bottom: 60px;
 }
 
-.project h2 {
-
-    /*text-shadow: rgb(0, 0, 0) 0px 1px 0px;*/
-}
-
 .pull-request {
     clear: both;
     margin: 0 0 30px 0;
@@ -202,7 +176,6 @@ a {
 
 .pull-request .roll-link {
     margin-bottom: 2px;
-    /*font-family: Yanone Kaffeesatz;*/
 }
 
 .pull-request img {
@@ -263,4 +236,13 @@ ul.subInfo {
     top: 0;
     right: 0;
     color: #999;
+}
+
+#introPage {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#introPage h1:first-child {
+    padding: 10px 0 10px 0;
 }
