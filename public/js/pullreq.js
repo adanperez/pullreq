@@ -38,10 +38,16 @@ var PullReq = PullReq || {};
                     return [];
                 }
                 return data;
+            },
+            comparator: function(model) {
+                return model.get('name');
             }
         }),
         PullRequests: Backbone.Collection.extend({
-            model: PullReq.models.PullRequest
+            model: PullReq.models.PullRequest,
+            comparator: function(model) {
+                return model.get('title').toLowerCase();
+            }
         })
     };
 
@@ -55,11 +61,11 @@ var PullReq = PullReq || {};
             render: function() {
                 var view = this;
                 this.$el.fadeOut(100, function() {
-                    $('#loadingMessage').html('Choose your repos');
+                    $('#loadingMessage h1').html('Choose your repos');
                     view.$el.empty();
                     view.collection.each(view.makeView, view);
                     view.$el.fadeIn(200, function() {
-                        $('#saveButton').show();
+                        $('#buttons').show();
                     });
                 });
                 return this;
@@ -102,7 +108,9 @@ var PullReq = PullReq || {};
             },
             render: function() {
                 this.$el.html( this.template(this.model.toJSON()));
-                this.model.get('pullRequests').each(function(pullRequest){
+                var pullRequests = this.model.get('pullRequests');
+                pullRequests.sort();
+                pullRequests.each(function(pullRequest){
                     var pullView = new PullReq.views.PullRequest({model:pullRequest});
                     this.$('.pull-requests').append(pullView.render().el)
                 }, this);
@@ -115,6 +123,7 @@ var PullReq = PullReq || {};
                 this.collection.on('add', this.addProjectView, this);
             },
             render: function() {
+                this.collection.sort();
                 this.collection.each(this.addProjectView, this); //passing in scope/context beacuse each is anonomyous function
                 return this;
             },

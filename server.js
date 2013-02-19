@@ -22,7 +22,7 @@ nconf.argv() // 1. Command-line arguments
      .file({ file: './config.json' });  // 3. A file located at 'path/to/config.json'
 
 app.configure('all', function() {
-
+    app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
     app.engine('ejs', ejslocals);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
@@ -37,7 +37,7 @@ app.configure('all', function() {
         secret: uuid.v4(),
         key: 'sid',
         maxAge: new Date(Date.now() + 60000*10),
-        cookie: { maxAge: 60000*10, path: '/', httpOnly: true },
+        cookie: { maxAge: null, path: '/', httpOnly: true },
         store : memStore({ reapInterval: 60000*10 })
     }));
 

@@ -1,3 +1,4 @@
+
 var render = {
     indexPage: function(res, locals) {
         res.render('index.ejs', {
@@ -13,10 +14,16 @@ function getAndClearMessage(req) {
 }
 
 function renderIndex(req, res) {
-    render.indexPage(res, {
-        user: null,
-        message: getAndClearMessage(req)
-    });
+    var id = req.session.user_id
+    if (id) {
+        res.redirect('/home');
+    } else {
+        render.indexPage(res, {
+            user: null,
+            message: getAndClearMessage(req)
+        });
+    }
+
 }
 
 module.exports = function(app) {

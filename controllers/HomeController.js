@@ -24,10 +24,7 @@ function renderHomePage(req, res) {
             });
         });
     } else {
-        render.homePage(res, {
-            user: null,
-            message: getAndClearMessage(req)
-        });
+        res.redirect('/');
     }
 }
 

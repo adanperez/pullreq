@@ -1,6 +1,6 @@
 <script id="project-template" type="text/x-handlebars-template">
     <div class="project" id="project-{{projectId}}">
-        <h2>{{name}}</h2>
+        <h2>{{{splitName name}}}</h2>
         <div class="pull-requests"></div>
     </div>
 </script>
@@ -22,10 +22,12 @@
 <script id="pull-template" type="text/x-handlebars-template">
     <div class="pull-request clear-fix">
         <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
-        <div>
+        <div class="pull-body">
             <a class="roll-link" href="{{html_url}}"><span data-title="{{title}}">{{title}}</span></a>
-            <p>{{body}}</p>
-            <ul>
+            <div class="pullSummary">
+                {{{markDown body}}}
+            </div>
+            <ul class="inline subInfo">
                 <li><i class="icon-user"></i> {{user.login}}</li>
                 <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
                 <li><i class="icon-copy"></i> {{files.length}} Files changed</li>
@@ -38,12 +40,16 @@
 <script id="repo-owner-template" type="text/x-handlebars-template">
     <div class="owner">
         <h2>{{login}}</h2>
-        <ul class="unstyled">
+        <ul class="unstyled repo">
             {{#each repos}}
             <li>
                 <label class="checkbox">
-                    <input type="checkbox" name="repo" value="{{full_name}}"> {{name}}
+                    <input type="checkbox" name="repo" value="{{full_name}}"> <b>{{name}}</b>
                 </label>
+                <ul class="inline subInfo">
+                    <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
+                    <li><i class="icon-random"></i> {{forks_count}} forks</li>
+                </ul>
             </li>
             {{/each}}
         </ul>

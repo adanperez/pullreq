@@ -1,9 +1,27 @@
 <% layout('mainLayout') -%>
-<h1 id="loadingMessage">
-    <i class="icon-repeat icon-spin"></i> Welcome <%- user.name %>
-</h1>
+<div class="btn-group hide" id="userOptions">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Options <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/repos/edit"><i class="icon-reorder"></i> Choose repos</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
+        <li class="divider"></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
+    </ul>
+</div>
+<div id="home">
+    <div id="loadingMessage">
+        <h1>
+            Welcome <%- user.name %>
+        </h1>
+        <div id="progressBar" class="progress progress-danger progress-striped active">
+            <div class="bar" style="width: 20%;"></div>
+        </div>
+    </div>
+</div>
 <% block('scripts', partial('templates')) -%>
-<% script('/js/moment-2.0.0.min.js') -%>
+<% script('/js/showdown.js') -%>
 <% script('/js/pullreq.js') -%>
 <% script('/js/pages/home.js') -%>
 

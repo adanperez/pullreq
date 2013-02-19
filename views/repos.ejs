@@ -1,12 +1,26 @@
 <% layout('mainLayout') -%>
+<div class="btn-group" id="userOptions">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        Options <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/home"><i class="icon-home"></i> Home</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
+        <li class="divider"></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
+    </ul>
+</div>
 <form id="repoForm"  action="/repos/save" method="post">
-    <h1 id="loadingMessage">
-        <i class="icon-repeat icon-spin"></i> Loading Options...
-    </h1>
-    <div id="owners">
-
+    <div id="loadingMessage">
+        <h1>
+            <i class="icon-repeat icon-spin"></i> Loading Options...
+        </h1>
     </div>
-    <button id="saveButton" class="btn hide" type="submit">Save</button>
+    <div id="owners"></div>
+    <p id="buttons" class="hide">
+        <button class="btn" type="submit">Save</button>
+        <a href="/home" class="btn">Cancel</a>
+    </p>
 </form>
 <% block('scripts', partial('templates')) -%>
 <% script('/js/pullreq.js') -%>

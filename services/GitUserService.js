@@ -33,7 +33,7 @@ exports.addOrFindGitUser = function(gitToken, gitUserJson, callback) {
                 login: gitUserJson.login,
                 id: gitUserJson.id,
                 name: gitUserJson.name,
-                url: gitUserJson.url
+                url: gitUserJson.html_url
             });
 
             user.save(function (err, gitUser) {

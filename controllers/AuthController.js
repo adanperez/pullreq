@@ -17,7 +17,12 @@ function openAuthToGitHub(req, res) {
 
 function register(req, res) {
     var code = req.query.code;
+    if (!code) {
+        res.redirect('/');
+        return;
+    }
     //res.send('Code: ' + code);
+
     var gitReq = {
         method: 'POST',
         url: 'https://github.com/login/oauth/access_token',
@@ -60,7 +65,7 @@ function register(req, res) {
                                if (repos.length > 0) {
                                    res.redirect('/home');
                                } else {
-                                   res.redirect('/repos');
+                                   res.redirect('/repos/edit');
                                }
                            }
                         });
