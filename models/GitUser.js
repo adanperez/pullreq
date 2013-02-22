@@ -23,8 +23,8 @@ var gitUser = new Schema({
             index: { unique: true },
             required: true
         },
-        name: { type: String, required: true },
-        url: { type: String, required: true },
+        name: { type: String, required: true, default: '' },
+        url: { type: String, required: true, default: '' },
         dateUpdated: { type: Date, default: Date.now, required: true },
         dateCreated: { type: Date, default: Date.now, required: true },
         dateDeleted: { type: Date, default: null, required: false }

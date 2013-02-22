@@ -23,19 +23,25 @@
     <div class="pull-request clear-fix">
         <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
         <div class="pull-body">
-            <a class="roll-link" href="{{html_url}}"><span data-title="{{title}}">{{title}}</span></a>
-            <div class="pullSummary">
+            <a class="roll-link" target="_blank" href="{{html_url}}"><span data-title="{{title}}">{{title}}</span></a>
+            <a href="#" class="descriptionLink hide"><i class="icon-double-angle-up icon-double-angle-down"></i></a>
+            <div class="pullSummary hide">
                 {{{markDown body}}}
             </div>
             <ul class="inline subInfo">
                 <li><i class="icon-user"></i> {{user.login}}</li>
                 <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
-                <li><i class="icon-copy"></i> {{files.length}} Files changed</li>
-                <li><i class="icon-edit"></i> {{commits.length}} Commits</li>
-                <li><i class="icon-comments"></i> {{comments.length}} Comments</li>
+                <li><i class="icon-repeat icon-spin"></i> Loading...</li>
             </ul>
         </div>
     </div>
+</script>
+<script id="pull-request-extra-info-temaplate" type="text/x-handlebars-template">
+    <li><i class="icon-user"></i> {{user.login}}</li>
+    <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
+    <li><i class="icon-copy"></i> {{files.length}} Files changed</li>
+    <li><i class="icon-edit"></i> {{commits.length}} Commits</li>
+    <li><i class="icon-comments"></i> {{comments.length}} Comments</li>
 </script>
 <script id="repo-owner-template" type="text/x-handlebars-template">
     <div class="owner">

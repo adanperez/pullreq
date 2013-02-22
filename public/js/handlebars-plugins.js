@@ -6,7 +6,7 @@
 //  usage: {{dateFormat creation_date format="MMMM YYYY"}}
 Handlebars.registerHelper('dateFormat', function(context, block) {
     if (window.moment) {
-        var f = block.hash.format || 'MMMM Do YYYY, h:mm:ss a';
+        var f = block.hash.format || 'MMMM Do YYYY'; //, h:mm:ss a
         return moment(new Date(context)).format(f);
     } else {
         return context;   //  moment plugin not available. return data as is.

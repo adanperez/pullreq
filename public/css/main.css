@@ -52,6 +52,10 @@ h4 {
 	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
 }
 
+a,
+a:hover {
+    color: #fa4b2a;
+}
 /* Clear Fix */
 .clear-fix {
     *zoom: 1;
@@ -72,7 +76,7 @@ h4 {
     font-weight: bold;
     text-decoration: none;
     word-wrap: break-word;
-
+    font-size: 16px;
     display: inline-block;
     overflow: hidden;
 
@@ -245,4 +249,9 @@ ul.subInfo {
 
 #introPage h1:first-child {
     padding: 10px 0 10px 0;
+}
+
+.descriptionLink {
+    font-size: 16px;
+    padding: 3px;
 }
