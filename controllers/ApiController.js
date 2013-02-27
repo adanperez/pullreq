@@ -32,13 +32,16 @@ function getPullRequestInfo(req, res) {
     var pullNumber = req.params.pullNumber;
     var info = {
         'commits': function(callback) {
-            gitAPIService.getPullRequestCommits(userToken, owner, repo, pullNumber, callback)
+            gitAPIService.getPullRequestCommits(userToken, owner, repo, pullNumber, callback);
         },
         'files': function(callback) {
-            gitAPIService.getPullRequestFiles(userToken, owner, repo, pullNumber, callback)
+            gitAPIService.getPullRequestFiles(userToken, owner, repo, pullNumber, callback);
         },
-        'comments': function(callback) {
-            gitAPIService.getPullRequestComments(userToken, owner, repo, pullNumber, callback)
+        'codeComments': function(callback) {
+            gitAPIService.getPullRequestComments(userToken, owner, repo, pullNumber, callback);
+        },
+        'issueComments': function(callback) {
+            gitAPIService.getIssueComments(userToken, owner, repo, pullNumber, callback);
         }
     }
     async.parallel(info, function(err, json) {
@@ -67,7 +70,6 @@ function getRepoOptions(req, res) {
     gitAPIService.getUserOrgs(req.session.user_token, function(err, json) {
         var options = [];
         _.each(json, function(org) {
-            console.log(org);
             options.push(function(callback) {
                 gitAPIService.getOrgRepos(req.session.user_token, org.login, function(err, json) {
                     org.repos = _.sortBy(json, function(repo){ return repo.name.toLowerCase(); });

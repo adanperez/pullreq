@@ -41,8 +41,6 @@ app.configure('all', function() {
         store : memStore({ reapInterval: 60000*10 })
     }));
 
-    console.log(uuid.v4());
-
     app.use(express.favicon());
     app.use(express.logger());
     app.use(express.bodyParser());
@@ -80,7 +78,6 @@ mongoose.connect(nconf.get('db:server'), nconf.get('db:database'));
  */
 var models_path = __dirname + '/models'
 fs.readdirSync(models_path).forEach(function (file) {
-    console.log('Loading: ' + models_path + '/' + file);
     require(models_path + '/' + file);
 });
 

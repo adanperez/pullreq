@@ -27,6 +27,10 @@ function getAndClearMessage(req) {
 }
 
 function saveRepos(req, res) {
+    if (!req.body.repo) {
+        res.redirect('/home');
+        return;
+    }
     var repos = [].concat(req.body.repo);
     var options = [];
     _.each(repos, function(repoOption) {

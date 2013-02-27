@@ -1,28 +1,36 @@
 <% layout('mainLayout') -%>
 <% block('header', partial('header')) -%>
-<div class="btn-group" id="userOptions">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Options <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="/home"><i class="icon-home"></i> Home</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
-        <li class="divider"></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
-    </ul>
+<div id="loadingMessage">
+    <h1>
+        <i class="icon-repeat icon-spin"></i> Loading Options...
+    </h1>
 </div>
-<form id="repoForm"  action="/repos/save" method="post">
-    <div id="loadingMessage">
-        <h1>
-            <i class="icon-repeat icon-spin"></i> Loading Options...
-        </h1>
+<div class="row-fluid" id="main">
+    <div class="span2">
+        <div id="menu" class="hide">
+            <div class="btn-group" id="userOptions">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Options <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/home"><i class="icon-home"></i> Home</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
+                    <li class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div id="owners"></div>
-    <p id="buttons" class="hide">
-        <button class="btn" type="submit">Save</button>
-        <a href="/home" class="btn">Cancel</a>
-    </p>
-</form>
+    <div class="span10" id="content">
+        <form id="repoForm"  action="/repos/save" method="post">
+            <div id="owners"></div>
+            <p id="buttons" class="hide">
+                <button class="btn" type="submit">Save</button>
+                <a href="/home" class="btn">Cancel</a>
+            </p>
+        </form>
+    </div>
+</div>
 <% block('scripts', partial('templates')) -%>
 <% script('/js/pullreq.js') -%>
 <% script('/js/pages/repos.js') -%>

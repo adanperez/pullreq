@@ -28,20 +28,22 @@
             <div class="pullSummary hide">
                 {{{markDown body}}}
             </div>
-            <ul class="inline subInfo">
-                <li><i class="icon-user"></i> {{user.login}}</li>
-                <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
-                <li><i class="icon-repeat icon-spin"></i> Loading...</li>
-            </ul>
+            <ul class="inline subInfo"></ul>
         </div>
     </div>
 </script>
-<script id="pull-request-extra-info-temaplate" type="text/x-handlebars-template">
+<script id="pull-request-extra-info-template" type="text/x-handlebars-template">
     <li><i class="icon-user"></i> {{user.login}}</li>
     <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
+    {{#if extraInfoLoaded}}
     <li><i class="icon-copy"></i> {{files.length}} Files changed</li>
-    <li><i class="icon-edit"></i> {{commits.length}} Commits</li>
-    <li><i class="icon-comments"></i> {{comments.length}} Comments</li>
+    <li><i class="icon-comments"></i> {{codeComments.length}} Code Comments</li>
+    {{else}}
+    <li><i class="icon-repeat icon-spin"></i> Loading...</li>
+    {{/if}}
+</script>
+<script id="tag-item-template" type="text/x-handlebars-template">
+    <li><i class="icon-tag"></i> <a href="#">{{name}}</a></li>
 </script>
 <script id="repo-owner-template" type="text/x-handlebars-template">
     <div class="owner">

@@ -54,13 +54,18 @@ function register(req, res) {
             }
             request(gitReq, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    gitUserService.addOrFindGitUser(gitToken, body, function(err, gitUser) {
+                    gitUserService.addOrFindGitUser(gitToken, body, function(error, gitUser) {
+                        if (error) {
+                            res.contentType('json');
+                            res.send(error);
+                            return;
+                        }
                         req.session.user_id = gitUser.id;
                         req.session.user_token = gitToken;
-                        repoService.getReposForUser(gitUser.id, function(err, repos) {
-                           if (err) {
+                        repoService.getReposForUser(gitUser.id, function(error, repos) {
+                           if (error) {
                                res.contentType('json');
-                               res.send(err);
+                               res.send(error);
                            } else {
                                if (repos.length > 0) {
                                    res.redirect('/home');
@@ -69,7 +74,6 @@ function register(req, res) {
                                }
                            }
                         });
-
                     });
                 } else {
                     res.contentType('json');
@@ -91,27 +95,3 @@ module.exports = function(app) {
     app.get(path + '/register', register);
     app.get(path + '/logout', logout);
 };
-
-//function authenticate(email, pass, req, res) {
-//    userService.authenticate(email, pass, function(err, user) {
-//        if (user) {
-//            req.session.user_id = user.id;
-//            console.log('Logged in: ' + user.name.full)
-//            req.session.message = 'Logged in!';
-//        } else {
-//            req.session.message = err.message;
-//        }
-//        res.redirect('/');
-//    });
-//}
-//function loginGet(req, res) {
-//    var pass = req.query.password,
-//        email = req.query.email;
-//    authenticate(email, pass, req, res);
-//}
-//
-//function loginPost(req, res) {
-//    var pass = req.body.password,
-//        email = req.body.email;
-//    authenticate(email, pass, req, res);
-//}

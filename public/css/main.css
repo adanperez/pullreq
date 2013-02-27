@@ -148,12 +148,30 @@ a:hover {
     transform: translate3d( 0px, 105%, 0px ) rotateX( -90deg );
 }
 
-#content {
+#main {
     height: 100%;
+    width: 960px;
     margin: 0 auto;
-    float: none;
-    position: relative;
+}
+
+#content {
+    /*height: 100%;*/
+    /*margin: 0 auto;*/
+    /*float: none;*/
+    /*position: relative;*/
     /*text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.7);*/
+}
+#menu h5 {
+    background-color: #c0bfbf;
+    margin-bottom: 0;
+    padding: 10px 0 10px 8px;
+}
+#teamTags li {
+    background-color: #ebeaea;
+    /*list-style: none;*/
+    /*text-transform: uppercase;*/
+    padding: 10px 0 10px 8px;
+    /*line-height: 1em;*/
 }
 
 #loadingMessage {
@@ -236,9 +254,9 @@ ul.subInfo {
 }
 
 #userOptions {
-    position: absolute;
-    top: 0;
-    right: 0;
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 0;*/
     color: #999;
 }
 
@@ -254,4 +272,8 @@ ul.subInfo {
 .descriptionLink {
     font-size: 16px;
     padding: 3px;
+}
+
+.noPullRequests {
+    padding: 20px 0 20px 144px;
 }

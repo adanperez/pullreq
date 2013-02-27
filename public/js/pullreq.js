@@ -1,14 +1,22 @@
 
 var PullReq = PullReq || {};
 
-(function(PullReq) {
+(function() {
 
     PullReq.globalEvents = _.extend({}, Backbone.Events);;
 
     PullReq.VERSION = "0.1.0";
 
     PullReq.models  = {
+
         PullRequest: Backbone.Model.extend({
+            defaults: {
+            },
+            initialize: function() {
+                if( !this.get('tags') ){
+                    this.set({tags: new Array()});
+                }
+            },
             fetchExtraInfo: function() {
                 var pullRequestModel = this;
                 $.ajax({
@@ -19,7 +27,7 @@ var PullReq = PullReq || {};
                 }).done(function (json) {
                     pullRequestModel.addExtraInfo(json)
                     pullRequestModel.trigger('extraInfoLoaded');
-                    PullReq.globalEvents.trigger('extraInfoLoaded');
+                    PullReq.globalEvents.trigger('pullRequest:extraInfoLoaded', this);
                 });
             },
             addExtraInfo: function(json) {
@@ -27,6 +35,7 @@ var PullReq = PullReq || {};
                 _.each(json, function(value, attr) {
                     pullRequestModel.set(attr, value);
                 });
+                pullRequestModel.set('extraInfoLoaded', true);
             }
         }),
 
@@ -34,10 +43,11 @@ var PullReq = PullReq || {};
 
         RepoOwner: Backbone.Model.extend({}),
 
+        TeamTag: Backbone.Model.extend({}),
+
         Project: Backbone.Model.extend({
             defaults: {
-                name:'',
-                projectId:''
+                name:''
             },
             validate: function(attrs) {
                 if (attrs.name == undefined || attrs.name == null) {
@@ -45,11 +55,14 @@ var PullReq = PullReq || {};
                 }
             },
             initialize: function() {
+                if( !this.get('tags') ){
+                    this.set({tags: new Array()});
+                }
                 this.set('pullRequests', new PullReq.collections.PullRequests());
                 //this.get('pullRequests')
             },
             addPullRequestsFromJSON: function(pullRequestsFromJson) {
-                var pullRequests = this.get('pullRequests')
+                var pullRequests = this.get('pullRequests');
                 _.each(pullRequestsFromJson, function(pullRequest) {
                     var pull = new PullReq.models.PullRequest(pullRequest);
                     pullRequests.add(pull);
@@ -60,6 +73,13 @@ var PullReq = PullReq || {};
     };
 
     PullReq.collections  = {
+
+        TeamTags: Backbone.Collection.extend({
+            model: PullReq.models.TeamTag,
+            comparator: function(model) {
+                return model.get('name');
+            }
+        }),
 
         RepoOwners: Backbone.Collection.extend({
             url: '/api/repoOptions',
@@ -109,6 +129,7 @@ var PullReq = PullReq || {};
                     view.collection.each(view.makeView, view);
                     view.$el.fadeIn(200, function() {
                         $('#buttons').show();
+                        $('#menu').show();
                     });
                 });
                 return this;
@@ -130,7 +151,7 @@ var PullReq = PullReq || {};
                 'click a.descriptionLink': 'toggleSummary'
             },
             template: Handlebars.compile($("#pull-template").html()),
-            templateExtraInfo: Handlebars.compile($("#pull-request-extra-info-temaplate").html()),
+            templateExtraInfo: Handlebars.compile($("#pull-request-extra-info-template").html()),
 
             initialize: function() {
                 this.model.bind('extraInfoLoaded', this.renderExtraInfo, this);
@@ -155,10 +176,11 @@ var PullReq = PullReq || {};
                 this.$el.find('a.descriptionLink').css('display', 'none');
             },
             renderExtraInfo: function() {
-                this.$el.find('ul').html(this.templateExtraInfo( this.model.toJSON()));
+                this.$el.find('ul.subInfo').html(this.templateExtraInfo( this.model.toJSON()));
             },
             render: function() {
                 this.$el.html( this.template( this.model.toJSON()));
+                this.renderExtraInfo();
                 return this;
             }
         }),
@@ -176,34 +198,93 @@ var PullReq = PullReq || {};
                 this.model.on('destroy', this.remove, this);
             },
             render: function() {
-                this.$el.html( this.template(this.model.toJSON()));
+                this.$el.html(this.template(this.model.toJSON()));
                 var pullRequests = this.model.get('pullRequests');
                 pullRequests.sort();
-                pullRequests.each(function(pullRequest){
-                    var pullView = new PullReq.views.PullRequest({model:pullRequest});
-                    this.$('.pull-requests').append(pullView.render().el)
+                pullRequests.each(function(pullRequest) {
+                    if (_.contains(pullRequest.get('tags'), PullReq.data.tag)) {
+                        var pullView = new PullReq.views.PullRequest({model:pullRequest});
+                        this.$('.pull-requests').append(pullView.render().el);
+                    }
                 }, this);
                 return this;
             }
         }),
 
         Projects: Backbone.View.extend({
-            el: $("#projects"),
 
             template: Handlebars.compile($("#project-template").html()),
+
+            initialize: function () {
+            },
+
+            render: function() {
+                var that = this;
+                this.$el.fadeOut(100, function() {
+                    that.$el.empty();
+                    if (that.collection.isEmpty()) {
+                        that.$el.html('<div class="noPullRequests"><h2>There are no open pull requests</h2></div>');
+                    } else {
+                        that.collection.each(that.addProjectView, that);
+                    }
+                    that.$el.fadeIn(100);
+                });
+                return this;
+            },
+
+            addProjectView: function(project) {
+                if (_.contains(project.get('tags'), PullReq.data.tag)) {
+                    var projectView = new PullReq.views.Project({model:project});
+                    this.$el.append(projectView.render().el);
+                }
+            }
+        }),
+
+        TeamTags: Backbone.View.extend({
+
+            template: Handlebars.compile($("#tag-item-template").html()),
+
+            events: {
+                'click a': 'filterTag'
+            },
+
+            filterTag: function(e) {
+                e.preventDefault();
+                PullReq.globalEvents.trigger('tag:selected', $(e.target).html());
+            },
+
+            initialize: function () {},
+
+            render: function() {
+                this.collection.each(this.renderTag, this);
+                return this;
+            },
+
+            renderTag: function(tag) {
+                this.$el.append(this.template(tag.toJSON()));
+            }
+        }),
+
+        MainApp: Backbone.View.extend({
+            el: $('#main'),
 
             data: {
                 progressBarCount: 0,
                 progressBarComplete: 0
             },
 
-            initialize: function () {
-                this.collection = new PullReq.collections.Projects();
-                this.collection.bind("reset", this.render, this);
-                this.collection.bind("reset", this.loaded, this);
-                this.collection.bind('addedPullRequests', this.progressBarUpdateInitialCount, this);
-                PullReq.globalEvents.on('extraInfoLoaded', this.progressBarUpdateCompleteStatus, this);
-                this.collection.fetch();
+            initialize: function() {
+                this.data.teamTags = new PullReq.collections.TeamTags();
+                this.data.projects = new PullReq.collections.Projects();
+                this.data.projects.bind("reset", this.collectionLoaded, this);
+                this.data.projects.bind('addedPullRequests', this.progressBarUpdateInitialCount, this);
+                PullReq.globalEvents.on('pullRequest:extraInfoLoaded', this.progressBarUpdateCompleteStatus, this);
+                PullReq.globalEvents.on('tag:selected', this.updateViewForTag, this);
+                this.data.projects.fetch();
+            },
+
+            updateProgressBar: function(percent) {
+                $('#progressBar div').width(percent+'%');
             },
 
             progressBarUpdateInitialCount: function(msg) {
@@ -216,29 +297,72 @@ var PullReq = PullReq || {};
                 num = num * 50;
                 this.updateProgressBar(50 + Math.abs(num));
                 if (this.data.progressBarComplete == this.data.progressBarCount) {
-                    this.updateProgressBar(100);
-                    $('#loadingMessage').slideUp(100);
-                    $('#userOptions').fadeIn(100);
+                    this.progressBarComplete();
                 }
             },
 
-            loaded: function() {
-                this.updateProgressBar(50);
+            progressBarComplete: function() {
+                this.updateProgressBar(100);
+                $('#loadingMessage').slideUp(100);
+                $('#userOptions').fadeIn(100);
             },
 
-            updateProgressBar: function(percent) {
-                $('#progressBar div').width(percent+'%');
+            collectionLoaded: function() {
+                if (this.data.projects.isEmpty()) {
+                    this.progressBarComplete();
+                } else {
+                    this.updateProgressBar(50);
+                    this.makeTeamTags();
+                    this.data.teamTags.sort();
+                    this.data.projects.sort();
+                }
+                this.render();
+            },
+
+            makeTeamTags: function() {
+                var re = /^([A-Za-z]+)\-?(\d+)?.*$/i;
+                this.data.projects.each(function(project) {
+                    var tags = project.get('tags');
+                    tags.push('ALL');
+                    var pullRequests = project.get('pullRequests');
+                    pullRequests.each(function(pullRequest) {
+                        var title = pullRequest.get('title');
+                        var res = title.match(re);
+                        if (res) {
+                            var tagName = res[1].toUpperCase();
+                            var tag = this.data.teamTags.find(function(e) {
+                                return e.get('name') == tagName;
+                            });
+                            if (!tag) {
+                                this.data.teamTags.add({name:tagName});
+                            }
+                            pullRequest.get('tags').push('ALL');
+                            pullRequest.get('tags').push(tagName);
+                            if (!_.contains(tags, tagName)) {
+                                tags.push(tagName);
+                            }
+                        }
+                    }, this);
+                }, this);
+            },
+
+            updateViewForTag: function(tag) {
+                PullReq.data.tag = tag;
+                PullReq.data.views.projects.render();
             },
 
             render: function() {
-                this.collection.sort();
-                this.collection.each(this.addProjectView, this); //passing in scope/context beacuse each is anonomyous function
-                return this;
-            },
-
-            addProjectView: function(project) {
-                var projectView = new PullReq.views.Project({model:project});
-                this.$el.append(projectView.render().el)
+                PullReq.data.views.projects = new PullReq.views.Projects({
+                    el: $("#projects"),
+                    collection: this.data.projects
+                });
+                PullReq.data.views.tags = new PullReq.views.TeamTags({
+                    el: $("#teamTags"),
+                    collection: this.data.teamTags
+                });
+                PullReq.data.views.projects.render();
+                PullReq.data.views.tags.render();
+                this.$el.find('#menu').show();
             }
         })
     };
@@ -246,7 +370,8 @@ var PullReq = PullReq || {};
     PullReq.data = {
         views: {},
         collections: {},
-        models: {}
+        models: {},
+        tag: 'ALL'
     };
 
-}(PullReq));
+}());

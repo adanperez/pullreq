@@ -43,3 +43,7 @@ exports.getPullRequestFiles = function(token, owner, repo, pullNumber, callback)
 exports.getPullRequestComments = function(token, owner, repo, pullNumber, callback) {
     makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/comments', callback);
 }
+
+exports.getIssueComments = function(token, owner, repo, pullNumber, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/issues/' + pullNumber + '/comments', callback);
+}
