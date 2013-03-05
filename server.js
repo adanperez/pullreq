@@ -9,17 +9,10 @@ var mongoose =  require('mongoose');
 var connect =   require('connect');
 var uuid =      require('node-uuid');
 var _ =         require('underscore');
-var nconf =     require('nconf');
 var fs =        require('fs');
 var app = express();
 var memStore = express.session.MemoryStore
 
-/**
- * Setup nconf to use (in-order):
- */
-nconf.argv() // 1. Command-line arguments
-     .env()  // 2. Environment variables
-     .file({ file: './config.json' });  // 3. A file located at 'path/to/config.json'
 
 app.configure('all', function() {
     app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -71,7 +64,8 @@ function errorHandler(err, req, res, next) {
 /**
  * Create the DB connection
  */
-mongoose.connect(nconf.get('db:server'), nconf.get('db:database'));
+var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pullreq';
+mongoose.connect(mongoUri);
 
 /**
  * Load the servers models into Mongoose
@@ -93,4 +87,5 @@ require("./controllers/RepoController.js")(app);
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
     console.log(app.routes);
+    console.log(mongoUri);
 });

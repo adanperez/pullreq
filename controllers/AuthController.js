@@ -1,11 +1,10 @@
 var request =           require('request');
-var nconf =             require('nconf');
 var qs =                require('querystring');
 var gitUserService =    require("../services/GitUserService.js");
 var repoService =    require("../services/RepoService.js");
 
-var githubClientID = nconf.get('githubClientID');
-var githubClientSecret = nconf.get('githubClientSecret');
+var githubClientID = process.env.GITHUB_CLIENT_ID;
+var githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 function openAuthToGitHub(req, res) {
     var url = 'https://github.com/login/oauth/authorize?' + qs.stringify({

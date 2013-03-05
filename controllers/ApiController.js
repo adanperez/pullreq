@@ -1,5 +1,4 @@
 var request =   require('request');
-var nconf =     require('nconf');
 var qs =        require('querystring');
 var request =   require('request');
 var async =     require('async');
