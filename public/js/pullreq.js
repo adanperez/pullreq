@@ -11,6 +11,7 @@ var PullReq = PullReq || {};
 
         PullRequest: Backbone.Model.extend({
             defaults: {
+                warningPaths: ['grails-app/migrations', 'grails-app/conf', 'releaseNotes']
             },
             initialize: function() {
                 if( !this.get('tags') ){
@@ -36,6 +37,22 @@ var PullReq = PullReq || {};
                     pullRequestModel.set(attr, value);
                 });
                 pullRequestModel.set('extraInfoLoaded', true);
+            },
+            containsWarningFiles: function() {
+                var files = this.get('files');
+                var found = false;
+                if (files) {
+                    var warningPaths = this.get('warningPaths');
+                    var found = false;
+                    files.every(function(file) {
+                        warningPaths.every(function(path) {
+                            found = file.filename.indexOf(path) !== -1;
+                            return !found;
+                        });
+                        return !found;
+                    });
+                }
+                return found;
             }
         }),
 
@@ -175,6 +192,12 @@ var PullReq = PullReq || {};
             hideDescriptionLink: function() {
                 this.$el.find('a.descriptionLink').css('display', 'none');
             },
+            renderTitleIcons: function() {
+                var body = this.model.get('body');
+                if (body && body.indexOf(':warning:') !== -1) {
+                    this.$el.find('a.pull-link').append(' <i class="icon-warning-sign"></i>');
+                }
+            },
             renderExtraInfo: function() {
                 var comments = this.model.get('issueComments');
                 if (comments) {
@@ -188,24 +211,15 @@ var PullReq = PullReq || {};
                         this.$el.find('a.pull-link').append(' <i class="icon-thumbs-up"></i>');
                     }
                 }
-                var files = this.model.get('files');
-                if (files) {
-                    var count = 0;
-                    _.each(files, function(file) {
-                        if (file.filename.indexOf('grails-app/migrations') !== -1 ||
-                            file.filename.indexOf('grails-app/conf') !== -1 ||
-                            file.filename.indexOf('releaseNotes') !== -1) {
-                            count++;
-                        }
-                    });
-                    if (count > 0) {
-                        this.$el.find('a.pull-link').addClass('pull-warn');
-                    }
+
+                if (this.model.containsWarningFiles()) {
+                    this.$el.find('a.pull-link').addClass('pull-warn');
                 }
                 this.$el.find('ul.subInfo').html(this.templateExtraInfo( this.model.toJSON()));
             },
             render: function() {
-                this.$el.html( this.template( this.model.toJSON()));
+                this.$el.html(this.template( this.model.toJSON()));
+                this.renderTitleIcons();
                 this.renderExtraInfo();
                 return this;
             }
