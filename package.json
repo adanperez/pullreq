@@ -13,7 +13,8 @@
         "ejs-locals": "1.x",
         "mongoose": "3.x",
         "underscore": "1.4.x",
-        "node-uuid": "1.x"
+        "node-uuid": "1.x",
+        "log4js": "0.5.x"
     },
     "engines": {
         "node": ">=0.8",

@@ -10,6 +10,7 @@ var connect =   require('connect');
 var uuid =      require('node-uuid');
 var _ =         require('underscore');
 var fs =        require('fs');
+var logger =    require('log4js').getLogger();
 var app = express();
 var memStore = express.session.MemoryStore
 
@@ -57,7 +58,7 @@ function clientErrorHandler(err, req, res, next) {
 
 function errorHandler(err, req, res, next) {
     res.status(500);
-    console.log('Ohs nos');
+    logger.warn('Ohs nos');
     res.render(err);
 }
 
@@ -79,7 +80,7 @@ fs.readdirSync(models_path).forEach(function (file) {
  * If prod, force https
  */
 if (process.env.NODE_ENV == 'production') {
-    app.all('*',function(req,res,next){
+    app.all('*',function(req, res, next){
         if(req.headers['x-forwarded-proto'] != 'https') {
             res.redirect('https://' + req.headers.host + req.url);
         } else {
@@ -98,7 +99,6 @@ require("./controllers/HomeController.js")(app);
 require("./controllers/RepoController.js")(app);
 
 http.createServer(app).listen(app.get('port'), function() {
-    console.log("Express server listening on port " + app.get('port'));
-    console.log(app.routes);
-    console.log(mongoUri);
+    logger.info("Express server listening on port " + app.get('port'));
+    //logger.info(app.routes);
 });

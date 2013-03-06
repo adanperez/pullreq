@@ -1,8 +1,8 @@
 var request =           require('request');
 var qs =                require('querystring');
 var gitUserService =    require("../services/GitUserService.js");
-var repoService =    require("../services/RepoService.js");
-
+var repoService =       require("../services/RepoService.js");
+var logger =            require('log4js').getLogger();
 var githubClientID = process.env.GITHUB_CLIENT_ID;
 var githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
@@ -55,14 +55,17 @@ function register(req, res) {
                 if (!error && response.statusCode == 200) {
                     gitUserService.addOrFindGitUser(gitToken, body, function(error, gitUser) {
                         if (error) {
+                            logger.warn(error);
                             res.contentType('json');
                             res.send(error);
                             return;
                         }
                         req.session.user_id = gitUser.id;
                         req.session.user_token = gitToken;
+                        logger.info(gitUser.name + ' (' + gitUser.id + ') logged in.');
                         repoService.getReposForUser(gitUser.id, function(error, repos) {
                            if (error) {
+                               logger.warn(error);
                                res.contentType('json');
                                res.send(error);
                            } else {
@@ -75,6 +78,7 @@ function register(req, res) {
                         });
                     });
                 } else {
+                    logger.warn(error);
                     res.contentType('json');
                     res.send(error);
                 }
