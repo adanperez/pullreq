@@ -8,7 +8,7 @@
     <div class="pull-request clear-fix">
         <img src="{{imageUrl}}" alt="{{user}}" title="{{user}}" />
         <div>
-            <a class="roll-link" href="{{pullUrl}}"><span data-title="{{name}}">{{name}}</span></a>
+            <a class="pull-link" href="{{pullUrl}}"><span data-title="{{name}}">{{name}}</span></a>
             <p>{{description}}</p>
             <ul>
                 <li><i class="icon-user"></i> {{user}}</li>
@@ -23,7 +23,7 @@
     <div class="pull-request clear-fix">
         <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
         <div class="pull-body">
-            <a class="roll-link" target="_blank" href="{{html_url}}"><span data-title="{{title}}">{{title}}</span></a>
+            <a class="pull-link" target="_blank" href="{{html_url}}">{{title}}</a>
             <a href="#" class="descriptionLink hide"><i class="icon-double-angle-up icon-double-angle-down"></i></a>
             <div class="pullSummary hide">
                 {{{markDown body}}}
@@ -52,12 +52,8 @@
             {{#each repos}}
             <li>
                 <label class="checkbox">
-                    <input type="checkbox" name="repo" value="{{full_name}}"> <b>{{name}}</b>
+                    <input type="checkbox" name="repo" value="{{full_name}}"> <b>{{name}}</b> <span class="subInfo"><i class="icon-random"></i> {{forks_count}} forks</span>
                 </label>
-                <ul class="inline subInfo">
-                    <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
-                    <li><i class="icon-random"></i> {{forks_count}} forks</li>
-                </ul>
             </li>
             {{/each}}
         </ul>

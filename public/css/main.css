@@ -55,6 +55,7 @@ h4 {
 a,
 a:hover {
     color: #fa4b2a;
+    color: #888;
 }
 /* Clear Fix */
 .clear-fix {
@@ -68,6 +69,25 @@ a:hover {
     visibility: hidden;
     line-height: 0;
     height: 0;
+}
+
+.pull-link,
+.pull-link:hover {
+    color: #dd4d42;
+    font-weight: bold;
+    word-wrap: break-word;
+    font-size: 16px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    margin-bottom: 6px;
+}
+
+.pull-warn,
+.pull-warn:hover {
+    background-color: #dd4d42;
+    color: #FFF;
+    padding:4px;
 }
 
 /* ROLL LINKS */
@@ -196,10 +216,6 @@ a:hover {
     margin: 0 0 30px 0;
 }
 
-.pull-request .roll-link {
-    margin-bottom: 2px;
-}
-
 .pull-request img {
     height: 40px;
     margin:0 10px 0 0;
@@ -229,6 +245,10 @@ a:hover {
 
 .subInfo {
     color: #AAA;
+}
+
+.selected {
+    font-weight: bold;
 }
 
 ul.subInfo {
@@ -271,7 +291,7 @@ ul.subInfo {
 
 .descriptionLink {
     font-size: 16px;
-    padding: 3px;
+    padding: 1px;
 }
 
 .noPullRequests {

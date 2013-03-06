@@ -24,6 +24,10 @@ exports.getUserOrgs = function(token, callback) {
     makeGitRequest(token, '/user/orgs', callback);
 }
 
+exports.getUserRepos = function(token, callback) {
+    makeGitRequest(token, '/user/repos', callback);
+}
+
 exports.getOrgRepos = function(token, org, callback) {
     makeGitRequest(token, '/orgs/' + org + '/repos', callback);
 }

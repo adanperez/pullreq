@@ -4,6 +4,7 @@ var request =   require('request');
 var async =     require('async');
 var _ =         require('underscore');
 var gitAPIService = require("../services/GitAPIService.js");
+var gitUserService = require("../services/GitUserService.js");
 var repoService =    require("../services/RepoService.js");
 
 
@@ -76,6 +77,21 @@ function getRepoOptions(req, res) {
                 });
             });
         }, this);
+        options.push(function(callback) {
+            gitAPIService.getUserRepos(req.session.user_token, function(err, json) {
+                if (err) {
+                    callback(err, json);
+                    return;
+                }
+                gitUserService.getGitUserById(req.session.user_id, function(err, user) {
+                    var option = {
+                        login: user.login,
+                        repos: _.sortBy(json, function(repo){ return repo.name.toLowerCase(); })
+                    };
+                    callback(err, option);
+                });
+            });
+        });
         async.parallel(options, function(err, json) {
             jsonResponse(err, json, res);
         });

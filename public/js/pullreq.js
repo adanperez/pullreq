@@ -176,6 +176,32 @@ var PullReq = PullReq || {};
                 this.$el.find('a.descriptionLink').css('display', 'none');
             },
             renderExtraInfo: function() {
+                var comments = this.model.get('issueComments');
+                if (comments) {
+                    var count = 0;
+                    _.each(comments, function(comment) {
+                        if (comment.body.indexOf('+1') !== -1) {
+                            count++;
+                        }
+                    });
+                    if (count > 1) {
+                        this.$el.find('a.pull-link').append(' <i class="icon-thumbs-up"></i>');
+                    }
+                }
+                var files = this.model.get('files');
+                if (files) {
+                    var count = 0;
+                    _.each(files, function(file) {
+                        if (file.filename.indexOf('grails-app/migrations') !== -1 ||
+                            file.filename.indexOf('grails-app/conf') !== -1 ||
+                            file.filename.indexOf('releaseNotes') !== -1) {
+                            count++;
+                        }
+                    });
+                    if (count > 0) {
+                        this.$el.find('a.pull-link').addClass('pull-warn');
+                    }
+                }
                 this.$el.find('ul.subInfo').html(this.templateExtraInfo( this.model.toJSON()));
             },
             render: function() {
@@ -220,14 +246,14 @@ var PullReq = PullReq || {};
 
             render: function() {
                 var that = this;
-                this.$el.fadeOut(100, function() {
+                this.$el.fadeOut(150, function() {
                     that.$el.empty();
                     if (that.collection.isEmpty()) {
                         that.$el.html('<div class="noPullRequests"><h2>There are no open pull requests</h2></div>');
                     } else {
                         that.collection.each(that.addProjectView, that);
                     }
-                    that.$el.fadeIn(100);
+                    that.$el.fadeIn(150);
                 });
                 return this;
             },
@@ -250,6 +276,9 @@ var PullReq = PullReq || {};
 
             filterTag: function(e) {
                 e.preventDefault();
+                var tags = $(e.target).parents('#teamTags')[0];
+                $('li', tags).removeClass('selected');
+                $(e.target).parents('li').addClass('selected');
                 PullReq.globalEvents.trigger('tag:selected', $(e.target).html());
             },
 
