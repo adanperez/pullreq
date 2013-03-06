@@ -44,7 +44,7 @@ app.configure('all', function() {
     }));
 
     app.use(app.router);
-    app.set('port', 3000);
+    app.set('port', process.env.PORT);
 });
 
 function clientErrorHandler(err, req, res, next) {
