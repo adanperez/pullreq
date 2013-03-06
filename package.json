@@ -1,26 +1,27 @@
 {
-	"name":"pullreq",
-	"author": "Adan Perez",
-	"version":"0.0.1",
-	"description":"Pull request app for Github.",
-	"license": "MIT",
-	"dependencies":{
-		"connect":"2.x",
-		"express":"3.x",
-		"querystring": "0.1.x",
-		"async": "0.1.x",
-		"request": "2.x",
-		"ejs-locals": "1.x",
-		"mongoose": "3.x",
-		"underscore": "1.4.x",
-		"node-uuid": "1.x"
-	},
-	"engines": {
-	    "node": ">=0.8"
-	},
-	"keywords": ["git", "pull", "request"],
-	"repository": {
-	    "type": "git",
-	    "url": "https://github.com/adanperez/pullreq.git"
-	}
+    "name": "pullreq",
+    "author": "Adan Perez",
+    "version": "0.0.1",
+    "description": "Pull request app for Github.",
+    "license": "MIT",
+    "dependencies": {
+        "connect": "2.x",
+        "express": "3.x",
+        "querystring": "0.1.x",
+        "async": "0.1.x",
+        "request": "2.x",
+        "ejs-locals": "1.x",
+        "mongoose": "3.x",
+        "underscore": "1.4.x",
+        "node-uuid": "1.x"
+    },
+    "engines": {
+        "node": ">=0.8",
+        "npm": "1.2.x"
+    },
+    "keywords": ["git", "pull", "request"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adanperez/pullreq.git"
+    }
 }
