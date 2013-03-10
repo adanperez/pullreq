@@ -8,17 +8,21 @@
 <div class="row-fluid" id="main">
     <div class="span2">
         <div id="menu" class="hide">
-            <div class="btn-group" id="userOptions">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    Options <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/home"><i class="icon-home"></i> Home</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
-                    <li class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
-                </ul>
-            </div>
+            <h5>Options</h5>
+            <ul class="unstyled" id="menuItems">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="/home"> Home</a>
+                </li>
+                <li>
+                    <i class="icon-external-link"></i>
+                    <a href="<%- user.url %>" target="_blank"> View profile</a>
+                </li>
+                <li>
+                    <i class="icon-signout"></i>
+                    <a href="/auth/logout"> Sign out</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="span10" id="content">

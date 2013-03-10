@@ -6,7 +6,7 @@
 
 body {
     color: #735151;
-	font: 300 100.1% Helvetica, "Arial Unicode MS", Arial, sans-serif;
+	font: 300 100.1% Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 
@@ -43,18 +43,20 @@ h2 {
     font-family: BebasNeue;
     font-weight: normal;
 }
-
-h4 {
-	font-weight: normal;
-	margin: 0;
-	font-size: 24px;
-	color: rgba(255,255,255,0.4);
-	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
+h5 {
+    word-break: break-all;
 }
+
+/*h4 {*/
+	/*font-weight: normal;*/
+	/*margin: 0;*/
+	/*font-size: 24px;*/
+	/*color: rgba(255,255,255,0.4);*/
+	/*text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);*/
+/*}*/
 
 a,
 a:hover {
-    color: #fa4b2a;
     color: #888;
 }
 /* Clear Fix */
@@ -71,31 +73,65 @@ a:hover {
     height: 0;
 }
 
-.pull-link,
-.pull-link:hover {
-    color: #dd4d42;
-    font-weight: bold;
-    word-wrap: break-word;
+.pull-title {
+    color: rgb(115, 81, 81);
     font-size: 16px;
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    margin-bottom: 6px;
+    word-wrap: break-word;
+    margin: 0 0 6px 0;
+    font-weight: normal;
 }
 
-.pull-link i {
-    color: #c01d20;
+a.pull-link,
+a.pull-link:hover {
+    color: rgb(115, 81, 81);
+    /*color: #fa4b2a; */
+    /*color: #dd4d42;*/
+    /*color: rgb(223, 76, 59);*/
+    /*color: rgb(20,158,32);*/
+    /*color: rgb(234,134,58);*/
+    /*color: rgb(201, 119, 47);*/
+    /*font-weight: bold;*/
+    /*font-family: "Arial", sans-serif;*/
+    /*word-wrap: break-word;*/
+    /*font-size: 16px;*/
+    /*display: inline-block;*/
+    /*overflow: hidden;*/
+    /*vertical-align: top;*/
+    /*margin-bottom: 10px;*/
 }
 
-.pull-warn,
-.pull-warn:hover {
-    background-color: #dd4d42;
-    color: #FFF;
-    padding: 4px;
+a.pull-link i.icon-thumbs-up {
+    color: rgb(53, 117, 58);
 }
 
-.pull-warn i {
-    color: #FFF;
+a.pull-link i.icon-warning-sign,
+i.icon-remove {
+    color: rgb(192, 29, 32);
+}
+
+i.icon-circle-blank {
+    color: #638EB0;
+}
+
+i.icon-circle {
+    color: rgb(58, 143, 72);
+}
+
+a.pull-warn,
+a.pull-warn:hover {
+    color: rgb(223, 76, 59);
+    font-weight: bold;
+    /*background-color: #dd4d42;*/
+    /*color: #FFF;*/
+    /*padding: 4px;*/
+}
+
+
+
+a.pull-good,
+a.pull-good:hover {
+    color: rgb(58, 143, 72);
+    /*color: #FFF;*/
 }
 
 /* ROLL LINKS */
@@ -190,12 +226,17 @@ a:hover {
     /*text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.7);*/
 }
 #menu h5 {
-    background-color: #c0bfbf;
+   /*background-color: rgb(233, 231, 236);*/
+   background-color: #e7e6e6;
+   border-bottom: rgb(210, 215, 221) solid 1px;
+    /*background-color: #c0bfbf;*/
     margin-bottom: 0;
     padding: 10px 0 10px 8px;
 }
-#teamTags li {
+
+#menu li {
     background-color: #ebeaea;
+    /*background-color: rgb(233, 231, 236);*/
     /*list-style: none;*/
     /*text-transform: uppercase;*/
     padding: 10px 0 10px 8px;
@@ -225,7 +266,7 @@ a:hover {
 
 .pull-request {
     clear: both;
-    margin: 0 0 30px 0;
+    margin: 0 0 40px 0;
 }
 
 .pull-request img {
@@ -243,12 +284,29 @@ a:hover {
     margin-left: 2px;
     color: #787878;
 }
+.pull-info {
+    margin-bottom: 10px;
+}
+.pull-comments {
+    margin: 0;
+}
 
-.pullSummary h1 {
+.pull-summary h1 {
     font-size: 28px;
 }
-.pullSummary h2 {
+.pull-summary h2 {
     font-size: 24px;
+}
+.pull-comments li {
+    clear: both;
+    padding: 10px 0;
+}
+.pull-user {
+    margin: 0 0 4px 0;
+}
+.pull-user small {
+    margin-left: 10px;
+    font-weight: normal;
 }
 
 .repo li {
@@ -257,9 +315,11 @@ a:hover {
 
 .subInfo {
     color: #AAA;
+    clear: both;
 }
 
-li.selected {
+
+li.selected a {
     font-weight: bold;
     color:#735151;
 }
@@ -305,11 +365,30 @@ ul.subInfo {
     padding: 10px 0 10px 0;
 }
 
-.descriptionLink {
-    font-size: 16px;
-    padding: 1px;
-}
+/*.descriptionLink {*/
+    /*font-size: 16px;*/
+    /*padding: 1px;*/
+/*}*/
 
 .noPullRequests {
     padding: 20px 0 20px 144px;
+}
+
+.pull-file h5 {
+    font-weight: normal;
+    margin: 4px 0;
+}
+.pull-file a {
+    color: rgb(115, 81, 81);
+}
+.pull-file-info {
+    margin:0 0 10px 22px;
+}
+.pull-file-info .progress {
+    width: 30%;
+    height:4px;
+    margin-bottom:2px;
+}
+.pull-file-info small {
+    color:#AAA;
 }

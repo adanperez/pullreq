@@ -15,17 +15,25 @@
             <ul class="unstyled" id="teamTags">
                 <li class="selected"><i class="icon-tags"></i> <a href="#">ALL</a></li>
             </ul>
-            <div class="btn-group hide" id="userOptions">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    Options <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/repos/edit"><i class="icon-reorder"></i> Choose repos</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%- user.url %>" target="_blank"><i class="icon-external-link"></i> View profile</a></li>
-                    <li class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout"><i class="icon-signout"></i> Sign out</a></li>
-                </ul>
-            </div>
+            <h5>Options</h5>
+            <ul class="unstyled" id="menuItems">
+                <li>
+                    <i class="icon-refresh"></i>
+                    <a href="/home"> Refresh</a>
+                </li>
+                <li>
+                    <i class="icon-reorder"></i>
+                    <a href="/repos/edit"> Choose repos</a>
+                </li>
+                <li>
+                    <i class="icon-external-link"></i>
+                    <a href="<%- user.url %>" target="_blank"> View profile</a>
+                </li>
+                <li>
+                    <i class="icon-signout"></i>
+                    <a href="/auth/logout"> Sign out</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="span10" id="content">

@@ -5,7 +5,7 @@ var PullReq = PullReq || {};
 
     PullReq.globalEvents = _.extend({}, Backbone.Events);;
 
-    PullReq.VERSION = "0.1.0";
+    PullReq.VERSION = "0.2.0";
 
     PullReq.models  = {
 
@@ -163,39 +163,63 @@ var PullReq = PullReq || {};
 
         PullRequest: Backbone.View.extend({
             events: {
-                'mouseenter div.pull-request': 'showDescriptionLink',
-                'mouseleave div.pull-request': 'hideDescriptionLink',
-                'click a.descriptionLink': 'toggleSummary'
+                //'mouseenter div.pull-request': 'showDescriptionLink',
+                //'mouseleave div.pull-request': 'hideDescriptionLink',
+                'click a.descriptionLink': 'toggleSummary',
+                'click a.filesLink': 'renderFilesModal'
             },
             template: Handlebars.compile($("#pull-template").html()),
             templateExtraInfo: Handlebars.compile($("#pull-request-extra-info-template").html()),
+            templatePullComment: Handlebars.compile($("#pull-request-comment-template").html()),
+            templateFiles: Handlebars.compile($("#files-template").html()),
 
             initialize: function() {
                 this.model.bind('extraInfoLoaded', this.renderExtraInfo, this);
             },
-            showDescriptionLink: function() {
-                var summary = this.$el.find('div.pullSummary');
-                if ($.trim(summary.html()).length) {
-                    this.$el.find('a.descriptionLink').css('display', 'inline-block');
-                }
-            },
             toggleSummary: function(e) {
                 e.preventDefault();
-                var summary = this.$el.find('div.pullSummary');
+                var summary = this.$el.find('div.pull-info');
                 if (summary.is(':visible')) {
-                    summary.slideUp(200);
+                    var that = this;
+                    summary.slideUp(200, function() {
+                        that.$el.find('ul.pull-comments').empty();
+                        that.$el.find('a.descriptionLink').html('More Info...');
+                    });
                 } else {
+                    this.renderComments();
                     summary.slideDown(200);
+                    this.$el.find('a.descriptionLink').html('Less Info...');
                 }
-                this.$el.find('a.descriptionLink i').toggleClass('icon-double-angle-down');
             },
-            hideDescriptionLink: function() {
-                this.$el.find('a.descriptionLink').css('display', 'none');
+            renderFilesModal: function(e) {
+                e.preventDefault();
+                var thing = this.templateFiles(this.model.toJSON());
+                $(thing.trim()).modal({
+                    backdrop: true,
+                    keyboard: true
+                }).css({
+                        'width': function () {
+                            return ($(document).width() * .6) + 'px';
+                        },
+                        'margin-left': function () {
+                            return -($(this).width() / 2);
+                        }
+                    });
+            },
+            renderComments: function() {
+                var el = this.$el.find('ul.pull-comments');
+                var comments = this.model.get('issueComments');
+                if (comments) {
+                    var that = this;
+                    _.each(comments, function(comment) {
+                        el.append(that.templatePullComment(comment));
+                    });
+                }
             },
             renderTitleIcons: function() {
                 var body = this.model.get('body');
                 if (body && body.indexOf(':warning:') !== -1) {
-                    this.$el.find('a.pull-link').append(' <i class="icon-warning-sign"></i>');
+                    //this.$el.find('a.pull-link').prepend('<i class="icon-warning-sign"></i> ');
                 }
             },
             renderExtraInfo: function() {
@@ -208,17 +232,21 @@ var PullReq = PullReq || {};
                         }
                     });
                     if (count > 1) {
-                        this.$el.find('a.pull-link').append(' <i class="icon-thumbs-up"></i>');
+                        this.$el.find('a.pull-link')
+                            .prepend('<i class="icon-thumbs-up"></i> ')
+                            .addClass('pull-good');
                     }
                 }
 
                 if (this.model.containsWarningFiles()) {
-                    this.$el.find('a.pull-link').addClass('pull-warn');
+                    var link = this.$el.find('a.pull-link')
+                        .prepend(' <i class="icon-warning-sign"></i> ')
+                        .addClass('pull-warn');
                 }
                 this.$el.find('ul.subInfo').html(this.templateExtraInfo( this.model.toJSON()));
             },
             render: function() {
-                this.$el.html(this.template( this.model.toJSON()));
+                this.$el.html(this.template(this.model.toJSON()));
                 this.renderTitleIcons();
                 this.renderExtraInfo();
                 return this;
