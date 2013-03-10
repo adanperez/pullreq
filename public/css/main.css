@@ -43,22 +43,16 @@ h2 {
     font-family: BebasNeue;
     font-weight: normal;
 }
+
 h5 {
     word-break: break-all;
 }
-
-/*h4 {*/
-	/*font-weight: normal;*/
-	/*margin: 0;*/
-	/*font-size: 24px;*/
-	/*color: rgba(255,255,255,0.4);*/
-	/*text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);*/
-/*}*/
 
 a,
 a:hover {
     color: #888;
 }
+
 /* Clear Fix */
 .clear-fix {
     *zoom: 1;
@@ -84,20 +78,6 @@ a:hover {
 a.pull-link,
 a.pull-link:hover {
     color: rgb(115, 81, 81);
-    /*color: #fa4b2a; */
-    /*color: #dd4d42;*/
-    /*color: rgb(223, 76, 59);*/
-    /*color: rgb(20,158,32);*/
-    /*color: rgb(234,134,58);*/
-    /*color: rgb(201, 119, 47);*/
-    /*font-weight: bold;*/
-    /*font-family: "Arial", sans-serif;*/
-    /*word-wrap: break-word;*/
-    /*font-size: 16px;*/
-    /*display: inline-block;*/
-    /*overflow: hidden;*/
-    /*vertical-align: top;*/
-    /*margin-bottom: 10px;*/
 }
 
 a.pull-link i.icon-thumbs-up {
@@ -121,17 +101,11 @@ a.pull-warn,
 a.pull-warn:hover {
     color: rgb(223, 76, 59);
     font-weight: bold;
-    /*background-color: #dd4d42;*/
-    /*color: #FFF;*/
-    /*padding: 4px;*/
 }
-
-
 
 a.pull-good,
 a.pull-good:hover {
     color: rgb(58, 143, 72);
-    /*color: #FFF;*/
 }
 
 /* ROLL LINKS */
@@ -218,29 +192,25 @@ a.pull-good:hover {
     margin: 0 auto;
 }
 
-#content {
-    /*height: 100%;*/
-    /*margin: 0 auto;*/
-    /*float: none;*/
-    /*position: relative;*/
-    /*text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.7);*/
+#menu {
+    width: 140px;
 }
+
+.fixed {
+    position: fixed;
+    top: 0;
+}
+
 #menu h5 {
-   /*background-color: rgb(233, 231, 236);*/
-   background-color: #e7e6e6;
-   border-bottom: rgb(210, 215, 221) solid 1px;
-    /*background-color: #c0bfbf;*/
+    background-color: #e7e6e6;
+    border-bottom: rgb(210, 215, 221) solid 1px;
     margin-bottom: 0;
     padding: 10px 0 10px 8px;
 }
 
 #menu li {
     background-color: #ebeaea;
-    /*background-color: rgb(233, 231, 236);*/
-    /*list-style: none;*/
-    /*text-transform: uppercase;*/
     padding: 10px 0 10px 8px;
-    /*line-height: 1em;*/
 }
 
 #loadingMessage {
@@ -318,7 +288,6 @@ a.pull-good:hover {
     clear: both;
 }
 
-
 li.selected a {
     font-weight: bold;
     color:#735151;
@@ -350,9 +319,6 @@ ul.subInfo {
 }
 
 #userOptions {
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*right: 0;*/
     color: #999;
 }
 
@@ -364,11 +330,6 @@ ul.subInfo {
 #introPage h1:first-child {
     padding: 10px 0 10px 0;
 }
-
-/*.descriptionLink {*/
-    /*font-size: 16px;*/
-    /*padding: 1px;*/
-/*}*/
 
 .noPullRequests {
     padding: 20px 0 20px 144px;

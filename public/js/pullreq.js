@@ -135,6 +135,21 @@ var PullReq = PullReq || {};
     };
 
     PullReq.views  = {
+
+        utils: {
+           initializeFixedMenu: function(adjustment) {
+               var top = $('#menu').parent().offset().top - (adjustment ? adjustment : 0);
+               $(window).bind('scroll', function() {
+                   var y = $(this).scrollTop();
+                   if (y >= top) {
+                       $('#menu').addClass('fixed');
+                   } else {
+                       $('#menu').removeClass('fixed');
+                   }
+               });
+           }
+        },
+
         RepoOwners: Backbone.View.extend({
             el: $("#owners"),
             template: Handlebars.compile($("#repo-owner-template").html()),
@@ -155,6 +170,7 @@ var PullReq = PullReq || {};
                 this.$el.append(this.template(repo.toJSON()))
             },
             initialize: function () {
+                PullReq.views.utils.initializeFixedMenu();
                 this.collection = new PullReq.collections.RepoOwners();
                 this.collection.bind("reset", this.render, this);
                 this.collection.fetch();
@@ -345,6 +361,7 @@ var PullReq = PullReq || {};
             },
 
             initialize: function() {
+                PullReq.views.utils.initializeFixedMenu(95); // 95 px for progress bar
                 this.data.teamTags = new PullReq.collections.TeamTags();
                 this.data.projects = new PullReq.collections.Projects();
                 this.data.projects.bind("reset", this.collectionLoaded, this);
