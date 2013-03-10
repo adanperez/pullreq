@@ -31,6 +31,7 @@ app.configure('all', function() {
         secret: uuid.v4(),
         key: 'sid',
         maxAge: new Date(Date.now() + 60000*10),
+        proxy: isProduction,
         cookie: {
             maxAge: null,
             path: '/',
