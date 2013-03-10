@@ -3,8 +3,9 @@ var mongoose =  require('mongoose');
 var Schema = mongoose.Schema;
 
 function isloginUnique(login, respondCallback) {
+    var gitUser = this;
     mongoose.model('GitUser').findOne({login: login}, function(err, user) {
-        respondCallback(!(err || user));
+        respondCallback(!(err || (user && user.id != gitUser.id)));
     });
 }
 
@@ -40,7 +41,8 @@ gitUser.statics.findById= function (id, callback) {
 }
 
 gitUser.pre('save', function(next) {
-    this.dateUpdated = Date.now;
+    this.dateUpdated = Date.now();
+    console.log(this.dateUpdated );
     next();
 });
 

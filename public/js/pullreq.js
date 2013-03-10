@@ -11,6 +11,7 @@ var PullReq = PullReq || {};
 
         PullRequest: Backbone.Model.extend({
             defaults: {
+                // Shared array of warning files between objects
                 warningPaths: ['grails-app/migrations', 'grails-app/conf', 'releaseNotes']
             },
             initialize: function() {
@@ -178,20 +179,25 @@ var PullReq = PullReq || {};
         }),
 
         PullRequest: Backbone.View.extend({
+
             events: {
                 //'mouseenter div.pull-request': 'showDescriptionLink',
                 //'mouseleave div.pull-request': 'hideDescriptionLink',
                 'click a.descriptionLink': 'toggleSummary',
                 'click a.filesLink': 'renderFilesModal'
             },
-            template: Handlebars.compile($("#pull-template").html()),
-            templateExtraInfo: Handlebars.compile($("#pull-request-extra-info-template").html()),
-            templatePullComment: Handlebars.compile($("#pull-request-comment-template").html()),
-            templateFiles: Handlebars.compile($("#files-template").html()),
+
+            templates: {
+                pullRequest: Handlebars.compile($("#pull-template").html()),
+                extraInfo: Handlebars.compile($("#pull-request-extra-info-template").html()),
+                pullComment: Handlebars.compile($("#pull-request-comment-template").html()),
+                filesModal: Handlebars.compile($("#files-template").html())
+            },
 
             initialize: function() {
                 this.model.bind('extraInfoLoaded', this.renderExtraInfo, this);
             },
+
             toggleSummary: function(e) {
                 e.preventDefault();
                 var summary = this.$el.find('div.pull-info');
@@ -207,20 +213,21 @@ var PullReq = PullReq || {};
                     this.$el.find('a.descriptionLink').html('Less Info...');
                 }
             },
+
             renderFilesModal: function(e) {
                 e.preventDefault();
-                var thing = this.templateFiles(this.model.toJSON());
-                $(thing.trim()).modal({
+                var filesModal = this.templates.filesModal(this.model.toJSON()).trim(); // bug with jQuery if leading whitespace.
+                $(filesModal).modal({
                     backdrop: true,
                     keyboard: true
                 }).css({
-                        'width': function () {
-                            return ($(document).width() * .6) + 'px';
-                        },
-                        'margin-left': function () {
-                            return -($(this).width() / 2);
-                        }
-                    });
+                    'width': function () {
+                        return ($(document).width() * .6) + 'px';
+                    },
+                    'margin-left': function () {
+                        return -($(this).width() / 2);
+                    }
+                });
             },
             renderComments: function() {
                 var el = this.$el.find('ul.pull-comments');
@@ -228,7 +235,7 @@ var PullReq = PullReq || {};
                 if (comments) {
                     var that = this;
                     _.each(comments, function(comment) {
-                        el.append(that.templatePullComment(comment));
+                        el.append(that.templates.pullComment(comment));
                     });
                 }
             },
@@ -256,13 +263,13 @@ var PullReq = PullReq || {};
 
                 if (this.model.containsWarningFiles()) {
                     var link = this.$el.find('a.pull-link')
-                        .prepend(' <i class="icon-warning-sign"></i> ')
+                        .prepend('<i class="icon-warning-sign"></i> ')
                         .addClass('pull-warn');
                 }
-                this.$el.find('ul.subInfo').html(this.templateExtraInfo( this.model.toJSON()));
+                this.$el.find('ul.subInfo').html(this.templates.extraInfo( this.model.toJSON()));
             },
             render: function() {
-                this.$el.html(this.template(this.model.toJSON()));
+                this.$el.html(this.templates.pullRequest(this.model.toJSON()));
                 this.renderTitleIcons();
                 this.renderExtraInfo();
                 return this;
@@ -337,7 +344,7 @@ var PullReq = PullReq || {};
                 var tags = $(e.target).parents('#teamTags')[0];
                 $('li', tags).removeClass('selected');
                 $(e.target).parents('li').addClass('selected');
-                PullReq.globalEvents.trigger('tag:selected', $(e.target).html());
+                PullReq.globalEvents.trigger('tag:selected', $(e.target).data('tag'));
             },
 
             initialize: function () {},
@@ -403,6 +410,7 @@ var PullReq = PullReq || {};
                     this.makeTeamTags();
                     this.data.teamTags.sort();
                     this.data.projects.sort();
+                    PullReq.data.tag = 'ALL';
                 }
                 this.render();
             },
@@ -459,7 +467,7 @@ var PullReq = PullReq || {};
         views: {},
         collections: {},
         models: {},
-        tag: 'ALL'
+        tag: null
     };
 
 }());

@@ -337,7 +337,11 @@ ul.subInfo {
 
 .pull-file h5 {
     font-weight: normal;
-    margin: 4px 0;
+    margin: 0 0 4px 0;
+}
+.pull-file i {
+    float:left;
+    line-height: 20px;
 }
 .pull-file a {
     color: rgb(115, 81, 81);

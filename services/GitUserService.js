@@ -8,25 +8,23 @@ exports.addOrFindGitUser = function(gitToken, gitUserJson, callback) {
             return;
         }
 
-        if (gitUser) {
-            callback(null, gitUser);
-        } else {
-            // create the user and return it
-            var user = new GitUser({
-                login: gitUserJson.login,
-                id: gitUserJson.id,
-                name: gitUserJson.name,
-                url: gitUserJson.html_url
-            });
-
-            user.save(function (err, gitUser) {
-                if (err) {
-                    callback(new Error('Error: ' + err), null);
-                } else {
-                    callback(null, gitUser);
-                }
+        if (!gitUser) {
+            gitUser = new GitUser({
+                id: gitUserJson.id
             });
         }
+        // Update any changes
+        gitUser.login = gitUserJson.login;
+        gitUser.name = gitUserJson.name;
+        gitUser.url = gitUserJson.html_url;
+
+        gitUser.save(function (err, gitUser) {
+            if (err) {
+                callback(new Error('Error: ' + err), null);
+            } else {
+                callback(null, gitUser);
+            }
+        });
     });
 };
 

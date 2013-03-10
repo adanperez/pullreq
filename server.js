@@ -13,7 +13,7 @@ var fs =        require('fs');
 var logger =    require('log4js').getLogger();
 var app = express();
 var memStore = express.session.MemoryStore
-
+var isProduction = process.env.NODE_ENV == 'production';
 
 app.configure('all', function() {
     app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -31,7 +31,12 @@ app.configure('all', function() {
         secret: uuid.v4(),
         key: 'sid',
         maxAge: new Date(Date.now() + 60000*10),
-        cookie: { maxAge: null, path: '/', httpOnly: true },
+        cookie: {
+            maxAge: null,
+            path: '/',
+            httpOnly: true,
+            secure: isProduction
+        },
         store : memStore({ reapInterval: 60000*10 })
     }));
 
@@ -79,7 +84,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 /**
  * If prod, force https
  */
-if (process.env.NODE_ENV == 'production') {
+if (isProduction) {
     app.all('*',function(req, res, next){
         if(req.headers['x-forwarded-proto'] != 'https') {
             res.redirect('https://' + req.headers.host + req.url);

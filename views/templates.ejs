@@ -52,7 +52,7 @@
     {{/if}}
 </script>
 <script id="tag-item-template" type="text/x-handlebars-template">
-    <li><i class="icon-tag"></i> <a href="#">{{name}}</a></li>
+    <li><i class="icon-tag"></i> <a href="#" data-tag="{{name}}">{{name}}</a></li>
 </script>
 <script id="pull-request-comment-template" type="text/x-handlebars-template">
     <li>
@@ -86,11 +86,13 @@
         <div class="modal-body">
             <ul class="unstyled">
                 {{#each files}}
-                <li class="pull-file">
-                    <h5><i class="icon-{{iconStatus status}}"></i>
-                        <a href="{{blob_url}}" target="_blank">{{filename}}</a>
-                    </h5>
+                <li class="pull-file clear-fix">
+                    <i class="icon-{{iconStatus status}}"></i>
+
                     <div class="pull-file-info">
+                        <h5>
+                            <a href="{{blob_url}}" target="_blank">{{filename}}</a>
+                        </h5>
                         <div class="progress">
                             <div class="bar bar-success" style="width: {{percentage additions changes}}%;"></div>
                             <div class="bar bar-danger" style="width: {{percentage deletions changes}}%;"></div>
