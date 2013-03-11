@@ -15,8 +15,10 @@ exports.addOrFindGitUser = function(gitToken, gitUserJson, callback) {
         }
         // Update any changes
         gitUser.login = gitUserJson.login;
-        gitUser.name = gitUserJson.name;
-        gitUser.url = gitUserJson.html_url;
+        if (gitUserJson.name)
+            gitUser.name = gitUserJson.name;
+        if (gitUserJson.html_url)
+            gitUser.url = gitUserJson.html_url;
 
         gitUser.save(function (err, gitUser) {
             if (err) {
