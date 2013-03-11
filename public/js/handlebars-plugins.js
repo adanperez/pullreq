@@ -40,6 +40,10 @@ Handlebars.registerHelper('percentage', function(v1, v2) {
     return name * 100;
 });
 
+Handlebars.registerHelper('addValues', function(v1, v2) {
+    return v1 + v2;
+});
+
 Handlebars.registerHelper('iconStatus', function(context) {
     switch(context) {
         case 'modified':

@@ -350,7 +350,12 @@ var PullReq = PullReq || {};
             initialize: function () {},
 
             render: function() {
-                this.collection.each(this.renderTag, this);
+                if (this.collection.isEmpty()) {
+                    this.$el.hide();
+                } else {
+                    this.collection.each(this.renderTag, this);
+                    this.$el.find('li:first-child').addClass('selected');
+                }
                 return this;
             },
 
@@ -410,12 +415,14 @@ var PullReq = PullReq || {};
                     this.makeTeamTags();
                     this.data.teamTags.sort();
                     this.data.projects.sort();
-                    PullReq.data.tag = 'ALL';
                 }
                 this.render();
+                var tag = this.data.teamTags.isEmpty() ? null : this.data.teamTags.first().get('name')
+                this.updateViewForTag(tag);
             },
 
             makeTeamTags: function() {
+                this.data.teamTags.add({name:'ALL'});
                 var re = /^([A-Za-z]+)\-?(\d+)?.*$/i;
                 this.data.projects.each(function(project) {
                     var tags = project.get('tags');
@@ -456,7 +463,7 @@ var PullReq = PullReq || {};
                     el: $("#teamTags"),
                     collection: this.data.teamTags
                 });
-                PullReq.data.views.projects.render();
+                //PullReq.data.views.projects.render();
                 PullReq.data.views.tags.render();
                 this.$el.find('#menu').show();
             }

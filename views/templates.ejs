@@ -38,15 +38,14 @@
     <li><i class="icon-user"></i> {{user.login}}</li>
     <li><i class="icon-time"></i> {{dateFormat created_at}}</li>
     {{#if extraInfoLoaded}}
+        <li><i class="icon-comments"></i> {{addValues issueComments.length codeComments.length}} Comments</li>
         <li>
             <i class="icon-copy"></i>
             {{#if files.length}} <a href="#" class="filesLink">{{files.length}} Files changed</a>  {{else}} {{files.length}} Files changed {{/if}}
         </li>
-        <li>
-            <i class="icon-comments"></i> {{codeComments.length}} Comments</li>
-            {{#ifOrCond issueComments.length body}}
-                <li><i class="icon-info-sign"></i> <a href="#" class="descriptionLink">More Info...</a> </li>
-            {{/ifOrCond}}
+        {{#ifOrCond issueComments.length body}}
+        <li><i class="icon-info-sign"></i> <a href="#" class="descriptionLink">More Info...</a> </li>
+        {{/ifOrCond}}
     {{else}}
         <li><i class="icon-repeat icon-spin"></i> Loading...</li>
     {{/if}}
