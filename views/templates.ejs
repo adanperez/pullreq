@@ -20,7 +20,7 @@
     </div>
 </script>
 <script id="pull-template" type="text/x-handlebars-template">
-    <div class="pull-request clear-fix">
+    <div class="pull-request clear-fix" id="pull-request-{{id}}">
         <img src="{{user.avatar_url}}" alt="{{user}}" title="{{user}}" />
         <div class="pull-body">
             <h4 class="pull-title">
@@ -90,12 +90,12 @@
 
                     <div class="pull-file-info">
                         <h5>
-                            <a href="{{blob_url}}" target="_blank">{{filename}}</a>
+                            <a href="{{blob_url}}" class="{{#if isWarn}}warn{{/if}}" target="_blank">{{filename}}</a>
                         </h5>
-                        <div class="progress">
-                            <div class="bar bar-success" style="width: {{percentage additions changes}}%;"></div>
-                            <div class="bar bar-danger" style="width: {{percentage deletions changes}}%;"></div>
-                        </div>
+                        <!--<div class="progress">-->
+                            <!--<div class="bar bar-success" style="width: {{percentage additions changes}}%;"></div>-->
+                            <!--<div class="bar bar-danger" style="width: {{percentage deletions changes}}%;"></div>-->
+                        <!--</div>-->
                         <small>{{additions}} additions / {{deletions}} deletions</small>
                     </div>
                 </li>

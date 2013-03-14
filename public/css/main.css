@@ -97,8 +97,13 @@ i.icon-circle {
     color: rgb(58, 143, 72);
 }
 
+i.icon-question-sign {
+    color: rgb(184, 113, 0);
+}
+
 a.pull-warn,
-a.pull-warn:hover {
+a.pull-warn:hover,
+.pull-file a.warn {
     color: rgb(223, 76, 59);
     font-weight: bold;
 }
@@ -106,6 +111,7 @@ a.pull-warn:hover {
 a.pull-good,
 a.pull-good:hover {
     color: rgb(58, 143, 72);
+    font-weight: bold;
 }
 
 /* ROLL LINKS */
@@ -356,4 +362,8 @@ ul.subInfo {
 }
 .pull-file-info small {
     color:#AAA;
+}
+
+.pull-file .progress {
+    opacity: 0.2;
 }

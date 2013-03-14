@@ -49,19 +49,26 @@ function getPullRequestInfo(req, res) {
     });
 };
 
-
 function getUserPullRequests(req, res) {
     var userToken = req.session.user_token;
     var userId = req.session.user_id;
-    var pulls = {}
+    var pulls = [];
     repoService.getReposForUser(userId, function(err, repos) {
         _.each(repos, function(repo) {
-            pulls[repo.owner + '/' + repo.repo] = function(callback) {
+            pulls.push(function(callback) {
                 gitAPIService.getPullRequests(userToken, repo.owner, repo.repo, callback);
-            }
+            })
         }, this);
         async.parallel(pulls, function(err, json) {
-            jsonResponse(err, json, res);
+            var resp = [];
+            //console.log(json);
+            _.each(json, function(pull) {
+                console.log(pull);
+                if (pull && pull.length) {
+                    resp = resp.concat(pull);
+                }
+            });
+            jsonResponse(err, resp, res);
         });
     });
 };

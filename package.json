@@ -1,7 +1,7 @@
 {
     "name": "pullreq",
     "author": "Adan Perez",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Pull request app for Github.",
     "license": "MIT",
     "dependencies": {
