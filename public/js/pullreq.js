@@ -307,8 +307,8 @@ var PullReq = PullReq || {};
                 this.$el.html(this.templates.pullRequest(this.model.toJSON()));
                 this.renderExtraInfo();
                 // remove auto wrap div
-                this.$el = this.$el.children();
-                this.setElement(this.$el);
+                //this.$el = this.$el.children();
+                //this.setElement(this.$el);
 
                 return this;
             }
@@ -316,35 +316,42 @@ var PullReq = PullReq || {};
 
         Project: Backbone.View.extend({
             template: Handlebars.compile($("#project-template").html()),
+            className: 'project',
+            tagName: 'div',
+            data: {
+                pullRequestViews: []
+            },
+
             initialize: function() {
                 this.model.on('projectReload', this.render, this);
             },
+
             render: function() {
                 this.$el.html(this.template(this.model.toJSON()));
                 var pullRequests = this.model.get('pullRequests');
                 pullRequests.sort();
-                _.each(pullRequests.getGoodPulls(), function(pullRequest) {
+                var pulls = [];
+                pulls = pulls.concat(pullRequests.getGoodPulls());
+                pulls = pulls.concat(pullRequests.getWarnPulls());
+                pulls = pulls.concat(pullRequests.getNewPulls());
+                _.each(pulls, function(pullRequest) {
                     if (!PullReq.data.tag || _.contains(pullRequest.get('tags'), PullReq.data.tag)) {
                         var pullView = new PullReq.views.PullRequest({model:pullRequest});
-                        this.$('.pull-requests').append(pullView.render().el);
-                    }
-                }, this);
-                _.each(pullRequests.getWarnPulls(), function(pullRequest) {
-                    if (!PullReq.data.tag || _.contains(pullRequest.get('tags'), PullReq.data.tag)) {
-                        var pullView = new PullReq.views.PullRequest({model:pullRequest});
-                        this.$('.pull-requests').append(pullView.render().el);
-                    }
-                }, this);
-                _.each(pullRequests.getNewPulls(), function(pullRequest) {
-                    if (!PullReq.data.tag || _.contains(pullRequest.get('tags'), PullReq.data.tag)) {
-                        var pullView = new PullReq.views.PullRequest({model:pullRequest});
+                        this.data.pullRequestViews.push(pullView);
                         this.$('.pull-requests').append(pullView.render().el);
                     }
                 }, this);
                 // remove auto wrap div
-                this.$el = this.$el.children();
-                this.setElement(this.$el);
+                //this.$el = this.$el.children();
+                //this.setElement(this.$el);
                 return this;
+            },
+
+            removeView: function() {
+                _.each(this.data.pullRequestViews, function(view) {
+                    view.remove();
+                });
+                this.remove();
             }
         }),
 
@@ -354,9 +361,20 @@ var PullReq = PullReq || {};
 
             initialize: function () {},
 
+            data: {
+                projectViews: []
+            },
+
+            removeSubViews: function() {
+                _.each(this.data.projectViews, function(view) {
+                    view.removeView();
+                });
+            },
+
             render: function() {
                 var that = this;
                 this.$el.fadeOut(150, function() {
+                    that.removeSubViews();
                     that.$el.empty();
                     if (that.collection.isEmpty()) {
                         that.$el.html('<div class="noPullRequests"><h2>There are no open pull requests</h2></div>');
@@ -370,6 +388,7 @@ var PullReq = PullReq || {};
 
             addProjectView: function(project) {
                 var projectView = new PullReq.views.Project({model:project});
+                this.data.projectViews.push(projectView);
                 this.$el.append(projectView.render().el);
             }
         }),
@@ -426,7 +445,8 @@ var PullReq = PullReq || {};
             data: {
                 progressBarCount: 0,
                 progressBarComplete: 0,
-                isViewLoaded: false
+                isViewLoaded: false,
+                isLoading: true
             },
 
             initialize: function() {
@@ -436,12 +456,16 @@ var PullReq = PullReq || {};
                 PullReq.data.collections.pullRequests.on('reset', this.collectionLoaded, this);
                 PullReq.globalEvents.on('pullRequest:extraInfoLoaded', this.progressBarUpdateCompleteStatus, this);
                 PullReq.globalEvents.on('tag:selected', this.updateTag, this);
-
-                this.updateTag(null);
+                PullReq.data.collections.pullRequests.fetch();
             },
 
-            refreshPage: function() {
-                this.updateTag(PullReq.data.tag);
+            refreshPage: function(e) {
+                e.preventDefault();
+                if (!this.data.isLoading) {
+                    this.data.isLoading = true;
+                    this.progressBarBegin();
+                    PullReq.data.collections.pullRequests.fetch();
+                }
             },
 
             updateProgressBar: function(percent) {
@@ -489,7 +513,9 @@ var PullReq = PullReq || {};
                     this.render();
                     this.data.isViewLoaded = true;
                 }
+                PullReq.data.views.tags.updateView();
                 this.updateViewForTag();
+                this.data.isLoading = false;
             },
 
             makeTeamTags: function() {
@@ -533,20 +559,18 @@ var PullReq = PullReq || {};
 
             updateTag: function(tag) {
                 PullReq.data.tag = tag;
-                this.progressBarBegin();
-                PullReq.data.collections.pullRequests.fetch();
+                this.updateViewForTag();
             },
 
             updateViewForTag: function() {
-                PullReq.data.views.projects = new PullReq.views.Projects({
-                    el: $("#projects"),
-                    collection: this.makeProjectsForTag()
-                });
-                PullReq.data.views.tags.updateView()
+                PullReq.data.views.projects.collection = this.makeProjectsForTag();
                 PullReq.data.views.projects.render();
             },
 
             render: function() {
+                PullReq.data.views.projects = new PullReq.views.Projects({
+                    el: $("#projects")
+                });
                 PullReq.data.views.tags = new PullReq.views.TeamTags({
                     el: $("#teamTags"),
                     collection: PullReq.data.collections.teamTags
