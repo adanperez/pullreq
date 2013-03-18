@@ -42,7 +42,6 @@ gitUser.statics.findById= function (id, callback) {
 
 gitUser.pre('save', function(next) {
     this.dateUpdated = Date.now();
-    console.log(this.dateUpdated );
     next();
 });
 

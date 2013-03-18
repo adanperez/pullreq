@@ -6,6 +6,7 @@ var _ =         require('underscore');
 var gitAPIService = require("../services/GitAPIService.js");
 var gitUserService = require("../services/GitUserService.js");
 var repoService =    require("../services/RepoService.js");
+var warningPathService =    require("../services/WarningPathService.js");
 
 
 function requireAuthentication(req, res, next) {
@@ -61,9 +62,7 @@ function getUserPullRequests(req, res) {
         }, this);
         async.parallel(pulls, function(err, json) {
             var resp = [];
-            //console.log(json);
             _.each(json, function(pull) {
-                console.log(pull);
                 if (pull && pull.length) {
                     resp = resp.concat(pull);
                 }
@@ -105,6 +104,41 @@ function getRepoOptions(req, res) {
     });
 };
 
+function getWarningPaths(req, res) {
+    var userId = req.session.user_id;
+    warningPathService.getWarningPathsForUser(userId, function(err, paths) {
+        jsonResponse(err, paths, res);
+    });
+}
+
+function saveWarningPaths(req, res) {
+    if (!req.body) {
+        res.redirect('/home');
+        return;
+    }
+    var paths = [].concat(req.body);
+    var options = [];
+    _.each(paths, function(warnPath) {
+        if (!warnPath || !warnPath.path) {
+            return;
+        }
+        var path = warnPath.path.replace(/^\s+|\s+$/g, '');
+        if (!path) {
+            return;
+        }
+        options.push(function(callback) {
+            warningPathService.saveWarningPathForUser(req.session.user_id, path, function(err, path) {
+                callback(err, path);
+            });
+        });
+    }, this);
+    warningPathService.removeWarningPathsForUser(req.session.user_id, function(err) {
+        async.series(options, function(err, paths) {
+            jsonResponse(err, paths, res);
+        });
+    });
+}
+
 function getUserOrgs(req, res) {
     gitAPIService.getUserOrgs(req.session.user_token, function(err, json) {
         jsonResponse(err, json, res);
@@ -122,9 +156,11 @@ module.exports = function(app) {
     var path = '/api';
     app.all(path + '/*', requireAuthentication);
     app.get(path + '/pullRequests', getUserPullRequests);
-    app.get(path + '/pullRequestInfo/:owner/:repo/:pullNumber', getPullRequestInfo);
+    app.get(path + '/pullRequests/:owner/:repo/:pullNumber/info', getPullRequestInfo);
     app.get(path + '/userOrgs', getUserOrgs);
     app.get(path + '/repoOptions', getRepoOptions);
+    app.get(path + '/warningPaths', getWarningPaths);
+    app.post(path + '/warningPaths', saveWarningPaths);
     app.get(path + '/orgRepos/:org', getOrgRepos);
 };
 

@@ -6,7 +6,7 @@
 
 body {
     color: #735151;
-	font: 300 100.1% Helvetica, Arial, sans-serif;
+	font: 300 100.1% "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
 }
 
@@ -205,18 +205,19 @@ a.pull-good:hover {
 .fixed {
     position: fixed;
     top: 0;
+    margin-top: 10px;
 }
 
 #menu h5 {
+    margin:0;
     background-color: #e7e6e6;
     border-bottom: rgb(210, 215, 221) solid 1px;
-    margin-bottom: 0;
     padding: 10px 0 10px 8px;
 }
 
 #menu li {
     background-color: #ebeaea;
-    padding: 10px 0 10px 8px;
+    padding: 8px 0 8px 8px;
 }
 
 #loadingMessage {
@@ -366,4 +367,27 @@ ul.subInfo {
 
 .pull-file .progress {
     opacity: 0.2;
+}
+
+#warnings {
+    margin-bottom: 0px;
+}
+
+.warningPath {
+    position: relative;
+}
+
+.warningPath a {
+    top: 5px;
+    left: 546px;
+    position: absolute;
+    text-decoration: none;
+}
+
+.buttons {
+    margin-bottom: 20px;
+}
+
+form .alert {
+    width: 525px;
 }

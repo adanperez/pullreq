@@ -20,7 +20,6 @@ function register(req, res) {
         res.redirect('/');
         return;
     }
-    //res.send('Code: ' + code);
 
     var gitReq = {
         method: 'POST',

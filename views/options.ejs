@@ -1,0 +1,39 @@
+<% layout('mainLayout') -%>
+<% block('header', partial('header')) -%>
+
+<div class="row-fluid" id="main">
+    <div class="span2">
+        <div id="menu">
+            <h5>Options</h5>
+            <ul class="unstyled" id="optionMenu">
+                <li>
+                    <i class="icon-cloud"></i>
+                    <a href="#/repos"> Choose Repos</a>
+                </li>
+                <li>
+                    <i class="icon-warning-sign"></i>
+                    <a href="#/warningPaths"> Warning Paths</a>
+                </li>
+            </ul>
+            <h5>Menu</h5>
+            <ul class="unstyled" id="menuItems">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="/home"> Home</a>
+                </li>
+                <li>
+                    <i class="icon-github-alt"></i>
+                    <a href="<%- user.url %>" target="_blank"> Github Profile</a>
+                </li>
+                <li>
+                    <i class="icon-signout"></i>
+                    <a href="/auth/logout"> Sign out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="span10" id="content"></div>
+</div>
+<% block('scripts', partial('templates')) -%>
+<% script('/js/pullreq.js') -%>
+<% script('/js/pages/options.js') -%>

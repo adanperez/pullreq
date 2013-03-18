@@ -14,7 +14,7 @@ function requireAuthentication(req, res, next) {
 
 var render = {
     mainPage: function(res, locals) {
-        res.render('repos.ejs', {
+        res.render('options.ejs', {
             locals: locals
         });
     }
@@ -36,13 +36,13 @@ function saveRepos(req, res) {
     _.each(repos, function(repoOption) {
         var repo = repoOption.split('/');
             options.push(function(callback) {
-                repoService.saveRepoForUser(req.session.user_id, repo[0], repo[1], function(err, repo) {
+                repoService.saveRepoForUser(req.session.user_id, repo[0].toLowerCase(), repo[1].toLowerCase(), function(err, repo) {
                     callback(err, repo);
                 });
             });
     }, this);
     repoService.removeReposForUser(req.session.user_id, function(err) {
-        async.parallel(options, function(err, repos) {
+        async.series(options, function(err, repos) {
             res.redirect('/home');
         });
     });
@@ -66,8 +66,8 @@ function editRepoPage(req, res) {
 }
 
 module.exports = function(app) {
-    var path = '/repos'
+    var path = '/options'
     app.all(path + '/*', requireAuthentication);
-    app.get(path + '/edit', editRepoPage);
-    app.post(path + '/save', saveRepos);
+    app.get(path, editRepoPage);
+    app.post(path + '/saveRepos', saveRepos);
 };

@@ -102,7 +102,7 @@ require("./controllers/IndexController.js")(app);
 require("./controllers/AuthController.js")(app);
 require("./controllers/ApiController.js")(app);
 require("./controllers/HomeController.js")(app);
-require("./controllers/RepoController.js")(app);
+require("./controllers/OptionsController.js")(app);
 
 http.createServer(app).listen(app.get('port'), function() {
     logger.info("Express server listening on port " + app.get('port'));

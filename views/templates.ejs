@@ -60,6 +60,44 @@
         </div>
     </li>
 </script>
+<script id="warning-paths-template" type="text/x-handlebars-template">
+    <div id="loadingMessage" style="text-align: left;">
+        <h1>
+            <i class="icon-repeat icon-spin"></i> Loading Warning Paths...
+        </h1>
+    </div>
+    <form action="/api/warningPaths" method="post">
+        <p>
+            These paths are used to determine if a pull request is touching critical files.
+        </p>
+        <ul id="warnings" class="unstyled"></ul>
+        <p class="buttons hide">
+            <button class="btn btn-mini btn-success addLink" type="button"><i class="icon-plus"></i> Add Path</button>
+        </p>
+        <p class="buttons hide">
+            <button class="btn saveLink" type="submit">Save</button>
+            <a href="/home" class="btn">Cancel</a>
+        </p>
+    </form>
+</script>
+<script id="warning-path-template" type="text/x-handlebars-template">
+    <input name="path" type="text" class="input-xxlarge" placeholder="Ex. grails-app/conf" value="{{#if path}}{{path}}{{/if}}">
+    <a href="#"><i class="icon-remove-sign"></i></a>
+</script>
+<script id="repo-options-template" type="text/x-handlebars-template">
+    <div id="loadingMessage" style="text-align: left;">
+        <h1>
+            <i class="icon-repeat icon-spin"></i> Loading Repo Options...
+        </h1>
+    </div>
+    <form id="repoForm" action="/options/saveRepos" method="post">
+        <div id="owners"></div>
+        <p id="buttons" class="hide">
+            <button class="btn" type="submit">Save</button>
+            <a href="/home" class="btn">Cancel</a>
+        </p>
+    </form>
+</script>
 <script id="repo-owner-template" type="text/x-handlebars-template">
     <div class="owner">
         <h2>{{login}}</h2>
