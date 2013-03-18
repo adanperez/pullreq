@@ -747,8 +747,7 @@ var Pullreq = Pullreq || {};
         OptionsApp: Backbone.Router.extend({
             routes: {
                 'warningPaths': 'warningPathsView',
-                'repos': 'reposView',
-                '*all': 'reposView'
+                '*repos': 'reposView'
             },
             initialize: function() {
                 Pullreq.views.utils.initializeFixedMenu();
@@ -758,10 +757,11 @@ var Pullreq = Pullreq || {};
                     el: $('#optionMenu')
                 });
 
-                Backbone.history.start();
-                if (!Backbone.history.fragment) {
-                    this.navigate('#/repos', true);
+                if (!window.location.hash) {
+                    window.location.hash = "/repos";
                 }
+
+                Backbone.history.start();
                 Pullreq.data.views.optionsMenu.initialSelect(Backbone.history.fragment);
             },
             removeView: function() {
