@@ -76,7 +76,6 @@
         </p>
         <p class="buttons hide">
             <button class="btn saveLink" type="submit">Save</button>
-            <a href="/home" class="btn">Cancel</a>
         </p>
     </form>
 </script>
@@ -93,8 +92,7 @@
     <form id="repoForm" action="/options/saveRepos" method="post">
         <div id="owners"></div>
         <p id="buttons" class="hide">
-            <button class="btn" type="submit">Save</button>
-            <a href="/home" class="btn">Cancel</a>
+            <button class="btn saveLink" type="submit">Save</button>
         </p>
     </form>
 </script>
@@ -105,7 +103,7 @@
             {{#each repos}}
             <li>
                 <label class="checkbox">
-                    <input type="checkbox" name="repo" value="{{full_name}}"> <b>{{name}}</b> <span class="subInfo"><i class="icon-random"></i> {{forks_count}} forks</span>
+                    <input type="checkbox" name="repo" class="repoOption" value="{{full_name}}" {{#if isChecked}}checked="checked"{{/if}}> <b>{{name}}</b> <span class="subInfo"><i class="icon-random"></i> {{forks_count}} forks</span>
                 </label>
             </li>
             {{/each}}

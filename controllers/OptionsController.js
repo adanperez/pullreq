@@ -2,7 +2,6 @@ var _ = require('underscore');
 var async =     require('async');
 
 var gitUserService = require("../services/GitUserService.js");
-var repoService =    require("../services/RepoService.js");
 
 function requireAuthentication(req, res, next) {
     if (req.session.user_id) {
@@ -26,28 +25,6 @@ function getAndClearMessage(req) {
     return message;
 }
 
-function saveRepos(req, res) {
-    if (!req.body.repo) {
-        res.redirect('/home');
-        return;
-    }
-    var repos = [].concat(req.body.repo);
-    var options = [];
-    _.each(repos, function(repoOption) {
-        var repo = repoOption.split('/');
-            options.push(function(callback) {
-                repoService.saveRepoForUser(req.session.user_id, repo[0].toLowerCase(), repo[1].toLowerCase(), function(err, repo) {
-                    callback(err, repo);
-                });
-            });
-    }, this);
-    repoService.removeReposForUser(req.session.user_id, function(err) {
-        async.series(options, function(err, repos) {
-            res.redirect('/home');
-        });
-    });
-}
-
 function editRepoPage(req, res) {
     var id = req.session.user_id
     if (id) {
@@ -69,5 +46,4 @@ module.exports = function(app) {
     var path = '/options'
     app.all(path + '/*', requireAuthentication);
     app.get(path, editRepoPage);
-    app.post(path + '/saveRepos', saveRepos);
 };

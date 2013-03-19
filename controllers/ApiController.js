@@ -3,6 +3,7 @@ var qs =        require('querystring');
 var request =   require('request');
 var async =     require('async');
 var _ =         require('underscore');
+var logger =    require('log4js').getLogger();
 var gitAPIService = require("../services/GitAPIService.js");
 var gitUserService = require("../services/GitUserService.js");
 var repoService =    require("../services/RepoService.js");
@@ -20,6 +21,7 @@ function requireAuthentication(req, res, next) {
 function jsonResponse(err, json, response) {
     response.contentType('json');
     if (err) {
+        logger.warn(err);
         response.send(500, {error:err.message});
     } else {
         response.send(200, json);
@@ -55,6 +57,10 @@ function getUserPullRequests(req, res) {
     var userId = req.session.user_id;
     var pulls = [];
     repoService.getReposForUser(userId, function(err, repos) {
+        if (err) {
+            jsonResponse(err, null, res);
+            return;
+        }
         _.each(repos, function(repo) {
             pulls.push(function(callback) {
                 gitAPIService.getPullRequests(userToken, repo.owner, repo.repo, callback);
@@ -74,6 +80,10 @@ function getUserPullRequests(req, res) {
 
 function getRepoOptions(req, res) {
     gitAPIService.getUserOrgs(req.session.user_token, function(err, json) {
+        if (err) {
+            jsonResponse(err, null, res);
+            return;
+        }
         var options = [];
         _.each(json, function(org) {
             options.push(function(callback) {
@@ -113,7 +123,7 @@ function getWarningPaths(req, res) {
 
 function saveWarningPaths(req, res) {
     if (!req.body) {
-        res.redirect('/home');
+        jsonResponse({error:'No body was found.'}, null, res);
         return;
     }
     var paths = [].concat(req.body);
@@ -139,6 +149,30 @@ function saveWarningPaths(req, res) {
     });
 }
 
+function saveUserRepos(req, res) {
+    if (!req.body) {
+        jsonResponse({error:'No body was found.'}, null, res);
+        return;
+    }
+    var repos = [].concat(req.body);
+    var options = [];
+    _.each(repos, function(userRepo) {
+        if (!userRepo || !userRepo.owner || !userRepo.repo) {
+            return;
+        }
+        options.push(function(callback) {
+            repoService.saveRepoForUser(req.session.user_id, userRepo.owner.toLowerCase(), userRepo.repo.toLowerCase(), function(err, repo) {
+                callback(err, repo);
+            });
+        });
+    }, this);
+    repoService.removeReposForUser(req.session.user_id, function(err) {
+        async.series(options, function(err, repos) {
+            jsonResponse(err, repos, res);
+        });
+    });
+}
+
 function getUserOrgs(req, res) {
     gitAPIService.getUserOrgs(req.session.user_token, function(err, json) {
         jsonResponse(err, json, res);
@@ -151,6 +185,13 @@ function getOrgRepos(req, res) {
     });
 }
 
+function getUserRepos(req, res) {
+    var userId = req.session.user_id;
+    repoService.getReposForUser(userId, function(err, repos) {
+        jsonResponse(err, repos, res);
+    });
+}
+
 
 module.exports = function(app) {
     var path = '/api';
@@ -159,6 +200,8 @@ module.exports = function(app) {
     app.get(path + '/pullRequests/:owner/:repo/:pullNumber/info', getPullRequestInfo);
     app.get(path + '/userOrgs', getUserOrgs);
     app.get(path + '/repoOptions', getRepoOptions);
+    app.get(path + '/userRepos', getUserRepos);
+    app.post(path + '/userRepos', saveUserRepos);
     app.get(path + '/warningPaths', getWarningPaths);
     app.post(path + '/warningPaths', saveWarningPaths);
     app.get(path + '/orgRepos/:org', getOrgRepos);

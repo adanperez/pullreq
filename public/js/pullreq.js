@@ -91,6 +91,8 @@ var Pullreq = Pullreq || {};
 
         RepoOwner: Backbone.Model.extend({}),
 
+        UserRepo: Backbone.Model.extend({}),
+
         WarningPath: Backbone.Model.extend({
             defaults: {
                 path:null
@@ -134,9 +136,14 @@ var Pullreq = Pullreq || {};
             }
         }),
 
-        RepoOwners: Backbone.Collection.extend({
+        RepoOptions: Backbone.Collection.extend({
             url: '/api/repoOptions',
             model: Pullreq.models.RepoOwner
+        }),
+
+        UserRepos: Backbone.Collection.extend({
+            url: '/api/userRepos',
+            model: Pullreq.models.UserRepo
         }),
 
         WarningPaths: Backbone.Collection.extend({
@@ -211,11 +218,69 @@ var Pullreq = Pullreq || {};
         RepoOwners: Backbone.View.extend({
             //el: $("#owners"),
             idAttribute: 'repoOwners',
-            initialize: function () {
-                this.collection.bind("reset", this.renderRepos, this);
+            events: {
+                'click input.repoOption': 'repoOptionClick',
+                'click button.saveLink': 'saveRepos'
+            },
+            data: {
+                successMessage: '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    '<strong>Bravo!</strong> You have successfully saved your warning paths.' +
+                    '</div>',
+                warningMessage: '<div class="alert alert-error">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    '<strong>Error!</strong> Something didn\'t save correctly.' +
+                    '</div>'
             },
             repoOwnerTemplate: Handlebars.compile($("#repo-owner-template").html()),
             template: Handlebars.compile($("#repo-options-template").html()),
+
+            initialize: function () {
+                this.options.loadCount = 0;
+                this.options.repoOptionsCollection.bind("reset", this.initialLoad, this);
+                this.options.userReposCollection.bind("reset", this.initialLoad, this);
+            },
+            initialLoad: function() {
+                this.options.loadCount++;
+                if (this.options.loadCount > 1) {
+                    this.renderRepos();
+                }
+            },
+
+            saveRepos: function(e) {
+                e.preventDefault();
+                var view = this;
+                var form = view.$el.find('form');
+                form.find('.alert').remove();
+                Backbone.sync('create', this.options.userReposCollection, {
+                    success: function() {
+                        form.prepend(view.data.successMessage);
+                    },
+                    error:function() {
+                        form.prepend(view.data.warningMessage);
+                    }
+                });
+            },
+
+            removeView: function() {
+                this.options.repoOptionsCollection.unbind();
+                this.options.userReposCollection.unbind();
+                this.remove();
+            },
+
+            repoOptionClick: function(e){
+                var name = $(e.currentTarget).val().split('/');
+                var owner = name[0];
+                var repo = name[1];
+                if (e.currentTarget.checked) {
+                    this.options.userReposCollection.add([{owner:owner, repo:repo}]);
+                } else {
+                    var userRepo = this.options.userReposCollection.find(function(userRepo) {
+                        return userRepo.get('owner') == owner && userRepo.get('repo') == repo;
+                    });
+                    this.options.userReposCollection.remove(userRepo);
+                }
+            },
 
             render: function() {
                 this.$el.html(this.template());
@@ -226,14 +291,21 @@ var Pullreq = Pullreq || {};
                 this.$el.fadeOut(100, function() {
                     $('#loadingMessage h1', view.$el).html('Choose your repos');
                     $('#owners', view.$el).empty();
-                    view.collection.each(view.makeView, view);
+                    view.options.repoOptionsCollection.each(view.makeView, view);
                     view.$el.fadeIn(200, function() {
                         $('#buttons').show();
                     });
                 });
             },
             makeView: function(repo) {
-                $('#owners', this.$el).append(this.repoOwnerTemplate(repo.toJSON()))
+                var json = repo.toJSON();
+
+                _.each(json.repos, function(repo) {
+                    repo.isChecked = this.options.userReposCollection.some(function(userRepo) {
+                        return repo.owner.login == userRepo.get('owner') && repo.name == userRepo.get('repo');
+                    }, this);
+                }, this);
+                $('#owners', this.$el).append(this.repoOwnerTemplate(json))
             }
         }),
 
@@ -289,7 +361,9 @@ var Pullreq = Pullreq || {};
                     '</div>'
             },
             template: Handlebars.compile($("#warning-paths-template").html()),
-
+            removeView: function() {
+                this.remove();
+            },
             initialize: function () {
                 this.collection.bind("reset", this.renderPaths, this);
                 this.collection.bind("add", this.renderNewPath, this);
@@ -760,8 +834,14 @@ var Pullreq = Pullreq || {};
             },
             initialize: function() {
                 Pullreq.views.utils.initializeFixedMenu();
-                Pullreq.data.collections.repoOwners = new Pullreq.collections.RepoOwners();
+                Pullreq.data.collections.userRepos = new Pullreq.collections.UserRepos();
+                Pullreq.data.collections.repoOptions = new Pullreq.collections.RepoOptions();
                 Pullreq.data.collections.warningPaths = new Pullreq.collections.WarningPaths();
+                // handle errors
+                Pullreq.data.collections.userRepos.on('error', this.defaultErrorHandler, this);
+                Pullreq.data.collections.repoOptions.on('error', this.defaultErrorHandler, this);
+                Pullreq.data.collections.warningPaths.on('error', this.defaultErrorHandler, this);
+                // load menu
                 Pullreq.data.views.optionsMenu = new Pullreq.views.OptionsMenu({
                     el: $('#optionMenu')
                 });
@@ -773,18 +853,25 @@ var Pullreq = Pullreq || {};
                 Backbone.history.start();
                 Pullreq.data.views.optionsMenu.initialSelect(Backbone.history.fragment);
             },
+            defaultErrorHandler: function(model, error) {
+                if (error.status == 401 || error.status == 403) {
+                    window.location = '/'; // not logged in
+                }
+            },
             removeView: function() {
                 if (Pullreq.data.views.options) {
-                    Pullreq.data.views.options.remove();
+                    Pullreq.data.views.options.removeView();
                 }
             },
             reposView: function() {
                 this.removeView();
                 Pullreq.data.views.options = new Pullreq.views.RepoOwners({
-                    collection: Pullreq.data.collections.repoOwners
+                    userReposCollection: Pullreq.data.collections.userRepos,
+                    repoOptionsCollection: Pullreq.data.collections.repoOptions
                 });
                 $('#content').html(Pullreq.data.views.options.render().el);
-                Pullreq.data.collections.repoOwners.fetch();
+                Pullreq.data.collections.userRepos.fetch();
+                Pullreq.data.collections.repoOptions.fetch();
             },
             warningPathsView: function() {
                 this.removeView();
