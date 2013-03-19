@@ -52,6 +52,8 @@ Handlebars.registerHelper('iconStatus', function(context) {
             return 'circle';
         case 'removed':
             return 'remove';
+        case 'renamed':
+            return 'adjust';
         default:
             return '';
     }

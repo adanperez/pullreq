@@ -214,10 +214,11 @@ var Pullreq = Pullreq || {};
             initialize: function () {
                 this.collection.bind("reset", this.renderRepos, this);
             },
-            template: Handlebars.compile($("#repo-owner-template").html()),
-            repoOptionsTemplate: Handlebars.compile($("#repo-options-template").html()),
+            repoOwnerTemplate: Handlebars.compile($("#repo-owner-template").html()),
+            template: Handlebars.compile($("#repo-options-template").html()),
+
             render: function() {
-                this.$el.html(this.repoOptionsTemplate());
+                this.$el.html(this.template());
                 return this;
             },
             renderRepos: function() {
@@ -232,7 +233,7 @@ var Pullreq = Pullreq || {};
                 });
             },
             makeView: function(repo) {
-                $('#owners', this.$el).append(this.template(repo.toJSON()))
+                $('#owners', this.$el).append(this.repoOwnerTemplate(repo.toJSON()))
             }
         }),
 
@@ -244,7 +245,8 @@ var Pullreq = Pullreq || {};
                 'mouseenter i': 'viewHover',
                 'mouseout i': 'viewHover'
             },
-            warningPathTemplate: Handlebars.compile($("#warning-path-template").html()),
+            template: Handlebars.compile($("#warning-path-template").html()),
+
             initialize: function() {
                 this._modelBinder = new Backbone.ModelBinder();
             },
@@ -262,7 +264,7 @@ var Pullreq = Pullreq || {};
                 this.remove();
             },
             render: function() {
-                this.$el.html(this.warningPathTemplate(this.model.toJSON()));
+                this.$el.html(this.template(this.model.toJSON()));
                 this._modelBinder.bind(this.model, this.el);
                 return this;
             }
@@ -287,7 +289,6 @@ var Pullreq = Pullreq || {};
                     '</div>'
             },
             template: Handlebars.compile($("#warning-paths-template").html()),
-            warningPathTemplate: Handlebars.compile($("#warning-path-template").html()),
 
             initialize: function () {
                 this.collection.bind("reset", this.renderPaths, this);
@@ -603,13 +604,21 @@ var Pullreq = Pullreq || {};
                 Pullreq.data.collections.pullRequests = new Pullreq.collections.PullRequests();
                 Pullreq.data.collections.teamTags = new Pullreq.collections.TeamTags();
                 Pullreq.data.collections.warningPaths = new Pullreq.collections.WarningPaths();
+                Pullreq.data.collections.warningPaths.on('error', this.defaultErrorHandler, this);
+                Pullreq.data.collections.pullRequests.on('error', this.defaultErrorHandler, this);
                 Pullreq.data.collections.pullRequests.on('reset', this.initialLoad, this);
-                Pullreq.data.collections.pullRequests.once('reset', this.initialLoad, this);
+                Pullreq.data.collections.warningPaths.once('reset', this.initialLoad, this);
                 Pullreq.globalEvents.on('pullRequest:extraInfoLoaded', this.progressBarUpdateCompleteStatus, this);
                 Pullreq.globalEvents.on('tag:selected', this.updateTag, this);
                 this.updateProgressBar(10);
                 Pullreq.data.collections.warningPaths.fetch();
                 Pullreq.data.collections.pullRequests.fetch();
+            },
+
+            defaultErrorHandler: function(model, error) {
+                if (error.status == 401 || error.status == 403) {
+                    window.location = '/'; // not logged in
+                }
             },
 
             initialLoad: function() {
@@ -665,7 +674,7 @@ var Pullreq = Pullreq || {};
                 if (Pullreq.data.collections.pullRequests.isEmpty()) {
                     this.progressBarComplete();
                 } else {
-                    this.updateProgressBar(this.data.progressBarPercent + 20);
+                    //this.updateProgressBar(this.data.progressBarPercent + 20);
                     this.makeTeamTags();
                     Pullreq.data.collections.teamTags.sort();
                 }

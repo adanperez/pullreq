@@ -89,7 +89,8 @@ i.icon-remove {
     color: rgb(192, 29, 32);
 }
 
-i.icon-circle-blank {
+i.icon-circle-blank,
+i.icon-adjust {
     color: #638EB0;
 }
 

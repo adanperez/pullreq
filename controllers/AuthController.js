@@ -71,7 +71,7 @@ function register(req, res) {
                                if (repos.length > 0) {
                                    res.redirect('/home');
                                } else {
-                                   res.redirect('/repos/edit');
+                                   res.redirect('/options');
                                }
                            }
                         });
