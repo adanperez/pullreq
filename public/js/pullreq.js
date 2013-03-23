@@ -685,8 +685,8 @@ var Pullreq = Pullreq || {};
                 Pullreq.globalEvents.on('pullRequest:extraInfoLoaded', this.progressBarUpdateCompleteStatus, this);
                 Pullreq.globalEvents.on('tag:selected', this.updateTag, this);
                 this.updateProgressBar(10);
-                Pullreq.data.collections.warningPaths.fetch();
-                Pullreq.data.collections.pullRequests.fetch();
+                Pullreq.data.collections.warningPaths.fetch({reset:true});
+                Pullreq.data.collections.pullRequests.fetch({reset:true});
             },
 
             defaultErrorHandler: function(model, error) {
@@ -708,7 +708,7 @@ var Pullreq = Pullreq || {};
                 if (!this.data.isLoading) {
                     this.data.isLoading = true;
                     this.progressBarBegin();
-                    Pullreq.data.collections.pullRequests.fetch();
+                    Pullreq.data.collections.pullRequests.fetch({reset:true});
                 }
             },
 
@@ -870,8 +870,8 @@ var Pullreq = Pullreq || {};
                     repoOptionsCollection: Pullreq.data.collections.repoOptions
                 });
                 $('#content').html(Pullreq.data.views.options.render().el);
-                Pullreq.data.collections.userRepos.fetch();
-                Pullreq.data.collections.repoOptions.fetch();
+                Pullreq.data.collections.userRepos.fetch({reset:true});
+                Pullreq.data.collections.repoOptions.fetch({reset:true});
             },
             warningPathsView: function() {
                 this.removeView();
@@ -879,7 +879,7 @@ var Pullreq = Pullreq || {};
                     collection: Pullreq.data.collections.warningPaths
                 });
                 $('#content').html(Pullreq.data.views.options.render().el);
-                Pullreq.data.collections.warningPaths.fetch();
+                Pullreq.data.collections.warningPaths.fetch({reset:true});
             }
         })
     };
