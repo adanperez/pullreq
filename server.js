@@ -30,7 +30,7 @@ app.configure('all', function() {
     app.use(express.session({
         secret: uuid.v4(),
         key: 'sid',
-        maxAge: new Date(Date.now() + 60000*10),
+        maxAge: new Date(Date.now() + 30*24*60*60*1000),
         proxy: isProduction,
         cookie: {
             maxAge: null,
