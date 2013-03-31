@@ -494,9 +494,16 @@ var Pullreq = Pullreq || {};
                         .addClass('pull-warn');
                 }
 
+                var body = this.model.get('body');
+                if (body && body.indexOf(':warning:') !== -1) {
+                    this.$el.find('a.pull-link')
+                        .append(' <i class="icon-exclamation-sign" title="This pull request contains a warning note."></i>')
+                        .addClass('pull-desc-warn');
+                }
+
                 if (this.model.get('isMissingTests')) {
                     var link = this.$el.find('a.pull-link')
-                        .append(' <i class="icon-question-sign" title="This pull request is missing tests" alt="This pull request is missing tests"></i> ');
+                        .append(' <i class="icon-question-sign" title="This pull request is missing tests"></i> ');
                 }
                 this.$el.find('ul.subInfo').html(this.templates.extraInfo( this.model.toJSON()));
             },

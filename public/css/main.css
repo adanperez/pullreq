@@ -98,8 +98,11 @@ i.icon-circle {
     color: rgb(58, 143, 72);
 }
 
-i.icon-question-sign {
-    color: rgb(184, 113, 0);
+/*a.pull-desc-warn,*/
+/*a.pull-desc-warn:hover,*/
+i.icon-question-sign,
+i.icon-exclamation-sign {
+    color: rgb(244, 145, 37);
 }
 
 a.pull-warn,

@@ -180,8 +180,35 @@ function getUserOrgs(req, res) {
 }
 
 function getOrgRepos(req, res) {
-    gitAPIService.getOrgRepos(token, req.params.org, function(err, json) {
-        jsonResponse(err, json, req.session.user_token);
+    gitAPIService.getOrgRepos(req.session.user_token, req.params.org, function(err, json) {
+        jsonResponse(err, json, res);
+    });
+}
+
+function getOrgMembers(req, res) {
+    gitAPIService.getOrgMembers(req.session.user_token, req.params.org, function(err, json) {
+        jsonResponse(err, json, res);
+    });
+}
+
+function getCommitsByUser(req, res) {
+    var user = req.query.user;
+    gitAPIService.getCommitsByUser(req.session.user_token,
+        req.params.owner,
+        req.params.repo,
+        user,
+        function(err, json) {
+            jsonResponse(err, json, res);
+    });
+}
+
+function getCommitBySha(req, res) {
+    gitAPIService.getCommitBySha(req.session.user_token,
+        req.params.owner,
+        req.params.repo,
+        req.params.sha,
+        function(err, json) {
+            jsonResponse(err, json, res);
     });
 }
 
@@ -204,6 +231,9 @@ module.exports = function(app) {
     app.post(path + '/userRepos', saveUserRepos);
     app.get(path + '/warningPaths', getWarningPaths);
     app.post(path + '/warningPaths', saveWarningPaths);
-    app.get(path + '/orgRepos/:org', getOrgRepos);
+    app.get(path + '/org/:org/repos', getOrgRepos);
+    app.get(path + '/org/:org/members', getOrgMembers);
+    app.get(path + '/repos/:owner/:repo/commits', getCommitsByUser);
+    app.get(path + '/repos/:owner/:repo/commits/:sha', getCommitBySha);
 };
 

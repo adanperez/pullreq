@@ -32,6 +32,18 @@ exports.getOrgRepos = function(token, org, callback) {
     makeGitRequest(token, '/orgs/' + org + '/repos', callback);
 }
 
+exports.getOrgMembers = function(token, org, callback) {
+    makeGitRequest(token, '/orgs/' + org + '/members', callback);
+}
+
+exports.getCommitsByUser = function(token, owner, repo, user, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/commits?author=' + user, callback);
+}
+
+exports.getCommitBySha = function(token, owner, repo, sha, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/commits/' + sha, callback);
+}
+
 exports.getPullRequests = function(token, owner, repo, callback) {
     makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls', callback);
 }
