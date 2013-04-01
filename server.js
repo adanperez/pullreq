@@ -14,6 +14,7 @@ var logger =    require('log4js').getLogger();
 var app = express();
 var memStore = express.session.MemoryStore
 var isProduction = process.env.NODE_ENV == 'production';
+var authCookieAge = 5*365*24*60*60*1000;
 
 app.configure('all', function() {
     app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
@@ -30,7 +31,7 @@ app.configure('all', function() {
     app.use(express.session({
         secret: uuid.v4(),
         key: 'sid',
-        maxAge: new Date(Date.now() + 60000*10),
+        maxAge: new Date(Date.now() + authCookieAge),
         proxy: isProduction,
         cookie: {
             maxAge: null,
