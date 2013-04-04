@@ -14,6 +14,10 @@ var logger =    require('log4js').getLogger();
 var app = express();
 var memStore = express.session.MemoryStore
 var isProduction = process.env.NODE_ENV == 'production';
+var maxSockets = 500;
+
+https.globalAgent.maxSockets = maxSockets;
+http.globalAgent.maxSockets = maxSockets;
 
 app.configure('all', function() {
     app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
