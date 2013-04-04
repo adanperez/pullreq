@@ -302,7 +302,7 @@ var Pullreq = Pullreq || {};
 
                 _.each(json.repos, function(repo) {
                     repo.isChecked = this.options.userReposCollection.some(function(userRepo) {
-                        return repo.owner.login == userRepo.get('owner') && repo.name == userRepo.get('repo');
+                        return repo.owner.login.toLowerCase() == userRepo.get('owner') && repo.name.toLowerCase() == userRepo.get('repo');
                     }, this);
                 }, this);
                 $('#owners', this.$el).append(this.repoOwnerTemplate(json))
