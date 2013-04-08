@@ -109,13 +109,11 @@ a.pull-warn,
 a.pull-warn:hover,
 .pull-file a.warn {
     color: rgb(223, 76, 59);
-    font-weight: bold;
 }
 
 a.pull-good,
 a.pull-good:hover {
     color: rgb(58, 143, 72);
-    font-weight: bold;
 }
 
 /* ROLL LINKS */
