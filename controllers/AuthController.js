@@ -39,17 +39,18 @@ function register(req, res) {
             res.contentType('json');
             res.send(error);
         } else {
-            var gitToken = body.access_token
+            var gitToken = body.access_token;
             gitReq = {
                 method: 'GET',
                 url: 'https://api.github.com/user',
                 headers: {
                     'Host': 'api.github.com',
-                    'Authorization': 'token ' + gitToken
+                    'Authorization': 'token ' + gitToken,
+                    'user-agent': 'Mozilla/5.0'
                 },
                 json: true,
                 encoding: 'utf8'
-            }
+            };
             request(gitReq, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     gitUserService.addOrFindGitUser(gitToken, body, function(error, gitUser) {
@@ -77,7 +78,7 @@ function register(req, res) {
                         });
                     });
                 } else {
-                    logger.warn(error);
+                    logger.warn(error + ' - Status Code: ' + response.statusCode);
                     res.contentType('json');
                     res.send(error);
                 }

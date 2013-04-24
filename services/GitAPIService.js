@@ -6,7 +6,8 @@ function makeGitRequest(token, path, params, callback) {
         url: 'https://api.github.com' + path,
         headers: {
             'Host': 'api.github.com',
-            'Authorization': 'token ' + token
+            'Authorization': 'token ' + token,
+            'user-agent': 'Mozilla/5.0'
         },
         qs: params ? params : {},
         json: true,
