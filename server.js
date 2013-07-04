@@ -101,11 +101,11 @@ if (isProduction) {
 /**
  * Controllers for sections of the website
  */
-require("./controllers/IndexController.js")(app);
-require("./controllers/AuthController.js")(app);
-require("./controllers/ApiController.js")(app);
-require("./controllers/HomeController.js")(app);
-require("./controllers/OptionsController.js")(app);
+require("./server/controllers/IndexController.js")(app);
+require("./server/controllers/AuthController.js")(app);
+require("./server/controllers/ApiController.js")(app);
+require("./server/controllers/HomeController.js")(app);
+require("./server/controllers/OptionsController.js")(app);
 
 http.createServer(app).listen(app.get('port'), function() {
     logger.info("Express server listening on port " + app.get('port'));

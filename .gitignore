@@ -15,3 +15,5 @@ logs
 results
 npm-debug.log
 config.json
+/server/public/css
+/server/public/js
