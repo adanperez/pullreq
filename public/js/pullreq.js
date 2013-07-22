@@ -225,7 +225,7 @@ var Pullreq = Pullreq || {};
             data: {
                 successMessage: '<div class="alert alert-success">' +
                     '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                    '<strong>Bravo!</strong> You have successfully saved your warning paths.' +
+                    '<strong>Bravo!</strong> You have successfully saved your chosen repositories.' +
                     '</div>',
                 warningMessage: '<div class="alert alert-error">' +
                     '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
