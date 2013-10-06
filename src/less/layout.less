@@ -1,0 +1,80 @@
+
+@font-face {
+  font-family: BebasNeue;
+  src: url('../font/BebasNeue.otf');
+}
+
+::-moz-selection,
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+body {
+  color: #735151;
+  font: 300 100.1% "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+img {
+  vertical-align: middle;
+}
+
+header {
+  margin: 10px 0;
+  text-align: center;
+
+  h1 {
+    display: inline-block;
+    margin-left: 5px;
+  }
+}
+
+footer {
+  color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  text-align: center;
+
+  a {
+    color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+h1 {
+  margin: 0;
+  color:rgba(0, 0, 0, 0.2);
+  text-shadow:none;
+  font-size: 30px;
+  font-family: 'Share Tech Mono', sans-serif;
+  font-weight: normal;
+  padding: 15px 0;
+}
+
+h2 {
+  font-family: BebasNeue;
+  font-weight: normal;
+}
+
+h5 {
+  word-break: break-all;
+}
+
+a,
+a:hover {
+  color: #888;
+}
+
+/* Clear Fix */
+.clear-fix {
+  *zoom: 1;
+}
+
+.clear-fix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}

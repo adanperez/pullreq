@@ -15,18 +15,21 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-html2js');
 
     var config = {
-        jsDistDir: 'server/public/js/apps',
-        cssDistDir: 'server/public/css',
-        lessDir: 'client/less',
-        jsDir: 'client/js'
+        jsDistDir: 'public/js/apps',
+        cssDistDir: 'public/css',
+        lessDir: 'src/less',
+        jsDir: 'src/js/client/apps'
     };
 
     var lessFiles = {
-        '<%= config.cssDistDir %>/layout.min.css' : [
-            '<%= config.lessDir %>/layout.less'
-        ],
-        '<%= config.cssDistDir %>/font-awesome.min.css' : ['<%= config.lessDir %>/font-awesome/font-awesome.less'],
-        '<%= config.cssDistDir %>/bootstrap.min.css' : ['<%= config.lessDir %>/bootstrap.less']
+        '<%= config.cssDistDir %>/main.min.css' : [
+            'public/lib/bootstrap/dist/css/bootstrap.min.css',
+            '<%= config.lessDir %>/layout.less',
+            '<%= config.lessDir %>/pages/intro.less'
+        ]
+        //,
+        //'<%= config.cssDistDir %>/font-awesome.min.css' : ['<%= config.lessDir %>/font-awesome/font-awesome.less'],
+        //'<%= config.cssDistDir %>/bootstrap.min.css' : ['<%= config.lessDir %>/bootstrap.less']
     };
 
     function generateJSAppConfigs() {

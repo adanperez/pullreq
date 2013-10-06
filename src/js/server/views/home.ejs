@@ -1,0 +1,44 @@
+<% layout('mainLayout') -%>
+<% block('header', partial('header')) -%>
+<div id="loadingMessage">
+    <h1>
+        Welcome <%- user.name %>
+    </h1>
+    <div id="progressBar" class="progress progress-danger progress-striped active">
+        <div class="bar" style="width: 0%;"></div>
+    </div>
+</div>
+<div class="row" ng-app="pullreq" ng-controller="homeController">
+    <div class="col-md-2">
+        <div id="menu">
+            <h5>Tags</h5>
+            <ul class="list-unstyled" id="teamTags"></ul>
+            <h5>Options</h5>
+            <ul class="list-unstyled" id="menuItems">
+                <li>
+                    <i class="icon-refresh"></i>
+                    <a href="#" id="refreshLink"> Refresh {{ hello }}</a>
+                </li>
+                <li>
+                    <i class="icon-reorder"></i>
+                    <a href="/options/"> Options</a>
+                </li>
+                <li>
+                    <i class="icon-github-alt"></i>
+                    <a href="<%- user.url %>" target="_blank"> Github Profile</a>
+                </li>
+                <li>
+                    <i class="icon-signout"></i>
+                    <a href="/auth/logout"> Sign out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div id="projects">something</div>
+    </div>
+</div>
+<% script('/js/apps/pullreq.js') -%>
+
+
+

@@ -10,10 +10,12 @@ lib-cov
 .idea
 .DS_Store
 node_modules
+bower_components
 pids
 logs
 results
 npm-debug.log
 config.json
-/server/public/css
-/server/public/js
+public/css
+public/js
+public/lib
