@@ -4,6 +4,8 @@
     "directory": "public/lib",
     "dependencies": {
         "angular": "1.2.0-rc.2",
+        "angular-animate": "1.2.0-rc.2",
+        "angular-route": "1.2.0-rc.2",
         "angular-ui": "0.4.0",
         "angular-bootstrap": "0.6.0",
         "jquery": "2.0.3",

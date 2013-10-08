@@ -12,7 +12,13 @@
         function($scope, _, reposService) {
 
             var handleRepos = function(repos) {
-                $scope.hello = repos;
+                _.each(repos, function(pull) {
+                    reposService.getPullRequestInfo(pull.base.user.login, pull.base.repo.name, pull.number).
+                        then(function(eee) {
+                            pull.info = eee;
+                        }, handleError);
+                });
+                $scope.pullRequests = repos;
             };
 
             var handleError = function(error) {

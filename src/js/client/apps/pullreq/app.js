@@ -2,8 +2,9 @@
 
     angular.module('pullreq', [
         'pullreq.controllers',
-        //'pullreq.directives',
-        'pullreq.partials'
+        'pullreq.directives',
+        'pullreq.partials',
+        'ngAnimate'
     ]);
 
 })();

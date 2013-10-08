@@ -1,5 +1,5 @@
-<% layout('mainLayout') -%>
-<% block('header', partial('header')) -%>
+<% layout('layouts/main') -%>
+
 <div id="loadingMessage">
     <h1>
         Welcome <%- user.name %>
@@ -35,7 +35,9 @@
         </div>
     </div>
     <div class="col-md-10">
-        <div id="projects">something</div>
+        <div id="projects">
+            <pull-request ng-repeat="pull in pullRequests" request="pull" class="fade-animation"></pull-request>
+        </div>
     </div>
 </div>
 <% script('/js/apps/pullreq.js') -%>

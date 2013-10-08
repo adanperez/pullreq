@@ -38,7 +38,6 @@ function mineGitRequest(token, path, params, list, callback) {
     request(req, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             list = list.concat(body);
-            console.log(response.headers.link);
             if (response.headers.link && response.headers.link.indexOf('rel="next"') != -1) {
                 params.page++;
                 mineGitRequest(token, path, params, list, callback);

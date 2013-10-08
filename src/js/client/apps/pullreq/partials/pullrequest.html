@@ -1,0 +1,28 @@
+<div class="pull-request clear-fix">
+    <img class="user img-circle" ng-src="{{ request.user.avatar_url }}" alt="{{ request.user.login }}" title="{{ request.user.login }}" />
+    <div class="pull-body">
+        <h4 class="pull-title">
+            <a class="pull-link" target="_blank" href="{{ request.html_url }}" ng-bind="request.title"></a>
+        </h4>
+        <span ng-bind="request.head.label"></span> <i class="icon-long-arrow-right"></i> <span ng-bind="request.base.label"></span>
+        <div class="pull-info hide">
+            <div class="pull-summary">{{ request.body }}</div>
+            <ul class="pull-comments list-unstyled"></ul>
+        </div>
+        <ul class="list-inline">
+            <li><i class="icon-user"></i> {{request.user.login}}</li>
+            <li><i class="icon-time"></i> {{request.created_at | date:'medium'}}</li>
+            <li ng-if="!request.info"><i class="icon-repeat icon-spin"></i> Loading...</li>
+
+            <li class="fade-animation" ng-if="request.info"><i class="icon-comments"></i> {{ request.info.issueComments.length + request.info.codeComments.length }} Comments</li>
+            <li class="fade-animation" ng-if="request.info">
+                <i class="icon-copy"></i>
+                <span ng-if="request.info.files.length == 0">0 Files changed</span>
+                <a href="#" class="filesLink" ng-if="request.info.files.length > 0">{{ request.info.files.length }} Files changed</a>
+            </li>
+            <li class="fade-animation" ng-if="request.info">
+                <i class="icon-info-sign"></i> <a href="#" class="descriptionLink">More Info...</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -25,7 +25,8 @@ module.exports = function (grunt) {
         '<%= config.cssDistDir %>/main.min.css' : [
             'public/lib/bootstrap/dist/css/bootstrap.min.css',
             '<%= config.lessDir %>/layout.less',
-            '<%= config.lessDir %>/pages/intro.less'
+            '<%= config.lessDir %>/pages/intro.less',
+            '<%= config.lessDir %>/pages/home.less'
         ]
         //,
         //'<%= config.cssDistDir %>/font-awesome.min.css' : ['<%= config.lessDir %>/font-awesome/font-awesome.less'],
