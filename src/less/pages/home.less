@@ -1,37 +1,127 @@
-#progressBar {
-    //margin: 0 auto 20px auto;
-    height: 4px;
+#loading-message {
+    #progress-bar {
+        height: 4px;
+    }
+}
+
+#menu {
+    margin-top: 20px;
+    color: rgb(170, 170, 170);
+
+    & > div {
+        margin-bottom:10px;
+    }
+
+    h5 {
+        //font-family: museo-slab;
+        color: rgb(115, 81, 81);
+        margin-top: 0;
+        margin-bottom: 8px;
+        //background-color: #e7e6e6;
+        border-bottom: rgb(210, 215, 221) solid 1px;
+        padding: 10px 0 10px 8px;
+    }
+
+    li {
+        //background-color: #ebeaea;
+        padding: 4px 0 4px 8px;
+    }
+}
+
+img.user {
+    height: 50px;
+    margin: 0 20px 0 0;
+    float: left;
+}
+
+.pull-body {
+    float: left;
+    width: 90%;
+    margin-top: 3px;
+}
+
+.pull-summary {
+    .pull-body;
+    margin-bottom: 26px;
+}
+
+.warn {
+    color: rgb(223, 85, 87);
+}
+.approved {
+    color:rgb(58, 143, 72);
 }
 
 .pull-request {
     margin: 0 0 40px 0;
 
-    img.user {
-        height: 60px;
-        margin: 0 10px 0 0;
-        float: left;
-    }
-
-    .pull-body {
-        float: left;
-        width: 90%;
-    }
-
     p {
-        margin-left: 2px;
-        color: #787878;
+        margin-bottom: 6px;
+        color:rgb(170, 170, 170);
     }
 
     .pull-title {
         word-wrap: break-word;
         margin: 0 0 6px 0;
         font-weight: normal;
+
+        a {
+            color: rgb(115, 81, 81);
+        }
+
+        &.approved {
+            a {
+                .approved;
+            }
+        }
+
+        &.warn {
+            color: rgb(223, 76, 59);
+            a {
+                color:rgb(223, 76, 59);
+            }
+        }
+
+        small {
+            font-size: .5em;
+        }
     }
 
-    ul.list-inline {
-        & > li {
-            padding-left: 0;
-            padding-right: 20px;
+    ul {
+        &.sub-info {
+            & > li {
+                color:rgb(170, 170, 170);
+                padding-left: 0;
+                padding-right: 20px;
+            }
+            margin-bottom: 0;
+        }
+    }
+}
+
+.repo {
+    margin-bottom: 20px;
+
+    h2 {
+        color: rgb(115, 81, 81);
+        margin-bottom: 26px;
+        font-family: BebasNeue;
+        font-weight: normal;
+    }
+}
+
+.comments {
+    & > li {
+        padding-bottom: 20px;
+
+        h5 {
+            margin-top: 0;
+            font-weight: bold;
+            color: rgb(115, 81, 81);
+
+            small {
+                margin-left: 10px;
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 (function() {
 
-    var module = angular.module('pullreq.service.repos', ['lib.lodash']);
+    var module = angular.module('pullreq.service.api', ['lib.lodash']);
 
-    module.factory('reposService', [
+    module.factory('apiService', [
         '$http',
         '$q',
         '_',
@@ -33,9 +33,9 @@
                     url: '/api/pullRequests'
                 });
                 http.success(function (repos) {
-                    //_(repos).forEach(function (event) {
-                    //    updateEvent(event);
-                    //});
+                    _(repos).forEach(function (repo) {
+                        repo.status_flags = {};
+                    });
                     promise.resolve(repos);
                 });
                 http.error(function (data, status) {

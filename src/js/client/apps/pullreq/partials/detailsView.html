@@ -1,0 +1,15 @@
+<div class="left-animation">
+<div class="details">
+    <img class="user img-circle" ng-src="{{ request.user.avatar_url }}" alt="{{ request.user.login }}" title="{{ request.user.login }}" />
+    <div class="pull-summary clear-fix" markdown text="request.body"></div>
+    <ul class="comments list-unstyled clear-fix">
+        <li ng-repeat="comment in request.info.issueComments" class="clear-fix">
+            <img class="user img-circle" ng-src="{{ comment.user.avatar_url }}" alt="{{ comment.user.login }}" title="{{ comment.user.login }}" />
+            <div class="pull-body">
+                <h5>{{comment.user.login}} <small>{{ comment.created_at | date:'medium' }}</small></h5>
+                {{ comment.body }}
+            </div>
+        </li>
+    </ul>
+</div>
+</div>

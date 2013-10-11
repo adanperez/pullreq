@@ -1,23 +1,47 @@
 <% layout('layouts/main') -%>
+<div ng-app="pullreq" ng-controller="homeController">
 
-<div id="loadingMessage">
-    <h1>
-        Welcome <%- user.name %>
-    </h1>
-    <div id="progressBar" class="progress progress-danger progress-striped active">
-        <div class="bar" style="width: 0%;"></div>
-    </div>
+<div id="loading-message" ng-if="progress < 100" class="bounce-animation">
+    <progress-bar progress="progress"></progress-bar>
 </div>
-<div class="row" ng-app="pullreq" ng-controller="homeController">
+<h1 ng-if="!pullRequests" style="text-align: center;" class="fade-animation">Welcome <%- user.name %></h1>
+<div class="row">
     <div class="col-md-2">
         <div id="menu">
-            <h5>Tags</h5>
-            <ul class="list-unstyled" id="teamTags"></ul>
+
+            <div ng-if="tags">
+                <h5>Projects</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="icon-tags"></i>
+                        <a href="#/pulls" ng-click="selectTag(null)">All</a>
+                    </li>
+                    <li ng-repeat="tag in tags">
+                        <i class="icon-tag"></i>
+                        <a href="#/pulls" ng-click="selectTag(tag)">{{ tag }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-if="users">
+                <h5>Users</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="icon-group"></i>
+                        <a href="#/pulls" ng-click="selectUser(null)">All</a>
+                    </li>
+                    <li ng-repeat="user in users">
+                        <i class="icon-user"></i>
+                        <a href="#/pulls" ng-click="selectUser(user)">{{ user }}</a>
+                    </li>
+                </ul>
+            </div>
+
             <h5>Options</h5>
             <ul class="list-unstyled" id="menuItems">
                 <li>
                     <i class="icon-refresh"></i>
-                    <a href="#" id="refreshLink"> Refresh {{ hello }}</a>
+                    <a href="javascript:void(0);" ng-click="refresh()"> Refresh</a>
                 </li>
                 <li>
                     <i class="icon-reorder"></i>
@@ -34,11 +58,11 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-10">
-        <div id="projects">
-            <pull-request ng-repeat="pull in pullRequests" request="pull" class="fade-animation"></pull-request>
-        </div>
+    <div class="col-md-10" style="position: relative; overflow: hidden;">
+        <div ng-view class="left-animation"></div>
     </div>
+</div>
+
 </div>
 <% script('/js/apps/pullreq.js') -%>
 
