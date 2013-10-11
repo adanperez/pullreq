@@ -40,9 +40,6 @@ function register(req, res) {
             res.send(error);
         } else {
             var gitToken = body.access_token;
-            console.log(gitToken);
-            console.log(githubClientID);
-            console.log(githubClientSecret);
             gitReq = {
                 method: 'GET',
                 url: 'https://api.github.com/user',

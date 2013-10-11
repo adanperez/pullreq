@@ -51,7 +51,7 @@
                         'repo': $scope.repo.tagName()
                     }});
                     $scope.pulls = pulls;
-                    //areAllPullsLoaded();
+                    areAllPullsLoaded();
                 });
 
             }],
