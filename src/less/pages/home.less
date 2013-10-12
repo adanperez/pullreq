@@ -42,7 +42,9 @@ img.user {
 
 .pull-summary {
     .pull-body;
-    margin-bottom: 26px;
+    margin-bottom: 36px;
+
+
 }
 
 .warn {
@@ -50,6 +52,43 @@ img.user {
 }
 .approved {
     color:rgb(58, 143, 72);
+}
+.pending {
+    color: rgb(223, 111, 43);
+}
+
+.pull-status {
+    b {
+        color:#aaa;
+    }
+}
+
+.pull-title {
+    font-size: 20px;
+    word-wrap: break-word;
+    margin: 0 0 6px 0;
+    font-weight: normal;
+
+    a {
+        color: rgb(115, 81, 81);
+    }
+
+    &.approved {
+        a {
+            .approved;
+        }
+    }
+
+    &.warn {
+        color: rgb(223, 76, 59);
+        a {
+            color:rgb(223, 76, 59);
+        }
+    }
+
+    small {
+        font-size: .5em;
+    }
 }
 
 .pull-request {
@@ -60,33 +99,6 @@ img.user {
         color:rgb(170, 170, 170);
     }
 
-    .pull-title {
-        word-wrap: break-word;
-        margin: 0 0 6px 0;
-        font-weight: normal;
-
-        a {
-            color: rgb(115, 81, 81);
-        }
-
-        &.approved {
-            a {
-                .approved;
-            }
-        }
-
-        &.warn {
-            color: rgb(223, 76, 59);
-            a {
-                color:rgb(223, 76, 59);
-            }
-        }
-
-        small {
-            font-size: .5em;
-        }
-    }
-
     ul {
         &.sub-info {
             & > li {
@@ -94,7 +106,7 @@ img.user {
                 padding-left: 0;
                 padding-right: 20px;
             }
-            margin-bottom: 0;
+            margin-bottom: 6px;
         }
     }
 }

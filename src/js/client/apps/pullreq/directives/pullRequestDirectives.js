@@ -24,14 +24,13 @@
         };
     }]);
 
-    module.directive('repo', ['$timeout', function($timeout) {
+    module.directive('repository', ['$timeout', function($timeout) {
 
         return {
             restrict: "E",
             replace: true,
             scope: {
-                repo: '=',
-                pullRequests: "="
+                repo: '='
             },
             controller: ['$scope', function($scope) {
 
@@ -46,16 +45,45 @@
                     }
                 };
 
-                $scope.$watch('pullRequests', function(newVal, oldVal) {
-                    var pulls = _.where(newVal, { 'tags': {
-                        'repo': $scope.repo.tagName()
-                    }});
-                    $scope.pulls = pulls;
-                    areAllPullsLoaded();
-                });
-
+                $scope.pulls = $scope.repo.pullRequests;
+                areAllPullsLoaded();
             }],
             templateUrl: 'pullreq/partials/repo.html'
+        };
+    }]);
+
+    module.directive('pullRequestStatus', [function() {
+        return {
+            restrict: "E",
+            replace: true,
+            scope: {
+                request: "="
+            },
+            controller: ['$scope', function($scope) {
+                $scope.$watch('request.info.status', function() {
+                    if ($scope.request.info && $scope.request.info.status) {
+                        $scope.status = $scope.request.info.status[0];
+                    }
+                });
+                $scope.message = function(status) {
+                    switch(status.state) {
+                        case 'success':
+                            return 'Successfully built.';
+                            break;
+                        case 'pending':
+                            return 'Building...';
+                            break;
+                        case 'failure':
+                            return 'Failure building this pull request.';
+                            break;
+                        default:
+                            return '';
+                            break;
+
+                    }
+                };
+            }],
+            templateUrl: 'pullreq/partials/pullRequestStatus.html'
         };
     }]);
 

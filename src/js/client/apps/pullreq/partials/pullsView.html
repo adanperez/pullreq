@@ -1,3 +1,5 @@
 <div class="left-animation">
-    <repo ng-repeat="repo in repos" repo="repo" pull-requests="pullRequests"></repo>
+    <div ng-if="repos">
+        <repository  ng-repeat="repo in repos" repo="repo"></repository>
+    </div>
 </div>

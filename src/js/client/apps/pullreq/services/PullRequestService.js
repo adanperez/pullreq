@@ -19,7 +19,6 @@
                 pullRequest.status_flags.review_approved = checkApproval(pullRequest);
                 pullRequest.status_flags.has_tests = checkForTests(pullRequest);
                 pullRequest.status_flags.has_warning = checkForWarning(pullRequest);
-                console.log(pullRequest.status_flags);
             };
 
             var checkApproval = function(pullRequest) {
@@ -48,8 +47,30 @@
                 return pullRequest.body.indexOf(':warning:') !== -1;
             };
 
+            var createRepos = function(pullRequests) {
+                var repos = [];
+                _.each(pullRequests, function(pullRequest) {
+
+                    var repo =  _.find(repos, function(repo) {
+                        return repo.owner === pullRequest.base.user.login &&
+                               repo.name === pullRequest.base.repo.name;
+                    });
+                    if (!repo) {
+                        repo = {
+                            owner: pullRequest.base.user.login,
+                            name: pullRequest.base.repo.name,
+                            pullRequests:[]
+                        };
+                        repos.push(repo);
+                    }
+                    repo.pullRequests.push(pullRequest);
+                });
+                return _.sortBy(repos, function(repo) { return repo.name; });
+            };
+
             return {
                 getUsers: getUsers,
+                createRepos: createRepos,
                 populateStatus: populateStatus
             }
         }

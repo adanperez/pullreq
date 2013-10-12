@@ -8,8 +8,8 @@
         '_',
         function ($http, $q, _) {
 
-            var getPullRequestInfo = function(owner, repo, pullNumber) {
-                var url = '/api/pullRequests/'+ owner +'/'+ repo +'/'+ pullNumber +'/info';
+            var getPullRequestInfo = function(owner, repo, pullNumber, sha) {
+                var url = '/api/pullRequests/'+ owner +'/'+ repo +'/'+ pullNumber +'/info/' + sha;
                 var promise = $q.defer();
                 var http = $http({
                     method: 'GET',

@@ -3,7 +3,7 @@
     <div class="pull-body">
         <h4 class="pull-title" ng-class="{approved: request.status_flags.review_approved}">
             <a class="pull-link" target="_blank" href="{{ request.html_url }}" ng-bind="request.title"></a>
-            <i tooltip="Approved" ng-if="request.status_flags.review_approved" class="approved icon-thumbs-up"></i>
+            <i tooltip="Approved" ng-if="request.status_flags.review_approved" class="approved icon-thumbs-up icon-large"></i>
             <i tooltip="Missing tests" ng-if="request.status_flags.has_tests != null && !request.status_flags.has_tests" class="warn icon-question-sign"></i>
             <i tooltip="Contains warning message" ng-if="request.status_flags.has_warning" class="warn icon-warning-sign"></i>
             <i tooltip="Contains modified critical files" ng-if="request.status_flags.has_critical_files" class="warn icon-exclamation-sign"></i>
@@ -11,10 +11,6 @@
                 <a href="#/details" ng-click="displayDetails()">(Details)</a>
             </small>
         </h4>
-        <div class="pull-info hide">
-            <div class="pull-summary">{{ request.body }}</div>
-            <ul class="pull-comments list-unstyled"></ul>
-        </div>
         <ul class="sub-info list-inline">
             <li><i class="icon-user" ></i> {{ request.user.login }}</li>
             <li><i class="icon-time"></i> {{ request.created_at | date:'mediumDate' }}</li>
@@ -27,5 +23,6 @@
                 {{ request.info.files.length }} Files changed
             </li>
         </ul>
+        <pull-request-status request="request"></pull-request-status>
     </div>
 </div>

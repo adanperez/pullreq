@@ -93,3 +93,7 @@ exports.getPullRequestComments = function(token, owner, repo, pullNumber, callba
 exports.getIssueComments = function(token, owner, repo, pullNumber, callback) {
     makeGitRequest(token, '/repos/' + owner + '/' + repo + '/issues/' + pullNumber + '/comments', {page:1, per_page:100}, callback);
 };
+
+exports.getStatus = function(token, owner, repo, sha, callback) {
+    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/statuses/' + sha, {page:1, per_page:100}, callback);
+};

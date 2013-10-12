@@ -33,6 +33,7 @@ function getPullRequestInfo(req, res) {
     var owner = req.params.owner;
     var repo = req.params.repo;
     var pullNumber = req.params.pullNumber;
+    var sha = req.params.sha;
     var info = {
         'commits': function(callback) {
             gitAPIService.getPullRequestCommits(userToken, owner, repo, pullNumber, callback);
@@ -45,6 +46,9 @@ function getPullRequestInfo(req, res) {
         },
         'issueComments': function(callback) {
             gitAPIService.getIssueComments(userToken, owner, repo, pullNumber, callback);
+        },
+        'status': function(callback) {
+            gitAPIService.getStatus(userToken, owner, repo, sha, callback);
         }
     }
     async.parallel(info, function(err, json) {
@@ -224,7 +228,7 @@ module.exports = function(app) {
     var path = '/api';
     app.all(path + '/*', requireAuthentication);
     app.get(path + '/pullRequests', getUserPullRequests);
-    app.get(path + '/pullRequests/:owner/:repo/:pullNumber/info', getPullRequestInfo);
+    app.get(path + '/pullRequests/:owner/:repo/:pullNumber/info/:sha', getPullRequestInfo);
     app.get(path + '/userOrgs', getUserOrgs);
     app.get(path + '/repoOptions', getRepoOptions);
     app.get(path + '/userRepos', getUserRepos);

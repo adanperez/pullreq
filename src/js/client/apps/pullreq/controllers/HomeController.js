@@ -43,8 +43,7 @@
                         data.filterByMethod = this;
                         data.filterValue = user;
                     }
-                    $scope.pullRequests = [];
-                    $scope.pullRequests = pulls;
+                    $scope.repos = pullRequestService.createRepos(pulls);
                 },
                 byTitle: function(tag) {
                     var pulls = data.pullRequests;
@@ -53,11 +52,10 @@
                         data.filterByMethod = this;
                         data.filterValue = tag;
                     }
-                    $scope.pullRequests = [];
-                    $scope.pullRequests = pulls;
+                    $scope.repos = pullRequestService.createRepos(pulls);
                 },
                 byNothing: function() {
-                    $scope.pullRequests = data.pullRequests;
+                    $scope.repos = pullRequestService.createRepos(data.pullRequests);
                 }
             };
 
@@ -70,27 +68,25 @@
                 data.filterByMethod(data.filterByValue);
             };
 
-            var handleRepos = function(repos) {
+            var handleRepos = function(pullRequests) {
                 $scope.progress = 40;
-                var count = repos.length;
+                var count = pullRequests.length;
                 var inc = Math.ceil(60/count);
 
-                data.users = pullRequestService.getUsers(repos);
-                _.each(repos, function(pull) {
-                    apiService.getPullRequestInfo(pull.base.user.login, pull.base.repo.name, pull.number).
-                        then(function(eee) {
-                            pull.info = eee;
+                data.users = pullRequestService.getUsers(pullRequests);
+                _.each(pullRequests, function(pull) {
+                    apiService.getPullRequestInfo(pull.base.user.login, pull.base.repo.name, pull.number, pull.head.sha).
+                        then(function(info) {
+                            pull.info = info;
                             $scope.progress += inc;
                             pullRequestService.populateStatus(pull);
                         }, handleError);
                 });
-                data.pullRequests = repos;
-                data.tags = tagService.createTitleTags(repos);
-                data.repos = tagService.createRepoTags(repos);
+                data.pullRequests = pullRequests;
+                data.tags = tagService.createTitleTags(pullRequests);
 
                 $scope.tags = data.tags;
                 $scope.users = data.users;
-                $scope.repos = data.repos;
                 filterPullRequests();
             };
 

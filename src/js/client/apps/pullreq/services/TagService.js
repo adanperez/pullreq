@@ -25,33 +25,8 @@
                 return _.sortBy(tags, function(tag) { return tag; });
             };
 
-
-            var createAndPopulateRepoTags = function(pullRequests) {
-                var repos = [];
-                _.each(pullRequests, function(pullRequest) {
-                    var obj = {
-                        owner: pullRequest.base.user.login,
-                        name: pullRequest.base.repo.name,
-                        tagName: function() {
-                            return this.owner + '_' + this.name;
-                        }
-                    };
-                    if (!_.any(repos, function(repo){
-                        return repo.tagName() == obj.tagName()
-                    })) {
-                        repos.push(obj);
-                    }
-                    if (!pullRequest.tags) {
-                        pullRequest.tags = {};
-                    }
-                    pullRequest.tags.repo = obj.tagName();
-                });
-                return _.sortBy(repos, function(repo) { return repo.name; });
-            };
-
             return {
-                createTitleTags: createAndPopulateTitleTags,
-                createRepoTags: createAndPopulateRepoTags
+                createTitleTags: createAndPopulateTitleTags
             }
         }
     ]);
