@@ -1,0 +1,9 @@
+<span>
+    <small><i class="status icon-{{ status }}"></i></small>
+    <a target="_blank" ng-href="{{ url }}/files#diff-{{ index }}">{{ name }}</a>
+    <span style="float:right;">
+        <span class="approved"><i class="icon-expand-alt"></i> {{ file.additions }}</span>
+        /
+        <span class="warn"><i class="icon-collapse-alt"></i> {{ file.deletions }}</span>
+    </span>
+</span>

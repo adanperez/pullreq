@@ -87,4 +87,49 @@
         };
     }]);
 
+    module.directive('pullFile', [function() {
+        return {
+            restrict: "E",
+            replace: true,
+            scope: {
+                file: "=",
+                url: '=',
+                index: '='
+            },
+            controller: ['$scope', function($scope) {
+                var trimLength = 100;
+                var trimName = function(name) {
+                    if (name.length > trimLength){
+                        return '...' + name.substring(name.length - trimLength, name.length);
+                    }
+                    return name;
+                };
+
+                var getStatus = function(status) {
+                    switch(status) {
+                        case 'added':
+                            return 'plus approved';
+                            break;
+                        case 'removed':
+                            return 'minus warn';
+                            break;
+                        case 'modified':
+                            return 'circle pending';
+                            break;
+                        case 'renamed':
+                            return 'exchange pending';
+                            break;
+                        default:
+                            return 'asterisk';
+                            break;
+                    }
+                };
+                $scope.status = getStatus($scope.file.status);
+                $scope.name = trimName($scope.file.filename);
+
+            }],
+            templateUrl: 'pullreq/partials/pullFile.html'
+        }
+    }]);
+
 })();

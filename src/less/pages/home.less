@@ -1,4 +1,5 @@
 #loading-message {
+    position: fixed;
     #progress-bar {
         height: 4px;
     }
@@ -63,6 +64,12 @@ img.user {
     }
 }
 
+.pull-files {
+    i.status {
+        margin-right: 10px;
+    }
+}
+
 .pull-title {
     font-size: 20px;
     word-wrap: break-word;
@@ -98,17 +105,27 @@ img.user {
         margin-bottom: 6px;
         color:rgb(170, 170, 170);
     }
+}
 
-    ul {
-        &.sub-info {
-            & > li {
-                color:rgb(170, 170, 170);
-                padding-left: 0;
-                padding-right: 20px;
-            }
-            margin-bottom: 6px;
+.list-sep {
+    & > li {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #EFEFEF;
+
+        &:last-child {
+            border-bottom: none;
         }
     }
+}
+
+.sub-info {
+    & > li {
+        color:rgb(170, 170, 170);
+        padding-left: 0;
+        padding-right: 20px;
+    }
+    margin-bottom: 6px;
 }
 
 .repo {
@@ -120,6 +137,20 @@ img.user {
         font-family: BebasNeue;
         font-weight: normal;
         font-size: 40px;
+    }
+}
+
+.details {
+    .pull-request {
+        margin-bottom: 10px;
+    }
+
+    .section {
+        margin-bottom: 40px;
+
+        h3 {
+            font-family: BebasNeue;
+        }
     }
 }
 

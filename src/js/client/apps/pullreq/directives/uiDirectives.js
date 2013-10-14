@@ -27,6 +27,8 @@
                 text: '='
             },
             link: function(scope, element, attrs) {
+                //var urlPattern = /((http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?)/gim;
+                //htmlText = htmlText.replace(urlPattern, '<a target="_blank" href="$1">$1</a>');
                 var htmlText = markdown.toHTML(scope.text);
                 element.html(htmlText);
             }
