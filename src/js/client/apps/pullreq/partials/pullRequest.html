@@ -6,7 +6,7 @@
             <i tooltip="Approved" ng-if="request.status_flags.review_approved" class="approved icon-thumbs-up icon-large"></i>
             <i tooltip="Missing tests" ng-if="request.status_flags.has_tests != null && !request.status_flags.has_tests" class="warn icon-question-sign"></i>
             <i tooltip="Contains warning message" ng-if="request.status_flags.has_warning" class="pending icon-warning-sign"></i>
-            <i tooltip="Contains modified critical files" ng-if="request.status_flags.has_critical_files" class="warn icon-exclamation-sign"></i>
+            <i tooltip="Contains modified critical files" ng-if="request.status_flags.has_warning_paths" class="warn icon-exclamation-sign"></i>
             <small>
                 <a href="#/details" ng-click="displayDetails()">(Details)</a>
             </small>

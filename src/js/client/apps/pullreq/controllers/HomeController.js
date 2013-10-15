@@ -10,17 +10,18 @@
     module.controller('homeController', [
         '$scope',
         '$timeout',
+        '$q',
         '_',
         'apiService',
         'tagService',
         'pullRequestService',
         '$rootScope',
         '$location',
-        function($scope, $timeout, _, apiService, tagService, pullRequestService, $rootScope, $location) {
+        function($scope, $timeout, $q, _, apiService, tagService, pullRequestService, $rootScope, $location) {
 
             var data = {
-                filterByMethod:null,
-                filterByValue:null
+                filterByMethod: null,
+                filterByValue: null
             };
 
             $rootScope.$on('display-details', function(message, args) {
@@ -28,7 +29,7 @@
             });
 
             $scope.$on('$locationChangeStart', function(next, current) {
-                if (!$scope.request && current.indexOf('/details') !== -1) {
+                if(!$scope.request && current.indexOf('/details') !== -1) {
                     $location.path('/pulls');
                 }
             });
@@ -36,7 +37,7 @@
             var filter = {
                 byUser: function(user) {
                     var pulls = data.pullRequests;
-                    if (user != null) {
+                    if(user != null) {
                         pulls = _.where(pulls, { 'user': {
                             'login': user
                         }});
@@ -47,7 +48,7 @@
                 },
                 byTitle: function(tag) {
                     var pulls = data.pullRequests;
-                    if (tag != null) {
+                    if(tag != null) {
                         pulls = _.where(pulls, { 'tags': { 'title': tag } });
                         data.filterByMethod = this;
                         data.filterValue = tag;
@@ -68,26 +69,26 @@
                 data.filterByMethod(data.filterByValue);
             };
 
-            var handleRepos = function(pullRequests) {
-                $scope.progress = 40;
+            var cleanupPullRequests = function(pullRequests, paths) {
                 var count = pullRequests.length;
-                var inc = Math.ceil(60/count);
+                var inc = Math.ceil(60 / count);
 
+                data.warningPaths = paths;
+                data.pullRequests = pullRequests;
+                data.tags = tagService.createTitleTags(pullRequests);
                 data.users = pullRequestService.getUsers(pullRequests);
+
                 _.each(pullRequests, function(pull) {
                     apiService.getPullRequestInfo(pull.base.user.login, pull.base.repo.name, pull.number, pull.head.sha).
                         then(function(info) {
-                            pull.info = info;
-                            $scope.progress += inc;
-                            pullRequestService.populateStatus(pull);
-                        }, handleError);
+                                 pull.info = info;
+                                 $scope.progress += inc;
+                                 pullRequestService.populateStatus(pull, data.warningPaths);
+                             }, handleError);
                 });
-                data.pullRequests = pullRequests;
-                data.tags = tagService.createTitleTags(pullRequests);
 
                 $scope.tags = data.tags;
                 $scope.users = data.users;
-                filterPullRequests();
             };
 
             var handleError = function(error) {
@@ -95,7 +96,7 @@
             };
 
             $scope.selectTag = function(val) {
-                if (val == null) {
+                if(val == null) {
                     resetFilter();
                 } else {
                     data.filterByMethod = filter.byTitle;
@@ -105,7 +106,7 @@
             };
 
             $scope.selectUser = function(val) {
-                if (val == null) {
+                if(val == null) {
                     resetFilter();
                 } else {
                     data.filterByMethod = filter.byUser;
@@ -115,8 +116,15 @@
             };
 
             $scope.refresh = function() {
-                $scope.progress = 20;
-                apiService.getRepos().then(handleRepos, handleError);
+                $scope.progress = 10;
+                $q.all({
+                   paths: apiService.getWarningPaths(),
+                   pulls: apiService.getPullRequests()
+                }).then(function(values) {
+                   $scope.progress = 40;
+                   cleanupPullRequests(values.pulls, values.paths);
+                   filterPullRequests();
+                });
             };
 
             resetFilter();

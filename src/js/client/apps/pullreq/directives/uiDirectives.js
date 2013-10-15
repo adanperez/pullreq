@@ -13,9 +13,7 @@
             scope: {
                 progress: '='
             },
-            controller: ['$scope', function($scope) {
-                console.log('caad');
-            }],
+            controller: ['$scope', function($scope) {}],
             templateUrl: 'pullreq/partials/progressBar.html'
         };
     }]);

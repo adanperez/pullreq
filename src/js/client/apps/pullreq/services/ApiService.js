@@ -24,9 +24,9 @@
                     }
                 });
                 return promise.promise;
-            }
+            };
 
-            var getRepos = function () {
+            var getPullRequests = function () {
                 var promise = $q.defer();
                 var http = $http({
                     method: 'GET',
@@ -46,9 +46,27 @@
                 return promise.promise;
             };
 
+            var getWarningPaths = function() {
+                var promise = $q.defer();
+                var http = $http({
+                    method: 'GET',
+                    url: '/api/warningPaths'
+                });
+                http.success(function (paths) {
+                    promise.resolve(paths);
+                });
+                http.error(function (data, status) {
+                    if (status) {
+                        promise.reject(status);
+                    }
+                });
+                return promise.promise;
+            };
+
             return {
-                getRepos: getRepos,
-                getPullRequestInfo: getPullRequestInfo
+                getPullRequests: getPullRequests,
+                getPullRequestInfo: getPullRequestInfo,
+                getWarningPaths: getWarningPaths
             }
         }
     ]);

@@ -15,10 +15,11 @@
                 return _.sortBy(_.unique(users), function(user) { return user; });
             };
 
-            var populateStatus = function(pullRequest) {
+            var populateStatus = function(pullRequest, warningPaths) {
                 pullRequest.status_flags.review_approved = checkApproval(pullRequest);
                 pullRequest.status_flags.has_tests = checkForTests(pullRequest);
                 pullRequest.status_flags.has_warning = checkForWarning(pullRequest);
+                pullRequest.status_flags.has_warning_paths = checkForWarningPaths(pullRequest, warningPaths);
             };
 
             var checkApproval = function(pullRequest) {
@@ -45,6 +46,18 @@
 
             var checkForWarning = function(pullRequest) {
                 return pullRequest.body.indexOf(':warning:') !== -1;
+            };
+
+            var checkForWarningPaths = function(pullRequest, warningPaths) {
+                var files = pullRequest.info.files;
+                var hasWarningPath = false;
+                _.each(files, function(file) {
+                    file.warn = _.any(warningPaths, function(path) {
+                       return file.filename.indexOf(path.path) === 0;
+                    });
+                    hasWarningPath = hasWarningPath || file.warn;
+                });
+                return hasWarningPath;
             };
 
             var createRepos = function(pullRequests) {
