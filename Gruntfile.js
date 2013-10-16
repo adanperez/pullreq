@@ -41,7 +41,9 @@ module.exports = function (grunt) {
                 apps.push(name);
             }
         });
+        //console.log(apps);
         _(apps).forEach(function(appName) {
+            console.log(appName);
             var jsSrcFiles = config.jsDir + '/' + appName + '/**/*.js';
             var partialsDir = config.jsDir + '/' + appName + '/partials/';
             var partialFiles = partialsDir + '**/*.html';
@@ -59,6 +61,7 @@ module.exports = function (grunt) {
                     module: appName + '.partials'
                 }
             };
+            console.log('html2js.' + appName, html2jsConfigObj);
             grunt.config('html2js.' + appName, html2jsConfigObj);
 
             var concatConfigObj = {
@@ -207,6 +210,7 @@ module.exports = function (grunt) {
     });
 
     generateJSAppConfigs();
+    console.log(grunt.config);
 
     grunt.registerTask('compile', ['html2js', 'concat']);
 

@@ -4,62 +4,63 @@
 <div id="loading-message" ng-if="progress < 100" class="bounce-animation">
     <progress-bar progress="progress"></progress-bar>
 </div>
-<h1 ng-if="!repos" style="text-align: center;" class="fade-animation">Welcome <%- user.name %></h1>
 <div class="row">
     <div class="col-md-2">
-        <div id="menu">
+        <div id="nav">
+            <% include header -%>
+            <div id="menu">
+                <div ng-if="tags">
+                    <ul class="list-unstyled">
+                        <li>
+                            <i class="icon-tags"></i>
+                            <a href="#/pulls" ng-click="selectTag(null)">All</a>
+                        </li>
+                        <li ng-repeat="tag in tags">
+                            <i class="icon-tag"></i>
+                            <a href="#/pulls" ng-click="selectTag(tag)">{{ tag }}</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div ng-if="tags">
-                <h5>Projects</h5>
-                <ul class="list-unstyled">
+                <!--<div ng-if="users">-->
+                    <!--&lt;!&ndash;<h5>Users</h5>&ndash;&gt;-->
+                    <!--<ul class="list-unstyled">-->
+                        <!--<li>-->
+                            <!--<i class="icon-group"></i>-->
+                            <!--<a href="#/pulls" ng-click="selectUser(null)">All</a>-->
+                        <!--</li>-->
+                        <!--<li ng-repeat="user in users">-->
+                            <!--<i class="icon-user"></i>-->
+                            <!--<a href="#/pulls" ng-click="selectUser(user)">{{ user }}</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <ul class="list-unstyled" id="menuItems">
                     <li>
-                        <i class="icon-tags"></i>
-                        <a href="#/pulls" ng-click="selectTag(null)">All</a>
+                        <i class="icon-refresh" ng-class="{ 'icon-spin': (progress < 100) }"></i>
+                        <a href="javascript:void(0);" ng-click="refresh()"> Refresh</a>
                     </li>
-                    <li ng-repeat="tag in tags">
-                        <i class="icon-tag"></i>
-                        <a href="#/pulls" ng-click="selectTag(tag)">{{ tag }}</a>
+                    <li>
+                        <i class="icon-reorder"></i>
+                        <a href="/options/"> Options</a>
+                    </li>
+                    <li>
+                        <i class="icon-github-alt"></i>
+                        <a href="<%- user.url %>" target="_blank"> Github Profile</a>
+                    </li>
+                    <li>
+                        <i class="icon-signout"></i>
+                        <a href="/auth/logout"> Sign out</a>
                     </li>
                 </ul>
             </div>
-
-            <div ng-if="users">
-                <h5>Users</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <i class="icon-group"></i>
-                        <a href="#/pulls" ng-click="selectUser(null)">All</a>
-                    </li>
-                    <li ng-repeat="user in users">
-                        <i class="icon-user"></i>
-                        <a href="#/pulls" ng-click="selectUser(user)">{{ user }}</a>
-                    </li>
-                </ul>
-            </div>
-
-            <h5>Options</h5>
-            <ul class="list-unstyled" id="menuItems">
-                <li>
-                    <i class="icon-refresh" ng-class="{ 'icon-spin':progress < 100 }"></i>
-                    <a href="javascript:void(0);" ng-click="refresh()"> Refresh</a>
-                </li>
-                <li>
-                    <i class="icon-reorder"></i>
-                    <a href="/options/"> Options</a>
-                </li>
-                <li>
-                    <i class="icon-github-alt"></i>
-                    <a href="<%- user.url %>" target="_blank"> Github Profile</a>
-                </li>
-                <li>
-                    <i class="icon-signout"></i>
-                    <a href="/auth/logout"> Sign out</a>
-                </li>
-            </ul>
         </div>
     </div>
-    <div class="col-md-10" style="position: relative; overflow: hidden;">
-        <div ng-view class="left-animation"></div>
+    <div class="col-md-10">
+        <div class="content">
+            <div ng-view class="left-animation"></div>
+            <h1 ng-if="!repos" class="fade-animation">Welcome <%- user.name %></h1>
+        </div>
     </div>
 </div>
 

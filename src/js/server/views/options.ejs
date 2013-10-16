@@ -1,39 +1,46 @@
 <% layout('layouts/main') -%>
-<% block('header', partial('header')) -%>
+<div ng-app="settings" ng-controller="settingsController">
 
-<div class="row-fluid" id="main">
-    <div class="span2">
-        <div id="menu">
-            <h5>Options</h5>
-            <ul class="unstyled" id="optionMenu">
-                <li>
-                    <i class="icon-cloud"></i>
-                    <a href="#/repos"> Choose Repos</a>
-                </li>
-                <li>
-                    <i class="icon-warning-sign"></i>
-                    <a href="#/warningPaths"> Warning Paths</a>
-                </li>
-            </ul>
-            <h5>Menu</h5>
-            <ul class="unstyled" id="menuItems">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="/home"> Home</a>
-                </li>
-                <li>
-                    <i class="icon-github-alt"></i>
-                    <a href="<%- user.url %>" target="_blank"> Github Profile</a>
-                </li>
-                <li>
-                    <i class="icon-signout"></i>
-                    <a href="/auth/logout"> Sign out</a>
-                </li>
-            </ul>
+    <div class="row">
+        <div class="col-md-2">
+            <div id="nav">
+                <% include header -%>
+                <div id="menu">
+                    <ul class="list-unstyled">
+                        <li>
+                            <i class="icon-cloud"></i>
+                            <a href="#/repos"> Choose Repos</a>
+                        </li>
+                        <li>
+                            <i class="icon-warning-sign"></i>
+                            <a href="#/warnings"> Warning Paths</a>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li>
+                            <i class="icon-home"></i>
+                            <a href="/home"> Home</a>
+                        </li>
+                        <li>
+                            <i class="icon-github-alt"></i>
+                            <a href="<%- user.url %>" target="_blank"> Github Profile</a>
+                        </li>
+                        <li>
+                            <i class="icon-signout"></i>
+                            <a href="/auth/logout"> Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-10">
+            <div class="content">
+                <div ng-view class="left-animation"></div>
+            </div>
         </div>
     </div>
-    <div class="span10" id="content"></div>
+
 </div>
-<% block('scripts', partial('templates')) -%>
-<% script('/js/pullreq.js') -%>
-<% script('/js/pages/options.js') -%>
+<% script('/js/apps/pullreq.js') -%>
+<% script('/js/apps/settings.js') -%>

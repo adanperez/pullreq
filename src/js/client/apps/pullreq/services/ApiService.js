@@ -63,10 +63,85 @@
                 return promise.promise;
             };
 
+            var saveWarningPaths = function(data) {
+                var promise = $q.defer();
+                var http = $http({
+                    method: 'POST',
+                    url: '/api/warningPaths',
+                    data: data
+                });
+                http.success(function (paths) {
+                    promise.resolve(paths);
+                });
+                http.error(function (data, status) {
+                    if (status) {
+                        promise.reject(status);
+                    }
+                });
+                return promise.promise;
+            };
+
+            var getRepoOptions = function() {
+                var promise = $q.defer();
+                var http = $http({
+                    method: 'GET',
+                    url: '/api/repoOptions'
+                });
+                http.success(function (repos) {
+                    promise.resolve(repos);
+                });
+                http.error(function (data, status) {
+                    if (status) {
+                        promise.reject(status);
+                    }
+                });
+                return promise.promise;
+            };
+
+            var getUserReposOptions = function() {
+                var promise = $q.defer();
+                var http = $http({
+                    method: 'GET',
+                    url: '/api/userRepos'
+                });
+                http.success(function (repos) {
+                    promise.resolve(repos);
+                });
+                http.error(function (data, status) {
+                    if (status) {
+                        promise.reject(status);
+                    }
+                });
+                return promise.promise;
+            };
+
+            var saveUserReposOptions = function(data) {
+                var promise = $q.defer();
+                var http = $http({
+                    method: 'POST',
+                    url: '/api/userRepos',
+                    data: data
+                });
+                http.success(function (repos) {
+                    promise.resolve(repos);
+                });
+                http.error(function (data, status) {
+                    if (status) {
+                        promise.reject(status);
+                    }
+                });
+                return promise.promise;
+            };
+
+
             return {
                 getPullRequests: getPullRequests,
                 getPullRequestInfo: getPullRequestInfo,
-                getWarningPaths: getWarningPaths
+                getWarningPaths: getWarningPaths,
+                saveWarningPaths: saveWarningPaths,
+                getRepoOptions: getRepoOptions,
+                getUserReposOptions: getUserReposOptions,
+                saveUserReposOptions: saveUserReposOptions
             }
         }
     ]);

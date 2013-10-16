@@ -1,0 +1,24 @@
+<div>
+    <div id="message" ng-if="saved" class="alert alert-success bounce-animation">
+        Your warning paths settings have been updated.
+    </div>
+    <h1 ng-if="!paths"><i class="icon-repeat icon-spin"></i> Loading your paths...</h1>
+    <div ng-if="paths">
+        <h1>Configure your warning paths</h1>
+        <form name="myForm" novalidate>
+            <ul class="list-unstyled paths">
+                <li ng-repeat="path in paths">
+                    <input name="path" type="text" class="form-control"
+                           placeholder="Ex. grails-app/conf"
+                           ng-model="path.path"
+                           required>
+                    <a href="javascript:void(0);" ng-click="removePath($index)"><i class="icon-remove-sign"></i></a>
+                </li>
+            </ul>
+            <div class="buttons">
+                <button type="button" class="btn btn-success" ng-click="addPath()">Add Path</button>
+                <button type="button" class="btn btn-primary" ng-click="savePaths()">{{ saving ? 'Saving...' : 'Save Paths' }}</button>
+            </div>
+        </form>
+    </div>
+</div>

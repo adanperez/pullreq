@@ -1,0 +1,28 @@
+<div>
+    <div id="message" ng-if="saved" class="alert alert-success bounce-animation">
+        Your repo settings have been updated.
+    </div>
+    <h1 ng-if="!options"><i class="icon-repeat icon-spin"></i> Loading your options...</h1>
+    <div ng-if="options">
+        <h1>Choose your repos</h1>
+        <form>
+            <div ng-repeat="account in options">
+                <h2>{{ account.login }}</h2>
+                <ul class="list-unstyled" ng-repeat="repo in account.repos">
+                    <li>
+                        <label class="checkbox">
+                            <input type="checkbox" name="repo"
+                                   value="{{ account.login }}/{{ repo.name }}"
+                                   ng-checked="isRepoSelected(repo)"
+                                   ng-click="toggleRepoSelect(repo)">
+                            <b>{{ repo.name }}</b> <span class="misc-info"><i class="icon-random"></i> {{ repo.forks }} forks</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="saveRepos()">{{ saving ? 'Saving...' : 'Save Repos' }}</button>
+            </div>
+        </form>
+    </div>
+</div>

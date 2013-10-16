@@ -79,6 +79,9 @@
                 data.users = pullRequestService.getUsers(pullRequests);
 
                 _.each(pullRequests, function(pull) {
+                    if ($scope.request && pull.id == $scope.request.id) {
+                        $scope.request = pull;
+                    }
                     apiService.getPullRequestInfo(pull.base.user.login, pull.base.repo.name, pull.number, pull.head.sha).
                         then(function(info) {
                                  pull.info = info;
@@ -93,6 +96,14 @@
 
             var handleError = function(error) {
                 $scope.error = error;
+            };
+
+            $scope.isTagSelected = function(tag) {
+
+            };
+
+            $scope.isUserSelected = function(user) {
+
             };
 
             $scope.selectTag = function(val) {
