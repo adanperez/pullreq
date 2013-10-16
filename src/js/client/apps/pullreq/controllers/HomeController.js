@@ -70,6 +70,16 @@
             };
 
             var cleanupPullRequests = function(pullRequests, paths) {
+                if (pullRequests.length == 0) {
+                    $scope.progress = 99;
+                    $scope.repos = [];
+                    $timeout(function() {
+                        $scope.progress = 100;
+                        $scope.noPullRequests = true;
+                    }, 500);
+                    return;
+                }
+
                 var count = pullRequests.length;
                 var inc = Math.ceil(60 / count);
 
@@ -92,6 +102,8 @@
 
                 $scope.tags = data.tags;
                 $scope.users = data.users;
+
+                filterPullRequests();
             };
 
             var handleError = function(error) {
@@ -127,6 +139,7 @@
             };
 
             $scope.refresh = function() {
+                $scope.noPullRequests = false;
                 $scope.progress = 10;
                 $q.all({
                    paths: apiService.getWarningPaths(),
@@ -134,7 +147,6 @@
                 }).then(function(values) {
                    $scope.progress = 40;
                    cleanupPullRequests(values.pulls, values.paths);
-                   filterPullRequests();
                 });
             };
 
