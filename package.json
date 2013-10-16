@@ -7,6 +7,7 @@
     "dependencies": {
         "bower": "~1.2.7",
         "grunt": "~0.4.1",
+        "grunt-cli": "~0.1.9",
         "grunt-karma": "~0.7.1",
         "grunt-contrib-concat": "~0.3.0",
         "grunt-contrib-csslint": "~0.1.2",
@@ -41,6 +42,6 @@
         "url": "https://github.com/adanperez/pullreq.git"
     },
     "scripts": {
-        "postinstall": "echo postinstall time; ./node_modules/bower/bin/bower install; ./node_modules/grunt/bin/grunt dev-assemble"
+        "postinstall": "echo postinstall time; ./node_modules/bower/bin/bower install; ./node_modules/grunt-cli/bin/grunt dev-assemble"
     }
 }
