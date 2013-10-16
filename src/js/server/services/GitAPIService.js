@@ -51,19 +51,19 @@ function mineGitRequest(token, path, params, list, callback) {
 }
 
 exports.getUserOrgs = function(token, callback) {
-    makeGitRequest(token, '/user/orgs', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/user/orgs', {page:1, per_page:100}, [], callback);
 };
 
 exports.getUserRepos = function(token, callback) {
-    makeGitRequest(token, '/user/repos', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/user/repos', {page:1, per_page:100}, [], callback);
 };
 
 exports.getOrgRepos = function(token, org, callback) {
-    makeGitRequest(token, '/orgs/' + org + '/repos', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/orgs/' + org + '/repos', {page:1, per_page:100}, [], callback);
 };
 
 exports.getOrgMembers = function(token, org, callback) {
-    makeGitRequest(token, '/orgs/' + org + '/members', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/orgs/' + org + '/members', {page:1, per_page:100}, [], callback);
 };
 
 exports.getCommitsByUser = function(token, owner, repo, user, callback) {
@@ -79,21 +79,21 @@ exports.getPullRequests = function(token, owner, repo, callback) {
 };
 
 exports.getPullRequestCommits = function(token, owner, repo, pullNumber, callback) {
-    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/commits', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/commits', {page:1, per_page:100}, [], callback);
 };
 
 exports.getPullRequestFiles = function(token, owner, repo, pullNumber, callback) {
-    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/files', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/files', {page:1, per_page:100}, [], callback);
 };
 
 exports.getPullRequestComments = function(token, owner, repo, pullNumber, callback) {
-    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/comments', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/repos/' + owner + '/' + repo + '/pulls/' + pullNumber + '/comments', {page:1, per_page:100}, [], callback);
 };
 
 exports.getIssueComments = function(token, owner, repo, pullNumber, callback) {
-    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/issues/' + pullNumber + '/comments', {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/repos/' + owner + '/' + repo + '/issues/' + pullNumber + '/comments', {page:1, per_page:100}, [], callback);
 };
 
 exports.getStatus = function(token, owner, repo, sha, callback) {
-    makeGitRequest(token, '/repos/' + owner + '/' + repo + '/statuses/' + sha, {page:1, per_page:100}, callback);
+    mineGitRequest(token, '/repos/' + owner + '/' + repo + '/statuses/' + sha, {page:1, per_page:100}, [], callback);
 };
