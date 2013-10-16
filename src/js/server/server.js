@@ -15,7 +15,6 @@ var MongoStore = require('connect-mongo')(express);
 
 var app = express();
 
-var memStore = express.session.MemoryStore
 var isProduction = process.env.NODE_ENV == 'production';
 
 https.globalAgent.maxSockets = 500;
@@ -47,7 +46,7 @@ app.configure('all', function() {
         key: 'sid',
         proxy: isProduction,
         cookie: {
-            maxAge: 5*365*24*60*60*1000, // 5 years
+            maxAge: 20*24*60*60*1000, // 20 days
             path: '/',
             httpOnly: true,
             secure: isProduction
@@ -78,11 +77,6 @@ function clientErrorHandler(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-
-    //todo redirect to error page
-    //logger.warn(err);
-    //res.status(500);
-    //res.render(err);
     next(err);
 }
 

@@ -40,5 +40,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/adanperez/pullreq.git"
+    },
+    "scripts": {
+        "postinstall": "echo postinstall time; ./node_modules/grunt/bin/grunt dev-assemble"
     }
 }
