@@ -74,7 +74,7 @@ module.exports = function (grunt) {
             var uglifyConfigObj = {
                 files: { }
             };
-            uglifyConfigObj.files[jsMinFile] = [ jsFile ];
+            uglifyConfigObj.files[jsFile] = [ jsFile ];
             grunt.config('uglify.' + appName, uglifyConfigObj);
 
             var watchConfigObj = {
