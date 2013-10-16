@@ -5,6 +5,7 @@
     "description": "Pull request app for Github.",
     "license": "MIT",
     "devDependencies": {
+        "bower": "~1.2.7",
         "grunt": "~0.4.1",
         "grunt-karma": "~0.7.1",
         "grunt-contrib-concat": "~0.3.0",
@@ -42,6 +43,6 @@
         "url": "https://github.com/adanperez/pullreq.git"
     },
     "scripts": {
-        "postinstall": "echo postinstall time; ./node_modules/grunt/bin/grunt dev-assemble"
+        "postinstall": "echo postinstall time; ./node_modules/bower/bin/bower install; ./node_modules/grunt/bin/grunt dev-assemble"
     }
 }
