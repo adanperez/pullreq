@@ -86,7 +86,11 @@
         'apiService',
         function($scope, $timeout, $q, _, apiService) {
 
+            $scope.paths = [];
+            $scope.loading = true;
+
             var loadPaths = function(paths) {
+                $scope.loading = false;
                 $scope.paths = paths;
             };
 

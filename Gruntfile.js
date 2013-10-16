@@ -210,7 +210,6 @@ module.exports = function (grunt) {
     });
 
     generateJSAppConfigs();
-    console.log(grunt.config);
 
     grunt.registerTask('compile', ['html2js', 'concat']);
 

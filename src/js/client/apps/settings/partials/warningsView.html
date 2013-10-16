@@ -2,8 +2,8 @@
     <div id="message" ng-if="saved" class="alert alert-success bounce-animation">
         Your warning paths settings have been updated.
     </div>
-    <h1 ng-if="!paths"><i class="icon-repeat icon-spin"></i> Loading your paths...</h1>
-    <div ng-if="paths">
+    <h1 ng-if="loading"><i class="icon-repeat icon-spin"></i> Loading your paths...</h1>
+    <div ng-if="!loading">
         <h1>Configure your warning paths</h1>
         <form name="myForm" novalidate>
             <ul class="list-unstyled paths">
