@@ -41,22 +41,18 @@
                         pulls = _.where(pulls, { 'user': {
                             'login': user
                         }});
-                        data.filterByMethod = this;
-                        data.filterValue = user;
                     }
-                    $scope.repos = pullRequestService.createRepos(pulls);
+                    return pullRequestService.createRepos(pulls);
                 },
                 byTitle: function(tag) {
                     var pulls = data.pullRequests;
                     if(tag != null) {
                         pulls = _.where(pulls, { 'tags': { 'title': tag } });
-                        data.filterByMethod = this;
-                        data.filterValue = tag;
                     }
-                    $scope.repos = pullRequestService.createRepos(pulls);
+                    return pullRequestService.createRepos(pulls);
                 },
                 byNothing: function() {
-                    $scope.repos = pullRequestService.createRepos(data.pullRequests);
+                    return pullRequestService.createRepos(data.pullRequests);
                 }
             };
 
@@ -66,7 +62,11 @@
             };
 
             var filterPullRequests = function() {
-                data.filterByMethod(data.filterByValue);
+                $scope.noPullRequests = false;
+                $scope.repos = data.filterByMethod(data.filterByValue);
+                if ($scope.repos.length == 0)  {
+                    $scope.noPullRequests = true;
+                }
             };
 
             var cleanupPullRequests = function(pullRequests, paths) {
@@ -75,7 +75,6 @@
                     $scope.repos = [];
                     $timeout(function() {
                         $scope.progress = 100;
-                        $scope.noPullRequests = true;
                     }, 500);
                     return;
                 }
@@ -102,8 +101,6 @@
 
                 $scope.tags = data.tags;
                 $scope.users = data.users;
-
-                filterPullRequests();
             };
 
             var handleError = function(error) {
@@ -142,12 +139,13 @@
                 $scope.noPullRequests = false;
                 $scope.progress = 10;
                 $q.all({
-                   paths: apiService.getWarningPaths(),
-                   pulls: apiService.getPullRequests()
-                }).then(function(values) {
-                   $scope.progress = 40;
-                   cleanupPullRequests(values.pulls, values.paths);
-                });
+                           paths: apiService.getWarningPaths(),
+                           pulls: apiService.getPullRequests()
+                       }).then(function(values) {
+                                   $scope.progress = 40;
+                                   cleanupPullRequests(values.pulls, values.paths);
+                                   filterPullRequests();
+                               });
             };
 
             resetFilter();

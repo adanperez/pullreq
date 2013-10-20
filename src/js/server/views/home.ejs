@@ -59,8 +59,8 @@
     <div class="col-md-10">
         <div class="content">
             <div ng-view class="left-animation"></div>
-            <h1 ng-if="!repos" class="fade-animation">Welcome <%- user.name %></h1>
-            <h1 ng-if="noPullRequests" class="fade-animation">There are no open pull requests</h1>
+            <h1 ng-if="!repos" class="ng-cloak fade-animation">Welcome <%- user.name %></h1>
+            <h1 ng-if="noPullRequests" class="ng-cloak fade-animation">There are no open pull requests</h1>
         </div>
     </div>
 </div>
