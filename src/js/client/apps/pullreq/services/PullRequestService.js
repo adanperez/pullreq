@@ -26,7 +26,8 @@
                 var comments = pullRequest.info.issueComments;
                 if (comments) {
                     comments = _.filter(comments, function(comment) {
-                        return comment.body.indexOf('+1') !== -1;
+                        return comment.body.indexOf('+1') !== -1 ||
+                               comment.body.indexOf(':thumbsup:') !== -1;
                     });
                     comments =  _.unique(comments, function(comment) {
                         return comment.user.login;
