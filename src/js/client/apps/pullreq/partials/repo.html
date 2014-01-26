@@ -1,6 +1,8 @@
-<div class="repo" ng-if="pulls">
-    <h2>{{ repo.name }}<small>\{{ repo.owner }}</small></h2>
-    <div class="clear-fix">
-        <pull-request ng-repeat="pull in pulls" request="pull"></pull-request>
+<div>
+    <div class="repo" ng-if="pulls">
+        <h2>{{ repo.name }}<small>\{{ repo.owner }}</small></h2>
+        <div class="clear-fix">
+            <pull-request ng-repeat="pull in pulls" request="pull"></pull-request>
+        </div>
     </div>
 </div>

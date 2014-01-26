@@ -139,13 +139,13 @@
                 $scope.noPullRequests = false;
                 $scope.progress = 10;
                 $q.all({
-                           paths: apiService.getWarningPaths(),
-                           pulls: apiService.getPullRequests()
-                       }).then(function(values) {
-                                   $scope.progress = 40;
-                                   cleanupPullRequests(values.pulls, values.paths);
-                                   filterPullRequests();
-                               });
+                       paths: apiService.getWarningPaths(),
+                       pulls: apiService.getPullRequests()
+                   }).then(function(values) {
+                               $scope.progress = 40;
+                               cleanupPullRequests(values.pulls, values.paths);
+                               filterPullRequests();
+                           });
             };
 
             resetFilter();
