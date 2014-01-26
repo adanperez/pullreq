@@ -1,7 +1,9 @@
-<div class="pull-status" ng-if="request.info.status.length > 0">
-    <b ng-class="{ warn: status.state === 'failure' }">Status:</b>
-    <a target="_blank"
-       ng-href="{{ status.target_url }}"
-       ng-class="{approved: status.state === 'success', pending: status.state === 'pending', warn: status.state === 'failure'}"
-       ng-bind="message(status)"></a>
+<div>
+    <div class="pull-status" ng-if="request.info.status.length > 0">
+        <b ng-class="{ warn: status.state === 'failure' }">Status:</b>
+        <a target="_blank"
+           ng-href="{{ status.target_url }}"
+           ng-class="{approved: status.state === 'success', pending: status.state === 'pending', warn: status.state === 'failure'}"
+           ng-bind="message(status)"></a>
+    </div>
 </div>

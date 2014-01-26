@@ -4,7 +4,6 @@ var https =     require('https');
 var qs =        require('querystring');
 var request =   require('request');
 var async =     require('async');
-var ejslocals = require('ejs-locals');
 var mongoose =  require('mongoose');
 var connect =   require('connect');
 var uuid =      require('node-uuid');
@@ -12,6 +11,10 @@ var _ =         require('lodash');
 var fs =        require('fs');
 var logger =    require('log4js').getLogger();
 var MongoStore = require('connect-mongo')(express);
+var ejslocals = require('ejs-locals');
+var dust =      require('dustjs-linkedin');
+                require('dustjs-helpers');
+var cons =      require('consolidate');
 
 var app = express();
 
@@ -25,6 +28,19 @@ http.globalAgent.maxSockets = 500;
  */
 var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pullreq';
 mongoose.connect(mongoUri);
+
+function clientErrorHandler(err, req, res, next) {
+    if (req.xhr) {
+        res.send(500, { error: 'Something blew up!' });
+    } else {
+        next(err);
+    }
+}
+
+function errorHandler(err, req, res, next) {
+    //does nothing right now
+    next(err);
+}
 
 /**
  * Configure app
@@ -68,18 +84,6 @@ app.configure('all', function() {
     app.set('port', process.env.PORT);
 });
 
-function clientErrorHandler(err, req, res, next) {
-    if (req.xhr) {
-        res.send(500, { error: 'Something blew up!' });
-    } else {
-        next(err);
-    }
-}
-
-function errorHandler(err, req, res, next) {
-    next(err);
-}
-
 /**
  * Load the servers models into Mongoose
  */
@@ -112,7 +116,6 @@ if (isProduction) {
 /**
  * Start server
  */
-http.createServer(app).listen(app.get('port'), function() {
+app.listen(app.get('port'), function() {
     logger.info("Express server listening on port " + app.get('port'));
-    //logger.info(app.routes);
 });
