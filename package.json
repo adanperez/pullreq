@@ -16,10 +16,8 @@
         "connect-mongo":"0.4.x",
         "dustjs-linkedin": "2.2.x",
         "dustjs-helpers": "1.2.x",
-        "consolidate": "0.10.0"
-    },
-    "devDependencies": {
-        "bower": "1.2.7",
+        "consolidate": "0.10.0",
+        "bower": "1.2.8",
         "grunt": "0.4.2",
         "grunt-cli": "0.1.13",
         "grunt-karma": "0.7.1",
@@ -46,6 +44,6 @@
         "url": "https://github.com/adanperez/pullreq.git"
     },
     "scripts": {
-        "postinstall": "./node_modules/bower/bin/bower install; ./node_modules/grunt-cli/bin/grunt prod-assemble"
+        "postinstall": "./node_modules/bower/bin/bower install --force --config.interactive=0; ./node_modules/grunt-cli/bin/grunt prod-assemble"
     }
 }
