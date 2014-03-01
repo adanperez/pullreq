@@ -1,32 +1,33 @@
-<% layout('layouts/main') -%>
+{>"layouts/main"/}
+{<content}
 <div ng-app="settings" ng-controller="settingsController">
 
     <div class="row">
         <div class="col-md-2">
             <div id="nav">
-                <% include header -%>
+                {>"header"/}
                 <div id="menu">
                     <ul class="list-unstyled">
                         <li>
-                            <i class="icon-cloud"></i>
+                            <i class="fa fa-cloud"></i>
                             <a href="#/repos"> Choose Repos</a>
                         </li>
                         <li>
-                            <i class="icon-warning-sign"></i>
+                            <i class="fa fa-warning"></i>
                             <a href="#/warnings"> Warning Paths</a>
                         </li>
                     </ul>
                     <ul class="list-unstyled">
                         <li>
-                            <i class="icon-home"></i>
+                            <i class="fa fa-home"></i>
                             <a href="/home"> Home</a>
                         </li>
                         <li>
-                            <i class="icon-github-alt"></i>
+                            <i class="fa fa-github-alt"></i>
                             <a href="<%- user.url %>" target="_blank"> Github Profile</a>
                         </li>
                         <li>
-                            <i class="icon-signout"></i>
+                            <i class="fa fa-sign-out"></i>
                             <a href="/auth/logout"> Sign out</a>
                         </li>
                     </ul>
@@ -40,7 +41,9 @@
             </div>
         </div>
     </div>
-
 </div>
-<% script('/js/apps/pullreq.js') -%>
-<% script('/js/apps/settings.js') -%>
+{/content}
+{<scripts}
+    <script src="/js/apps/pullreq.js"></script>
+    <script src="/js/apps/settings.js"></script>
+{/scripts}

@@ -2,9 +2,7 @@ var gitUserService = require("../services/GitUserService.js");
 
 var render = {
     homePage: function(res, locals) {
-        res.render('home.ejs', {
-            locals: locals
-        });
+        res.render('home', locals);
     }
 };
 

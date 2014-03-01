@@ -1,12 +1,13 @@
-<div class="left-animation">
+<div>
     <h2>
-        <a href="#/pulls"> <i class="icon-chevron-left"></i> Back</a>
+        <a href="#/pulls"> <i class="fa fa-chevron-left"></i> Back</a>
     </h2>
     <div class="details">
 
         <pull-request request="request"></pull-request>
 
         <div class="section">
+            <h3>Summary</h3>
             <div markdown text="request.body"></div>
         </div>
 
@@ -16,7 +17,7 @@
                 <li ng-repeat="commit in request.info.commits">
                     <div markdown text="commit.commit.message"></div>
                     <p><a target="_blank" ng-href="{{ commit.html_url }}" >{{ commit.html_url }}</a></p>
-                    <p><i class="icon-user" ></i> {{ commit.commit.author.name }}</p>
+                    <p><i class="fa fa-user" ></i> {{ commit.commit.author.name }}</p>
                 </li>
             </ul>
         </div>

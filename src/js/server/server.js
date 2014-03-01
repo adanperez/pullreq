@@ -5,13 +5,11 @@ var qs =        require('querystring');
 var request =   require('request');
 var async =     require('async');
 var mongoose =  require('mongoose');
-var connect =   require('connect');
 var uuid =      require('node-uuid');
 var _ =         require('lodash');
 var fs =        require('fs');
 var logger =    require('log4js').getLogger();
 var MongoStore = require('connect-mongo')(express);
-var ejslocals = require('ejs-locals');
 var dust =      require('dustjs-linkedin');
                 require('dustjs-helpers');
 var cons =      require('consolidate');
@@ -46,15 +44,14 @@ function errorHandler(err, req, res, next) {
  * Configure app
  */
 app.configure('all', function() {
-    app.use(express.favicon(__dirname + '/../../../public/img/favicon.ico'));
-    app.engine('ejs', ejslocals);
+    // Setup view engine
+    app.engine('dust', cons.dust);
+    app.set('view engine', 'dust');
+    app.set('template_engine', 'dust');
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'ejs');
-    app.set('view options', {
-        open: '<%',
-        close: '%>'
-    });
+    app.set('view options', {layout: false});
 
+    app.use(express.favicon(__dirname + '/../../../public/img/favicon.ico'));
     app.use(express.static(__dirname + '/../../../public'));
     app.use(express.cookieParser());
     app.use(express.session({
@@ -87,7 +84,7 @@ app.configure('all', function() {
 /**
  * Load the servers models into Mongoose
  */
-var models_path = __dirname + '/models'
+var models_path = __dirname + '/models';
 fs.readdirSync(models_path).forEach(function (file) {
     require(models_path + '/' + file);
 });
@@ -95,7 +92,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 /**
  * Controllers for sections of the website
  */
-var controllers_path = __dirname + '/controllers'
+var controllers_path = __dirname + '/controllers';
 fs.readdirSync(controllers_path).forEach(function (file) {
     require(controllers_path + '/' + file)(app);
 });

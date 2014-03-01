@@ -1,0 +1,73 @@
+{>"layouts/main"/}
+{<content}
+    <div ng-app="pullreq" ng-controller="homeController">
+
+        <div id="loading-message" ng-if="progress < 100" class="bounce-animation">
+            <progress-bar progress="progress"></progress-bar>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <div id="nav">
+                    {>"header"/}
+                    <div id="menu">
+                        <div ng-if="tags">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <i class="fa fa-tags"></i>
+                                    <a href="#/pulls" ng-click="selectTag(null)">All</a>
+                                </li>
+                                <li ng-repeat="tag in tags">
+                                    <i class="fa fa-tag"></i>
+                                    <a href="#/pulls" ng-click="selectTag(tag)" ng-bind="tag"></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!--<div ng-if="users">-->
+                        <!--&lt;!&ndash;<h5>Users</h5>&ndash;&gt;-->
+                        <!--<ul class="list-unstyled">-->
+                        <!--<li>-->
+                        <!--<i class="fa fa-group"></i>-->
+                        <!--<a href="#/pulls" ng-click="selectUser(null)">All</a>-->
+                        <!--</li>-->
+                        <!--<li ng-repeat="user in users">-->
+                        <!--<i class="fa fa-user"></i>-->
+                        <!--<a href="#/pulls" ng-click="selectUser(user)">{{ user }}</a>-->
+                        <!--</li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+                        <ul class="list-unstyled" id="menuItems">
+                            <li>
+                                <i class="fa fa-refresh" ng-class="{ 'fa-spin': (progress < 100) }"></i>
+                                <a href="javascript:void(0);" ng-click="refresh()"> Refresh</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-gear"></i>
+                                <a href="/options/"> Options</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-github-alt"></i>
+                                <a href="{user.url}" target="_blank"> Github Profile</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-sign-out"></i>
+                                <a href="/auth/logout"> Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="content">
+                    <div ng-view class="left-animation"></div>
+                    <h1 ng-if="!repos" class="ng-cloak fade-animation">Welcome {user.name}</h1>
+                    <h1 ng-if="noPullRequests" class="ng-cloak fade-animation">There are no open pull requests</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+{/content}
+{<scripts}
+    <script src="/js/apps/pullreq.js"></script>
+{/scripts}

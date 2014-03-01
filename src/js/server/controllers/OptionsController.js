@@ -13,9 +13,7 @@ function requireAuthentication(req, res, next) {
 
 var render = {
     mainPage: function(res, locals) {
-        res.render('options.ejs', {
-            locals: locals
-        });
+        res.render('options', locals);
     }
 }
 

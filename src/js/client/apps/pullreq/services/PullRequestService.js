@@ -54,7 +54,10 @@
                 var hasWarningPath = false;
                 _.each(files, function(file) {
                     file.warn = _.any(warningPaths, function(path) {
-                       return file.filename.indexOf(path.path) === 0;
+                        var regex = new RegExp(path.path);
+                        console.log(regex);
+                        console.log(file.filename.match(regex));
+                        return file.filename.match(regex) != null;
                     });
                     hasWarningPath = hasWarningPath || file.warn;
                 });

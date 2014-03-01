@@ -3,24 +3,25 @@
     <div class="pull-body">
         <h4 class="pull-title" ng-class="{approved: request.status_flags.review_approved}">
             <a class="pull-link" target="_blank" href="{{ request.html_url }}" ng-bind="request.title"></a>
-            <i tooltip="Approved" ng-if="request.status_flags.review_approved" class="approved icon-thumbs-up icon-large"></i>
-            <i tooltip="Missing tests" ng-if="request.status_flags.has_tests != null && !request.status_flags.has_tests" class="warn icon-question-sign"></i>
-            <i tooltip="Contains warning message" ng-if="request.status_flags.has_warning" class="pending icon-warning-sign"></i>
-            <i tooltip="Contains modified critical files" ng-if="request.status_flags.has_warning_paths" class="warn icon-exclamation-sign"></i>
+            <i tooltip="Approved" ng-if="request.status_flags.review_approved" class="approved fa fa-thumbs-up fa-lg"></i>
+            <i tooltip="Missing tests"
+               ng-if="request.status_flags.has_tests != null && !request.status_flags.has_tests"
+               class="warn fa fa-question-circle"></i>
+            <i tooltip="Contains warning message" ng-if="request.status_flags.has_warning" class="pending fa fa-warning"></i>
+            <i tooltip="Contains modified critical files" ng-if="request.status_flags.has_warning_paths" class="warn fa fa-exclamation-triangle"></i>
             <small>
                 <a href="#/details" ng-click="displayDetails()">(Details)</a>
             </small>
         </h4>
         <ul class="sub-info list-inline">
-            <li><i class="icon-user" ></i> {{ request.user.login }}</li>
-            <li><i class="icon-time"></i> {{ request.created_at | date:'mediumDate' }}</li>
-            <li><i class="icon-code-fork"></i> {{ request.base.ref }}</li>
-            <li ng-if="!request.info"><i class="icon-repeat icon-spin"></i> Loading...</li>
+            <li><i class="fa fa-user" ></i>{{ request.user.login }}</li>
+            <li><i class="fa fa-time"></i>{{ request.created_at | date:'mediumDate' }}</li>
+            <li><i class="fa fa-code-fork"></i>{{ request.base.ref }}</li>
+            <li ng-if="!request.info"><i class="fa fa-repeat fa-spin"></i>Loading...</li>
 
-            <li ng-if="request.info"><i class="icon-comments"></i> {{ request.info.issueComments.length + request.info.codeComments.length }} Comments</li>
+            <li ng-if="request.info"><i class="fa fa-comments"></i>{{ request.info.issueComments.length + request.info.codeComments.length }} Comments</li>
             <li ng-if="request.info">
-                <i class="icon-copy"></i>
-                {{ request.info.files.length }} Files changed
+                <i class="fa fa-copy"></i>{{ request.info.files.length }} Files changed
             </li>
         </ul>
         <pull-request-status request="request"></pull-request-status>

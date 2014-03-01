@@ -1,8 +1,6 @@
 var render = {
     indexPage: function(res, locals) {
-        res.render('index.ejs', {
-            locals: locals
-        });
+        res.render('index', locals);
     }
 };
 

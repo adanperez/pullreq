@@ -2,7 +2,7 @@
     <div id="message" ng-if="saved" class="alert alert-success bounce-animation">
         Your repo settings have been updated.
     </div>
-    <h1 ng-if="!options"><i class="icon-repeat icon-spin"></i> Loading your options...</h1>
+    <h1 ng-if="!options"><i class="fa fa-repeat fa-spin"></i> Loading your options...</h1>
     <div ng-if="options">
         <h1>Choose your repos</h1>
         <form>
@@ -15,7 +15,7 @@
                                    value="{{ account.login }}/{{ repo.name }}"
                                    ng-checked="isRepoSelected(repo)"
                                    ng-click="toggleRepoSelect(repo)">
-                            <b>{{ repo.name }}</b> <span class="misc-info"><i class="icon-random"></i> {{ repo.forks }} forks</span>
+                            <b>{{ repo.name }}</b> <span class="misc-info"><i class="fa fa-random"></i> {{ repo.forks }} forks</span>
                         </label>
                     </li>
                 </ul>

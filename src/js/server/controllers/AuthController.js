@@ -70,9 +70,9 @@ function register(req, res) {
                                res.send(error);
                            } else {
                                if (repos.length > 0) {
-                                   res.redirect('/home');
+                                   res.redirect('/home/');
                                } else {
-                                   res.redirect('/options');
+                                   res.redirect('/options/');
                                }
                            }
                         });
