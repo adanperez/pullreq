@@ -6,42 +6,37 @@
 
         <pull-request request="request"></pull-request>
 
-        <div class="section">
-            <h3>Summary</h3>
-            <div markdown text="request.body"></div>
-        </div>
-
-        <div class="section">
-            <h3>Commits</h3>
-            <ul class="list-sep list-unstyled">
-                <li ng-repeat="commit in request.info.commits">
-                    <div markdown text="commit.commit.message"></div>
-                    <p><a target="_blank" ng-href="{{ commit.html_url }}" >{{ commit.html_url }}</a></p>
-                    <p><i class="fa fa-user" ></i> {{ commit.commit.author.name }}</p>
-                </li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h3>Files</h3>
-            <ul class="pull-files list-sep list-unstyled">
-                <li ng-repeat="file in request.info.files">
-                    <pull-file file="file" url="request.html_url" index="$index"></pull-file>
-                </li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h3>Comments</h3>
-            <ul class="comments list-unstyled clear-fix clear">
-                <li ng-repeat="comment in request.info.issueComments" class="clear-fix">
-                    <img class="user img-circle" ng-src="{{ comment.user.avatar_url }}" alt="{{ comment.user.login }}" title="{{ comment.user.login }}" />
-                    <div class="pull-body">
-                        <h5>{{comment.user.login}} <small>{{ comment.created_at | date:'medium' }}</small></h5>
-                        <div markdown text="comment.body"></div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <tabset>
+            <tab heading="Summary">
+                <div markdown text="request.body"></div>
+            </tab>
+            <tab heading="Comments">
+                <ul class="comments list-unstyled clear-fix clear">
+                    <li ng-repeat="comment in request.info.issueComments" class="clear-fix">
+                        <img class="user img-circle" ng-src="{{ comment.user.avatar_url }}" alt="{{ comment.user.login }}" title="{{ comment.user.login }}" />
+                        <div class="pull-body">
+                            <h5>{{comment.user.login}} <small>{{ comment.created_at | date:'medium' }}</small></h5>
+                            <div markdown text="comment.body"></div>
+                        </div>
+                    </li>
+                </ul>
+            </tab>
+            <tab heading="Commits">
+                <ul class="list-sep list-unstyled">
+                    <li ng-repeat="commit in request.info.commits">
+                        <div markdown text="commit.commit.message"></div>
+                        <p><a target="_blank" ng-href="{{ commit.html_url }}" >{{ commit.html_url }}</a></p>
+                        <p><i class="fa fa-user" ></i> {{ commit.commit.author.name }}</p>
+                    </li>
+                </ul>
+            </tab>
+            <tab heading="Files">
+                <ul class="pull-files list-sep list-unstyled">
+                    <li ng-repeat="file in request.info.files">
+                        <pull-file file="file" url="request.html_url" index="$index"></pull-file>
+                    </li>
+                </ul>
+            </tab>
+        </tabset>
     </div>
 </div>

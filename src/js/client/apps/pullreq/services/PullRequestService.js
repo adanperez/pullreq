@@ -55,8 +55,6 @@
                 _.each(files, function(file) {
                     file.warn = _.any(warningPaths, function(path) {
                         var regex = new RegExp(path.path);
-                        console.log(regex);
-                        console.log(file.filename.match(regex));
                         return file.filename.match(regex) != null;
                     });
                     hasWarningPath = hasWarningPath || file.warn;

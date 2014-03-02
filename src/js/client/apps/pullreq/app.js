@@ -9,7 +9,11 @@
         'ngAnimate',
         'ngRoute',
         'ui.bootstrap.tooltip',
-        'template/tooltip/tooltip-popup.html'
+        'ui.bootstrap.tabs',
+        'template/tooltip/tooltip-popup.html',
+        'template/tabs/tab.html',
+        'template/tabs/tabset.html',
+        'template/tabs/tabset-titles.html'
     ]);
 
     module.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
