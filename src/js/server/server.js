@@ -55,7 +55,7 @@ app.configure('all', function() {
     app.use(express.static(__dirname + '/../../../public'));
     app.use(express.cookieParser());
     app.use(express.session({
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET || "ABC123",
         key: 'sid',
         proxy: isProduction,
         cookie: {
@@ -78,7 +78,7 @@ app.configure('all', function() {
     app.use(app.router);
     app.use(errorHandler);
     app.use(clientErrorHandler);
-    app.set('port', process.env.PORT);
+    app.set('port', process.env.PORT || 3000);
 });
 
 /**

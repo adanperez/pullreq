@@ -1,17 +1,16 @@
 var request =   require('request');
+var qs =                require('querystring');
+var githubApiHost = process.env.GITHUB_API_HOST || "api.github.com";
 
 function makeGitRequest(token, path, params, callback) {
+    params  = params || {};
+    params.access_token = token;
     var req = {
         method: 'GET',
-        url: 'https://api.github.com' + path,
-        headers: {
-            'Host': 'api.github.com',
-            'Authorization': 'token ' + token,
-            'user-agent': 'Mozilla/5.0'
-        },
-        qs: params ? params : {},
+        url: "https://" + githubApiHost + path + '?' + qs.stringify(params),
         json: true,
-        encoding: 'utf8'
+        encoding: 'utf8',
+        strictSSL: false
     };
     request(req, function (error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -23,17 +22,14 @@ function makeGitRequest(token, path, params, callback) {
 }
 
 function mineGitRequest(token, path, params, list, callback) {
+    params  = params || {};
+    params.access_token = token;
     var req = {
         method: 'GET',
-        url: 'https://api.github.com' + path,
-        headers: {
-            'Host': 'api.github.com',
-            'Authorization': 'token ' + token,
-            'user-agent': 'Mozilla/5.0'
-        },
-        qs: params,
+        url: "https://" + githubApiHost + path + '?' + qs.stringify(params),
         json: true,
-        encoding: 'utf8'
+        encoding: 'utf8',
+        strictSSL: false
     };
     request(req, function (error, response, body) {
         if (!error && response.statusCode == 200) {

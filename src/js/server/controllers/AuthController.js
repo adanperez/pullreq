@@ -5,9 +5,11 @@ var repoService =       require("../services/RepoService.js");
 var logger =            require('log4js').getLogger();
 var githubClientID = process.env.GITHUB_CLIENT_ID;
 var githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
+var githubBaseUrl = process.env.GITHUB_BASE_URL || "https://github.com";
+var githubApiHost = process.env.GITHUB_API_HOST || "api.github.com";
 
 function openAuthToGitHub(req, res) {
-    var url = 'https://github.com/login/oauth/authorize?' + qs.stringify({
+    var url = githubBaseUrl + '/login/oauth/authorize?' + qs.stringify({
         client_id: githubClientID,
         scope:'user,repo,notifications,gist'
     });
@@ -23,15 +25,15 @@ function register(req, res) {
 
     var gitReq = {
         method: 'POST',
-        url: 'https://github.com/login/oauth/access_token',
-        headers: {},
-        body: qs.stringify({
-            client_id: githubClientID,
-            client_secret: githubClientSecret,
-            code: code
+        url: githubBaseUrl + '/login/oauth/access_token?' + qs.stringify({
+          client_id: githubClientID,
+          client_secret: githubClientSecret,
+          code: code
         }),
+        headers: {},
         json: true,
-        encoding: 'utf8'
+        encoding: 'utf8',
+        strictSSL: false
     };
 
     request(gitReq, function (error, response, body) {
@@ -42,14 +44,12 @@ function register(req, res) {
             var gitToken = body.access_token;
             gitReq = {
                 method: 'GET',
-                url: 'https://api.github.com/user',
-                headers: {
-                    'Host': 'api.github.com',
-                    'Authorization': 'token ' + gitToken,
-                    'user-agent': 'Mozilla/5.0'
-                },
+                url: "https://" + githubApiHost + '/user?' + qs.stringify({
+                  access_token: gitToken
+                }),
                 json: true,
-                encoding: 'utf8'
+                encoding: 'utf8',
+                strictSSL: false
             };
             request(gitReq, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
